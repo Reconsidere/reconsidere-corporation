@@ -10,6 +10,4 @@ export class Location {
     number: number;
     county: string;
     complement: string;
-
-    constructor() { }
 }

@@ -1,5 +1,5 @@
 export class Profile {
-
-    name: String;
-    access: [String];
+    _id: string;
+    name: string;
+    access: [string];
 }

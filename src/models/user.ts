@@ -1,20 +1,11 @@
-import { Profile } from './profile';
+import { Profile } from "./profile";
+
 export class User {
     _id: string;
     name: string;
     email: string;
-    profile: Profile;
     password: string;
-    active: boolean;
-    token?: string;
-}
+    active: boolean
+    profile: Profile;
 
-export namespace User {
-    export enum Profiles {
-        Administrator = 'Administrador',
-        Coordinator = 'Coordenador',
-        Manager = 'Gerente',
-        Operational = 'Operacional',
-        SuperUser = 'Super usuário'
-    }
 }

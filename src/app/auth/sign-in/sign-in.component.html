@@ -1,0 +1,38 @@
+<div id="backgroud">
+  <div class="container">
+    <div class="wrapper">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" name="Login_Form" class="form-signin">
+        <img class="styleMargin" src="./assets/images/branding/reconsidere-logo.png" width="280px" height="50px" />
+        <h3 class="form-signin-heading text-center">
+          <img src="http://codigocomcafe.com.br/demo/form/image/logo.png" alt="" />
+        </h3>
+        <div class="input-group">
+          <span class="input-group-addon" id="sizing-addon1">
+            <mat-icon color="primary">person</mat-icon>
+          </span>
+          <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" placeholder="Email" autofocus="" required />
+        </div>
+        <div class="input-group">
+          <span class="input-group-addon" id="sizing-addon1">
+            <mat-icon color="primary">lock</mat-icon>
+          </span>
+          <input #passwordfield type="{{hidepassword ? 'password' : 'text'}}" type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" placeholder="Senha" required />
+          <div class="input-group-append">
+            <span class="input-group-text">
+              <mat-icon color="primary" (click)="hidepassword = !hidepassword" *ngIf="!hidepassword">visibility</mat-icon>
+              <mat-icon color="primary" (click)="hidepassword = !hidepassword" *ngIf="hidepassword">visibility_off</mat-icon>
+            </span>
+          </div>
+        </div>
+        <button [disabled]="loading" mat-raised-button class="form-control" color="accent" name="Submit" value="Entrar" type="Submit">Entrar</button>
+        <img *ngIf="loading" class="pl-2"
+          src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+        <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+        <div class="marginStyle">
+          <a class="" routerLink="/sign-up">Registrar organização</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
