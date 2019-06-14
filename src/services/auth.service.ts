@@ -9,8 +9,7 @@ import jwt from 'jsonwebtoken';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { DecriptEncript } from 'src/app/security/decriptencript';
 import { Corporation } from 'src/models/corporation';
-import { request } from 'graphql-request'
-
+import { request, GraphQLClient } from 'graphql-request'
 @Injectable({
   providedIn: 'root'
 })
@@ -79,9 +78,10 @@ export class AuthService {
     this.cleanStorage();
   }
 
-  public signIn(email: string, password: string) {
-    const query = `{
-      signIn(email: ${email},password:${password}) {
+  public async signIn(email: string, password: string) {
+    const query = /* GraphQL */`
+    query signIn($email: String!, $password: String!) {
+       signIn(email: $email, password:$password)  {
         users{
           _id
           profile {
@@ -95,24 +95,59 @@ export class AuthService {
       }
     }`
 
-    request(environment.database.uri, query).then(data =>
-      console.log(data)
-    );
+    const variables = {
+      email: email,
+      password: password
+    }
+
+
+
+    const client = new GraphQLClient(environment.database.uri, {
+      headers: {}
+    })
+    try {
+      var user = await client.request(query, variables);
+      const isLogged = this.generateToken(user, password);
+      if (!isLogged) {
+        throw new Error('ERE001');
+      }
+
+    } catch (error) {
+      throw new Error('ERE001');
+    }
   }
   getOrganizationId(): Observable<string> {
     return null;
   }
 
-  getOrganization(id, organization) {
+  getOrganization(id) {
+    return this.http.get<any>(`${environment.database.uri}/organization/${id}`);
   }
 
   generateToken(user, password): boolean {
-    return null;
+    if (user) {
+      const decryptPass = this.decript(user.password);
+      if (password !== decryptPass) {
+        return false;
+      } else {
+        const id = user._id;
+        user.token = jwt.sign({ id }, environment.secret, {
+          expiresIn: 3600 // uma hora
+        });
+      }
+      localStorage.setItem('currentToken', JSON.stringify(user.token));
+      localStorage.setItem('currentUserId', JSON.stringify(user._id));
+      localStorage.setItem('userName', JSON.stringify(user.name));
+      this.currenTokenSubject.next(user.token);
+      return true;
+    }
   }
 
   encript(value) {
+    return this.decriptEncript.set(environment.secret, value);
   }
 
   decript(value) {
+    return this.decriptEncript.get(environment.secret, value);
   }
 }

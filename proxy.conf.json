@@ -1,6 +1,6 @@
 {
-    "/api": {
-        "target": "http://localhost:32546",
+    "/corporation": {
+        "target": "http://localhost:32546/corporation",
         "secure": "false"
     }
 }
