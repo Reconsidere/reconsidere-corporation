@@ -38,7 +38,7 @@ export class SignInComponent implements OnInit {
     return this.loginForm.controls;
   }
 
-  onSubmit() {
+  async onSubmit() {
     this.submitted = true;
 
     if (this.loginForm.invalid) {
@@ -49,18 +49,18 @@ export class SignInComponent implements OnInit {
     if (!environment.auth) {
       this.router.navigate([this.returnUrl]);
     } else {
-      this.authenticationService
-        .signIn(this.f.username.value, this.f.password.value);
-      // .pipe(first())
-      // .subscribe(
-      //   data => {
-      //     this.router.navigate([this.returnUrl]);
-      //   },
-      //   error => {
-      //     this.error = error;
-      //     this.loading = false;
-      //   }
-      // );
+
+      try {
+        let isLogged = await this.authenticationService.signIn(this.f.username.value, this.f.password.value);
+        if (isLogged) {
+          this.loading = false;
+          this.router.navigate([this.returnUrl]);
+        } else {
+          this.loading = false;
+        }
+      } catch (error) {
+        this.error = error;
+      }
     }
   }
 }

@@ -1,0 +1,390 @@
+<div *ngIf="isLogged">
+  <app-toolbar></app-toolbar>
+</div>
+<div class="container">
+  <form ngNativeValidate>
+    <div class="card">
+      <div class="card-header">Empresa</div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+            <div class="form-group">
+              <label for="classification">Classificação</label>
+              <select required [(ngModel)]="this.corporation.classification" name="classification" class="form-control" (blur)="requiredCheck($event)" (change)="Typecorporation(this.corporation.classification, $event)">
+                <option id="classification" *ngFor="let item of classifications">{{ item }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+            <div class="form-group">
+              <label for="email">Contato empresarial</label>
+              <input required [(ngModel)]="corporation.email" name="email" type="email" class="form-control" id="email" aria-describedby="email" placeholder="empresa@email.com" (blur)="requiredCheck($event)" />
+            </div>
+          </div>
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+            <div class="form-group" *ngIf="dynamicCnpj">
+              <label for="cnpj">CNPJ</label>
+              <input required [(ngModel)]="corporation.cnpj" name="cnpj" type="text" class="form-control" id="cnpj" aria-describedby="cnpj" placeholder="00.000.000/0000-00" mask="00.000.000/0000-00" (blur)="verifyCNPJ($event)" />
+              <div *ngIf="isValidCNPJ == false" class="input-group is-invalid">
+                CNPJ inválido
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+            <div class="form-group">
+              <label for="company">Nome</label>
+              <input required [(ngModel)]="corporation.company" name="company" type="text" class="form-control" id="company" aria-describedby="company" (blur)="requiredCheck($event)" />
+            </div>
+          </div>
+
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+            <div class="form-group">
+              <label for="tradingName">Nome fantasia</label>
+              <input required [(ngModel)]="corporation.tradingName" name="tradingName" type="text" class="form-control" id="tradingName" aria-describedby="tradingName" (blur)="requiredCheck($event)" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-3 col-lg-6 col-md-12 col-sm-12 col-12">
+            <div class="form-group">
+              <label for="phone">Telefone</label>
+              <input required [(ngModel)]="corporation.phone" name="phone" type="text" class="form-control" id="phone" aria-describedby="phone" placeholder="(00) 0000-0000" mask="(00) 0000-0000" (blur)="requiredCheck($event)" />
+            </div>
+          </div>
+          <div class="col-xl-3 col-lg-6 col-md-12 col-sm-12 col-12">
+            <div class="form-group">
+              <label for="cellPhone">Celular</label>
+              <input required [(ngModel)]="corporation.cellPhone" name="cellPhone" type="text" class="form-control" id="cellPhone" aria-describedby="cellPhone" placeholder="(00) 00000-0000" mask="(00) 00000-0000" (blur)="requiredCheck($event)" />
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="!isLogged" class="row">
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+            <div class="form-group">
+              <label for="password">Nome completo</label>
+              <input [(ngModel)]="user.name" name="name" type="text" class="form-control" id="name" aria-describedby="name" (blur)="requiredCheck($event)" />
+            </div>
+          </div>
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+            <div class="form-group">
+              <label for="password">Usuário</label>
+              <input [(ngModel)]="user.email" name="emailuser" type="email" class="form-control" id="emailuser" aria-describedby="emailuser" placeholder="usuario@email.com" (blur)="requiredCheck($event)" />
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="!isLogged" class="row">
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+            <div class="form-group">
+              <label for="userpassword">Senha</label>
+              <div class="input-group">
+                <input minlength="6" maxlength="20" [(ngModel)]="passwordUser" name="userpassword" type="password" class="form-control" id="userpassword" aria-describedby="userpassword" (blur)="requiredCheck($event)" placeholder="mínimo 6 caracteres" />
+                <div class="input-group-append">
+                  <span class="input-group-text">
+                    <mat-hint>{{ passwordUser?.length || 0 }}/20</mat-hint>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+            <div class="form-group">
+              <label for="confirmPasswordUser">Confirmação de senha</label>
+              <div class="input-group">
+                <input minlength="6" maxlength="20" [(ngModel)]="confirmPasswordUser" name="confirmPasswordUser" type="password" class="form-control" id="confirmPasswordUser" aria-describedby="confirmPasswordUser" (blur)="verifyPasswordUser($event)" placeholder="mínimo 6 caracteres" />
+                <div class="input-group-append">
+                  <span class="input-group-text">
+                    <mat-hint>{{ confirmPasswordUser?.length || 0 }}/20</mat-hint>
+                  </span>
+                </div>
+              </div>
+              <div *ngIf="isValidPasswordUser == false" class="input-group is-invalid">
+                Senha não coincide
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="isLogged" class="row">
+        <div class="col-xl-1 col-lg-6 col-md-12 col-sm-12 col-12">
+          <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
+            <mat-slide-toggle color="accent" #corporationActive name="activecorporation" checked="corporation.active" checklist-value="corporation.active" checklist-model="corporation.active" (change)="enableDisbale(corporation, corporationActive)">Ativo</mat-slide-toggle>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="isLogged">
+      <div class="card">
+        <div class="card-header">Unidade</div>
+        <div class="card-body">
+          <div class="tableUnits">
+            <table class="table-sm table-striped">
+              <thead>
+                <tr id="Titles">
+                  <th>Nome</th>
+                  <th>Endereço</th>
+                  <th>Estado</th>
+                  <th>Editar</th>
+                  <th>Remover</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let unit of (corporation.units | paginate: { itemsPerPage: 5, currentPage: pageUnit })">
+                  <td hidden>{{ unit._id }}</td>
+                  <td>{{ unit.name }}</td>
+                  <td>{{ unit.location.neighborhood }}</td>
+                  <td>{{ unit.location.state }}</td>
+                  <td>
+                    <button (click)="editLocation(unit)" type="button" mat-raised-button color="accent" class="btn btn-sm btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  </td>
+                  <td>
+                    <button (click)="removeUnit(unit)" type="button" mat-raised-button color="warn" class="btn btn-sm btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+                      <mat-icon>delete_forever</mat-icon>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+              <pagination-controls (pageChange)="pageUnit = $event" previousLabel="Anterior" nextLabel="Próxima" autoHide="true" responsive="true" screenReaderPaginationLabel="Pagination">
+              </pagination-controls>
+            </table>
+          </div>
+
+          <div class="row">
+            <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+              <div class="form-group">
+                <label for="nameUnit">Nome</label>
+                <input required [(ngModel)]="unit.name" name="nameUnit" type="text" class="form-control" id="nameUnit" aria-describedby="nameUnit" (blur)="requiredCheck($event)" />
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">Localização</div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-xl-2 col-lg-6 col-md-12 col-sm-12 col-12">
+                  <div class="form-group">
+                    <label for="cep">CEP</label>
+                    <input required [(ngModel)]="unit.location.cep" cep="ngModel" name="cep" type="text" class="form-control" id="cep" aria-describedby="cep" placeholder="00.000-000" mask="00.000-000" #cepVal (blur)="CEPSearch(cepVal.value, $event)" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="centered">
+                <img *ngIf="loading" class="pl-2"
+                  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+              </div>
+
+              <div class="row">
+                <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+                  <div class="form-group">
+                    <label for="publicPlace">Logradouro</label>
+                    <input required [(ngModel)]="unit.location.publicPlace" name="publicPlace" type="text" class="form-control" id="publicPlace" aria-describedby="publicPlace" (blur)="requiredCheck($event)" />
+                  </div>
+                </div>
+                <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+                  <div class="form-group">
+                    <label for="neighborhood">Bairro</label>
+                    <input required [(ngModel)]="unit.location.neighborhood" name="neighborhood" type="text" class="form-control" id="neighborhood" aria-describedby="neighborhood" (blur)="requiredCheck($event)" />
+                  </div>
+                </div>
+                <div class="col-xl-1 col-lg-6 col-md-12 col-sm-12 col-12">
+                  <div class="form-group">
+                    <label for="number">Número</label>
+                    <input required [(ngModel)]="unit.location.number" name="number" min="0" type="number" class="form-control" id="number" numbers-only aria-describedby="number" (blur)="requiredCheck($event)" oninput="this.value = Math.abs(this.value)" />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                  <div class="form-group">
+                    <label for="county">Município</label>
+                    <input required [(ngModel)]="unit.location.county" name="county" type="text" class="form-control" id="county" aria-describedby="county" (blur)="requiredCheck($event)" />
+                  </div>
+                </div>
+                <div class="col-xl-1 col-lg-6 col-md-12 col-sm-12 col-12">
+                  <div class="form-group">
+                    <label for="state">UF</label>
+                    <input required [(ngModel)]="unit.location.state" name="state" type="text" class="form-control" id="state" numbers-only aria-describedby="state" (blur)="requiredCheck($event)" />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                  <div class="form-group">
+                    <label for="complement">Complemento</label>
+                    <input required [(ngModel)]="unit.location.complement" name="complement" type="text" class="form-control" id="complement" aria-describedby="complement" (blur)="requiredCheck($event)" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button type="button" id="addLocation" (click)="addOrUpdateLocation()" mat-raised-button class="col-md-2" color="primary">
+            Adicionar
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">Usuários</div>
+        <div class="card-body">
+          <div class="tableUsers">
+            <table class="table-sm table-striped">
+              <thead>
+                <tr id="Titles">
+                  <th>Nome</th>
+                  <th>Email</th>
+                  <th>Ativo</th>
+                  <th>Editar</th>
+                  <th>Remover</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of (corporation.users | paginate: { itemsPerPage: 5, currentPage: pageUser })">
+                  <td hidden>{{ user._id }}</td>
+                  <td>{{ user.name }}</td>
+                  <td>{{ user.email }}</td>
+                  <td>{{ user.active | booltransform }}</td>
+                  <td>
+                    <button (click)="editUser(user)" type="button" mat-raised-button color="accent" class="btn btn-sm btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  </td>
+                  <td>
+                    <button (click)="removeUser(user)" type="button" mat-raised-button color="warn" class="btn btn-sm btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+                      <mat-icon>delete_forever</mat-icon>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+              <pagination-controls (pageChange)="pageUser = $event" previousLabel="Anterior" nextLabel="Próxima" autoHide="true" responsive="true" screenReaderPaginationLabel="Pagination">
+              </pagination-controls>
+            </table>
+          </div>
+
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+              <div class="form-group">
+                <label for="password">Nome</label>
+                <input [(ngModel)]="user.name" name="name" type="text" class="form-control" id="name" aria-describedby="name" (blur)="requiredCheck($event)" />
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+              <div class="form-group">
+                <label for="password">Email</label>
+                <input [(ngModel)]="user.email" name="emailuser" type="email" class="form-control" id="emailuser" aria-describedby="emailuser" placeholder="usuario@email.com" (blur)="requiredCheck($event)" />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+              <div class="form-group">
+                <label for="userpassword">Senha</label>
+                <div class="input-group">
+                  <input minlength="6" maxlength="20" [(ngModel)]="passwordUser" name="userpassword" type="password" class="form-control" id="userpassword" aria-describedby="userpassword" (blur)="requiredCheck($event)" />
+                  <div class="input-group-append">
+                    <span class="input-group-text">
+                      <mat-hint>{{ confirmPasswordcorporation?.length || 0 }}/20</mat-hint>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+              <div class="form-group">
+                <label for="confirmPasswordUser">Confirmação de senha</label>
+                <div class="input-group">
+                  <input minlength="6" maxlength="20" [(ngModel)]="confirmPasswordUser" name="confirmPasswordUser" type="password" class="form-control" id="confirmPasswordUser" aria-describedby="confirmPasswordUser" (blur)="verifyPasswordUser($event)" />
+                  <div class="input-group-append">
+                    <span class="input-group-text">
+                      <mat-hint>{{ confirmPasswordcorporation?.length || 0 }}/20</mat-hint>
+                    </span>
+                  </div>
+                </div>
+                <div *ngIf="isValidPasswordUser == false" class="input-group is-invalid">
+                  Senha não coincide
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">Permissões</div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                  <div class="form-group">
+                    <label for="nameProfile">Nome</label>
+                    <input [(ngModel)]="user.profile.name" name="nameProfile" type="text" class="form-control" id="nameProfile" aria-describedby="nameProfile" (blur)="requiredCheck($event)" />
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                  <label for="classification">Perfil</label>
+                  <select required [(ngModel)]="user.profile.access" name="profile" class="form-control" (blur)="requiredCheck($event)">
+                    <option id="profile" *ngFor="let profile of profiles">{{ profile }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
+              <mat-slide-toggle color="accent" #userActive name="userActive" checked="user.active" checklist-value="user.active" checklist-model="user.active" (change)="enableDisbale(user, userActive)">Ativo</mat-slide-toggle>
+            </div>
+          </div>
+          <button type="button" id="add" (click)="addOrUpdateUser()" mat-raised-button class="col-md-2" color="primary">
+            Adicionar
+          </button>
+        </div>
+      </div>
+
+
+
+
+    </div>
+    <div class="marginterms">
+      <mat-checkbox mat-checkbox color="accent" type="checkbox" [(ngModel)]="termService" name="termService" id="termService"></mat-checkbox>
+      <label for="termService">Eu li e aceito os <a target="_blank" class="" href="http://blog.reconsidere.online/termos-de-servico">Termos de Serviço</a> do Reconsidere</label>
+    </div>
+
+    <div class=" marginterms">
+      <mat-checkbox color="accent" type="checkbox" name="termPrivacity" [(ngModel)]="termPrivacity" id="termPrivacity">
+      </mat-checkbox>
+
+      <label for="termPrivacity">Eu li e aceito as <a target="_blank" class="" href="http://blog.reconsidere.online/politica-de-privacidade">Política de Privacidade</a> Eu li e aceito os <a target="_blank" class="" href="http://blog.reconsidere.online/termos-de-processamento-de-dados">Processamentos de Dados</a> </label>
+    </div>
+
+
+
+
+
+    <div class="g-recaptcha">
+      <recaptcha name="captcha" [(ngModel)]="myRecaptcha" (scriptLoad)="onScriptLoad()" (scriptError)="onScriptError()"></recaptcha>
+    </div>
+
+    <div class="row">
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+        <button mat-raised-button class="form-control" color="accent" type="submit" id="clean" (click)="clean()">
+          Limpar
+        </button>
+      </div>
+
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+        <button mat-raised-button class="form-control" color="primary" type="submit" id="save" (click)="save()">
+          Salvar
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -9,3 +9,14 @@ export class User {
     profile: Profile;
 
 }
+
+
+export namespace User {
+    export enum Profiles {
+      Administrator = 'Administrador',
+      Coordinator = 'Coordenador',
+      Manager = 'Gerente',
+      Operational = 'Operacional',
+      SuperUser = 'Super usuário'
+    }
+  }

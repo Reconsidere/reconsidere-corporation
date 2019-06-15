@@ -10,6 +10,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { DecriptEncript } from 'src/app/security/decriptencript';
 import { Corporation } from 'src/models/corporation';
 import { request, GraphQLClient } from 'graphql-request'
+import { ObserveOnSubscriber } from 'rxjs/internal/operators/observeOn';
 @Injectable({
   providedIn: 'root'
 })
@@ -56,8 +57,27 @@ export class AuthService {
     }
   }
 
-  add(corporation: Corporation) {
+  async add(corporation: Corporation) {
+    const mutation = /* GraphQL */`
+    mutation createCorporation($input: Corporation!) {
+      createCorporation(input: $corporation)  { 
+      }{
+        _id
+      }
+    }`
 
+    const variables = {
+      input: corporation,
+    }
+
+    const client = new GraphQLClient(environment.database.uri, {
+      headers: {}
+    })
+    try {
+      var id = await client.request(mutation, variables);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   update(organizationId: string, corporation: Corporation) {
@@ -100,8 +120,6 @@ export class AuthService {
       password: password
     }
 
-
-
     const client = new GraphQLClient(environment.database.uri, {
       headers: {}
     })
@@ -110,6 +128,8 @@ export class AuthService {
       const isLogged = this.generateToken(user, password);
       if (!isLogged) {
         throw new Error('ERE001');
+      } else {
+        return isLogged;
       }
 
     } catch (error) {
@@ -120,7 +140,87 @@ export class AuthService {
     return null;
   }
 
-  getOrganization(id) {
+  async getOrganization() {
+    const id = JSON.parse(localStorage.getItem('currentUserId'));
+    if (id !== null) {
+      const query = /* GraphQL */`
+      query getCorporationByUser($id: String!) {
+        getCorporationByUser(id: $id)  {
+          _id
+          company
+          cnpj
+          tradingName
+          active
+          class
+          phone
+          email
+          classification
+          cellPhone
+          creationDate
+          activationDate
+          verificationDate
+          location {
+            _id
+            country
+            state
+            latitude
+            longitude
+            cep
+            publicPlace
+            neighborhood
+            number
+            county
+            complement
+          }
+          units {
+            name
+            _id
+            location {
+              country
+              state
+              latitude
+              longitude
+              cep
+              publicPlace
+              neighborhood
+              number
+              county
+              complement
+            }
+          }
+          users {
+            _id
+            name
+            email
+            password
+            active
+            profile {
+              name
+              access
+            }
+          }
+  }
+  }`
+      const variables = {
+        id: id,
+      }
+      const client = new GraphQLClient(environment.database.uri, {
+        headers: {}
+      })
+      try {
+        var corporation = await client.request(query, variables);
+        if (corporation) {
+          return corporation;
+        } else {
+          return undefined;
+        }
+      } catch (error) {
+        throw new Error(error);
+      }
+
+    } else {
+      return new Observable<string>();
+    }
     return this.http.get<any>(`${environment.database.uri}/organization/${id}`);
   }
 

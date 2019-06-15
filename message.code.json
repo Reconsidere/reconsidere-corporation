@@ -1,0 +1,64 @@
+{
+  "INFO": {
+    "IRE001": { "status": "INFO", "summary": "O usuário foi desconectado com sucesso!", "message": "O usuário foi desconectado a partir de uma requisição do mesmo"},
+    "IRE002": { "status": "INFO", "summary": "Unidade adicionada!", "message": ""},
+    "IRE003": { "status": "INFO", "summary": "Usuário adicionado!", "message": ""},
+    "IRE004": { "status": "INFO", "summary": "Unidade removida!", "message": ""},
+    "IRE005": { "status": "INFO", "summary": "Usuário removido!", "message": ""},
+    "IRE006": { "status": "INFO", "summary": "Por favor, confirme: Não sou um robo!", "message": ""}
+  },
+  "SUCCESS": {
+    "SRE001": { "status": "SUCCESS", "summary": "Dados salvos com sucesso!", "message": ""},
+    "SRE002": { "status": "SUCCESS", "summary": "Unidade registrada com sucesso :)", "message": "Muito obrigado pelo seu precioso tempo e apoio"},
+    "SRE003": { "status": "SUCCESS", "summary": "", "message": ""},
+    "SRE004": { "status": "SUCCESS", "summary": "", "message": ""},
+    "SRE005": { "status": "SUCCESS", "summary": "", "message": ""}
+  },
+  "WARNNING": {
+    "WRE001": { "status": "WARNNING", "summary": "'Por favor, preencha os campos antes de salvar os dados!", "message": "Alguns dados neste formulário são obrigatórios"},
+    "WRE002": { "status": "WARNNING", "summary": "CNPJ incorreto!", "message": ""},
+    "WRE003": { "status": "WARNNING", "summary": "Verifique se todos os dados da localização foram inseridos!", "message": ""},
+    "WRE004": { "status": "WARNNING", "summary": "Verifique se todos os dados do usuário foram inseridos!", "message": ""},
+    "WRE005": { "status": "WARNNING", "summary": "Email já está em uso", "message": "Não é permitido a utilização de emails duplicados."},
+    "WRE006": { "status": "WARNNING", "summary": "Por favor, para utilizar este recurso primeiro, vá ate a tela de Conta e insira as a classe de materias que deseja utilizar.", "message": "Não é permitido a utilização deste recurso, existe uma dependência de informações de outras áreas do sistema que precisam ser cadastradas antes."},
+    "WRE007": { "status": "WARNNING", "summary": "Por favor, para utilizar este recurso primeiro, vá ate a tela de Materiais e cadastre-o", "message": "Não é permitido a utilização deste recurso, existe uma dependência de informações de outras áreas do sistema que precisam ser cadastradas antes."},
+    "WRE008": { "status": "WARNNING", "summary": "Este item já foi salvo, e não pode ser alterado.", "message": ""},
+    "WRE009": { "status": "WARNNING", "summary": "Por favor, é necessário ter o valor unitário e o peso para calcular o preço final.", "message": ""},
+    "WRE010": { "status": "WARNNING", "summary": "Nenhuma alteração foi realizada, todos os items já foram precificados!", "message": ""},
+    "WRE011": { "status": "WARNNING", "summary": "Está placa já está em uso!", "message": ""},
+    "WRE012": { "status": "WARNNING", "summary": "Por favor, para utilizar este recurso primeiro, vá ate a tela de Cadeia de processamento e cadastre pelo menos um item.", "message": "Não é permitido a utilização deste recurso, existe uma dependência de informações de outras áreas do sistema que precisam ser cadastradas antes."},
+    "WRE013": { "status": "WARNNING", "summary": "Nenhum dado foi localizado!", "message": ""},
+    "WRE014": { "status": "WARNNING", "summary": "Para calcular o valor, é necessário ter pelo menos a quantidade e o custo!", "message": ""},
+    "WRE015": { "status": "WARNNING", "summary": "Este nome já está cadastrado!", "message": "Não é permitido duplicidade de materiais."},
+    "WRE016": { "status": "WARNNING", "summary": "Nenhum dado foi localizado!. ", "message": "Certifique-se que existem dados cadastrados neste período de entrada ou saída de materias"},
+    "WRE017": { "status": "WARNNING", "summary": "A data inicial não pode ser maior que a data final.", "message": ""},
+    "WRE018": { "status": "WARNNING", "summary": "Este cep já esta em uso!", "message": ""}
+
+
+
+  },
+  "ERROR": {
+    "ERE001": { "status": "ERROR", "summary": "Usuário ou senha incorretos", "message": ""},
+    "ERE002": { "status": "ERROR", "summary": "Falha de conexão ao banco de dados inacessível", "message": ""},
+    "ERE003": { "status": "ERROR", "summary": "Impossível conectar a interface de persistência", "message": ""},
+    "ERE004": { "status": "ERROR", "summary": "A conexão foi perdida, efetue o login novamente", "message": ""},
+    "ERE005": { "status": "ERROR", "summary": "Não foi possível carregar o documento a partir do banco de dados", "message": ""},
+    "ERE006": { "status": "ERROR", "summary": "Não foi possível salvar os dados", "message": ""},
+    "ERE007": { "status": "ERROR", "summary": "Não foi possível remover os dados", "message": ""},
+    "ERE008": { "status": "ERROR", "summary": "Não foi possível localizar os dados solicitados.", "message": ""}
+  },
+  "DANGER": {
+    "DRE001": { "status": "DANGER", "summary": "", "message": ""},
+    "DRE002": { "status": "DANGER", "summary": "", "message": ""},
+    "DRE003": { "status": "DANGER", "summary": "", "message": ""},
+    "DRE004": { "status": "DANGER", "summary": "", "message": ""},
+    "DRE005": { "status": "DANGER", "summary": "", "message": ""}
+  },
+  "FATAL": {
+    "FRE001": { "status": "FATAL", "summary": "", "message": ""},
+    "FRE002": { "status": "FATAL", "summary": "", "message": ""},
+    "FRE003": { "status": "FATAL", "summary": "", "message": ""},
+    "FRE004": { "status": "FATAL", "summary": "", "message": ""},
+    "FRE005": { "status": "FATAL", "summary": "", "message": ""}
+  }
+}
