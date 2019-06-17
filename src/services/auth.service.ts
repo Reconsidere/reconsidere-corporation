@@ -59,15 +59,14 @@ export class AuthService {
 
   async add(corporation: Corporation) {
     const mutation = /* GraphQL */`
-    mutation createCorporation($input: Corporation!) {
+    mutation createCorporation($corporation: CorporationInput!) {
       createCorporation(input: $corporation)  { 
-      }{
         _id
       }
     }`
 
     const variables = {
-      input: corporation,
+      corporation: corporation,
     }
 
     const client = new GraphQLClient(environment.database.uri, {
@@ -159,6 +158,10 @@ export class AuthService {
           creationDate
           activationDate
           verificationDate
+          provide{
+            _id
+            providerId
+          }
           location {
             _id
             country

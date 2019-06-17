@@ -134,7 +134,7 @@ export class SignUpComponent implements OnInit {
   }
 
 
-  TypeOrganization(value, e) {
+  typeCorporation(value, e) {
     if (value === Corporation.Classification.Cooperativa) {
       this.dynamicCnpj = true;
     } else if (value === Corporation.Classification.Privada) {
@@ -372,7 +372,7 @@ export class SignUpComponent implements OnInit {
     return prof;
   }
 
-  save() {
+  async save() {
     if (!this.isLogged) {
       this.user.profile = this.getAdmProfile();
       this.user.active = true;
@@ -391,7 +391,7 @@ export class SignUpComponent implements OnInit {
     }
 
     try {
-      this.authService.signup(this.corporation);
+      await this.authService.signup(this.corporation);
       if (this.corporation._id === undefined) {
         this.router.navigate(['/']);
       }

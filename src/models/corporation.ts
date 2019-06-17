@@ -1,6 +1,7 @@
 import { Location } from "./location";
 import { Unit } from "./unit";
 import { User } from "./user";
+import { Provider } from "./provider";
 
 export class Corporation {
     _id: string;
@@ -19,6 +20,7 @@ export class Corporation {
     location: Location;
     units: [Unit];
     users: [User];
+    providers: [Provider];
 }
 
 
