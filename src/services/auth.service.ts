@@ -11,6 +11,7 @@ import { DecriptEncript } from 'src/app/security/decriptencript';
 import { Corporation } from 'src/models/corporation';
 import { request, GraphQLClient } from 'graphql-request'
 import { ObserveOnSubscriber } from 'rxjs/internal/operators/observeOn';
+import { resolve } from 'q';
 @Injectable({
   providedIn: 'root'
 })
@@ -49,15 +50,15 @@ export class AuthService {
   public getUserName() {
     return JSON.parse(localStorage.getItem('userName'));
   }
-  public signup(corporation: Corporation) {
+  public signup(corporation: Corporation, resolve, reject) {
     if (corporation._id === undefined) {
-      this.add(corporation);
+      this.add(corporation, resolve, reject);
     } else {
-      this.update(corporation._id, corporation);
+      this.update(corporation._id, corporation, resolve, reject);
     }
   }
 
-  async add(corporation: Corporation) {
+  async add(corporation: Corporation, resolve, reject) {
     const mutation = /* GraphQL */`
     mutation createCorporation($corporation: CorporationInput!) {
       createCorporation(input: $corporation)  { 
@@ -74,13 +75,38 @@ export class AuthService {
     })
     try {
       var id = await client.request(mutation, variables);
+      if (id) {
+        resolve(id);
+      }
     } catch (error) {
-      console.log(error);
+      reject(error.response.errors[0].message);
     }
   }
 
-  update(organizationId: string, corporation: Corporation) {
+  async update(organizationId: string, corporation: Corporation, resolve, reject) {
+    const mutation = /* GraphQL */`
+    mutation updateCorporation($_id:ID!,$corporation: CorporationInput!) {
+      updateCorporation(_id: $_id, input: $corporation)  { 
+        _id
+      }
+    }`
 
+    const variables = {
+      _id: organizationId,
+      corporation: corporation,
+    }
+
+    const client = new GraphQLClient(environment.database.uri, {
+      headers: {}
+    })
+    try {
+      var id = await client.request(mutation, variables);
+      if (id) {
+        resolve(id);
+      }
+    } catch (error) {
+      reject(error.response.errors[0].message);
+    }
   }
 
   cleanStorage() {
@@ -107,6 +133,7 @@ export class AuthService {
             name
             access
           }
+          name
           email
           password
           active
@@ -116,15 +143,15 @@ export class AuthService {
 
     const variables = {
       email: email,
-      password: password
+      password: this.encript(password)
     }
 
     const client = new GraphQLClient(environment.database.uri, {
       headers: {}
     })
     try {
-      var user = await client.request(query, variables);
-      const isLogged = this.generateToken(user, password);
+      var signIn = await client.request(query, variables);
+      const isLogged = this.generateToken(signIn['signIn'].users[0], password);
       if (!isLogged) {
         throw new Error('ERE001');
       } else {
@@ -139,12 +166,12 @@ export class AuthService {
     return null;
   }
 
-  async getOrganization() {
-    const id = JSON.parse(localStorage.getItem('currentUserId'));
-    if (id !== null) {
+  async getOrganization(resolve, reject) {
+    const _id = JSON.parse(localStorage.getItem('currentUserId'));
+    if (_id !== null && _id !== undefined) {
       const query = /* GraphQL */`
-      query getCorporationByUser($id: String!) {
-        getCorporationByUser(id: $id)  {
+      query getCorporationByUser($_id: ID!) {
+        getCorporationByUser(_id: $_id)  {
           _id
           company
           cnpj
@@ -158,7 +185,7 @@ export class AuthService {
           creationDate
           activationDate
           verificationDate
-          provide{
+          providers{
             _id
             providerId
           }
@@ -205,26 +232,25 @@ export class AuthService {
   }
   }`
       const variables = {
-        id: id,
+        _id: _id,
       }
       const client = new GraphQLClient(environment.database.uri, {
         headers: {}
       })
       try {
-        var corporation = await client.request(query, variables);
-        if (corporation) {
-          return corporation;
+        var getCorporationByUser = await client.request(query, variables);
+        if (getCorporationByUser) {
+          resolve(getCorporationByUser['getCorporationByUser']);
         } else {
-          return undefined;
+          resolve(undefined);
         }
       } catch (error) {
-        throw new Error(error);
+        reject(error.response.errors[0].message);
       }
 
     } else {
       return new Observable<string>();
     }
-    return this.http.get<any>(`${environment.database.uri}/organization/${id}`);
   }
 
   generateToken(user, password): boolean {

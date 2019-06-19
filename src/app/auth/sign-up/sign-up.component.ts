@@ -18,6 +18,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Corporation } from 'src/models/corporation';
 import { UserService } from 'src/services/user.service';
 import * as messageCode from 'message.code.json';
+import { reject } from 'q';
 
 @Component({
   selector: 'app-sign-up',
@@ -68,29 +69,31 @@ export class SignUpComponent implements OnInit {
     this.pageUnit = 1;
     this.pageUser = 1;
     this.loading = false;
-    //this.authService.getOrganizationId().subscribe(id => this.setId(id));
-    this.authService.getOrganization();
     this.isLogged = false;
+    this.loadOrganization();
   }
 
+  private async loadOrganization() {
+    var corporation = undefined;
+    try {
 
+      corporation = await new Promise(async (resolve, reject) => {
+        corporation = this.authService.getOrganization(resolve, reject);
+      });
 
-  setId(id) {
-    this.corporationId = id;
-    if (id !== undefined) {
-      this.isLogged = true;
-      this.authService.getOrganization().then(item => this.loadOrganization(item), error => error);
-    } else {
-      this.isLogged = false;
-      this.termService = false;
-      this.termPrivacity = false;
+      if (corporation === undefined || corporation === null) {
+        this.isLogged = false;
+        this.termService = false;
+        this.termPrivacity = false;
+      } else {
+        this.corporation = corporation;
+        this.termService = true;
+        this.termPrivacity = true;
+        this.isLogged = true;
+      }
+    } catch (error) {
+      this.toastr.error(messageCode['WARNNING'][error]['summary']);
     }
-  }
-
-  private loadOrganization(item) {
-    this.corporation = item;
-    this.termService = true;
-    this.termPrivacity = true;
   }
 
   CEPSearch(value, e) {
@@ -102,24 +105,23 @@ export class SignUpComponent implements OnInit {
     this.cepService.search(value).subscribe(result => {
       this.loadAddress(result);
     });
-
   }
 
 
   loadAddress(result) {
     if (result === undefined || result === null) {
-      this.corporation.location = new Location();
+      this.unit.location = new Location();
     }
     if (result.erro !== undefined && result.erro === true) {
-      return;
-      //show message error
+      this.toastr.warning(messageCode['WARNNING']['WRE019']['summary']);
     }
-    this.corporation.location.cep = result.cep;
-    this.corporation.location.publicPlace = result.logradouro;
-    this.corporation.location.complement = result.complemento;
-    this.corporation.location.neighborhood = result.bairro;
-    this.corporation.location.county = result.localidade;
-    this.corporation.location.state = result.uf;
+    this.unit.location.cep = result.cep;
+    this.unit.location.publicPlace = result.logradouro;
+    this.unit.location.complement = result.complemento;
+    this.unit.location.neighborhood = result.bairro;
+    this.unit.location.county = result.localidade;
+    this.unit.location.state = result.uf;
+    this.loading = false;
   }
 
   clean() {
@@ -390,15 +392,20 @@ export class SignUpComponent implements OnInit {
       return;
     }
 
+    if (this.corporation._id !== undefined) {
+      this.corporation.creationDate = new Date();
+    }
+
     try {
-      await this.authService.signup(this.corporation);
-      if (this.corporation._id === undefined) {
+      let promise = await new Promise(async (resolve, reject) => {
+        this.authService.signup(this.corporation, resolve, reject);
+      });
+      if (promise === undefined) {
         this.router.navigate(['/']);
       }
       this.toastr.success(messageCode['SUCCESS']['SRE001']['summary']);
     } catch (error) {
-      this.toastr.error(messageCode['ERROR'][error]['summary']);
-      console.log(error);
+      this.toastr.error(messageCode['WARNNING'][error]['summary']);
     }
   }
 }

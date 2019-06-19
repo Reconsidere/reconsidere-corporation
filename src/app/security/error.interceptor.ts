@@ -8,6 +8,8 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from 'src/services/auth.service';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -25,7 +27,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         }
 
         const error = err.error || err.statusText;
-        return throwError(error);
+         return throwError(error);
       })
     );
   }

@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/services/auth.service';
 import { environment } from 'src/environments/environment';
+import * as messageCode from 'message.code.json';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -22,7 +24,7 @@ export class SignInComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthService) { }
+    private authenticationService: AuthService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -59,7 +61,9 @@ export class SignInComponent implements OnInit {
           this.loading = false;
         }
       } catch (error) {
-        this.error = error;
+        this.loading = false;
+        this.toastr.error(messageCode['ERROR'][error.message]['summary']);
+        return;
       }
     }
   }
