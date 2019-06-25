@@ -1,0 +1,57 @@
+<app-toolbar></app-toolbar>
+<div class="container">
+
+
+  <div class="card">
+    <div class="card-header">Departamentos
+      <button type="button" id="save" (click)="save()" mat-raised-button class="col-md-2 pull-right" color="primary">
+        Salvar ações
+      </button>
+    </div>
+
+    <div class="card-body">
+      <div class="tableDepartment">
+        <table class="table-sm">
+          <thead>
+            <tr>
+              <button id="newItem" (click)="newItem()" type="button" mat-raised-button color="accent" class="btn btn-sm btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+                <mat-icon>add</mat-icon>
+              </button>
+            </tr>
+            <tr id="Titles">
+              <th>Nome</th>
+              <th>Descrição</th>
+              <th>Remover</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-template ngFor let-item [ngForOf]="(departments | paginate: { itemsPerPage: 5, currentPage: page })" let-igroup="index">
+              <tr *ngIf="item.active">
+                <td>
+                  <input required [(ngModel)]="item.name" name="name" type="text" class="form-control" id="name" aria-describedby="name" />
+                </td>
+                <td>
+                  <input  [(ngModel)]="item.description" name="description" type="text" class="form-control" id="description" aria-describedby="description" />
+                </td>
+                <td>
+                  <button (click)="remove(item)" type="button" mat-raised-button color="warn" class="btn btn-sm btn-danger" data-toggle="button" aria-pressed="false" autocomplete="off">
+                    <mat-icon>delete_forever</mat-icon>
+                  </button>
+                </td>
+              </tr>
+            </ng-template>
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- <td>
+    <select required [(ngModel)]="item.typeMaterial" name="typeMaterial" class="form-control">
+      <option id="typeMaterial" *ngFor="let type of materialsType">{{type}}</option>
+    </select>
+  </td> -->

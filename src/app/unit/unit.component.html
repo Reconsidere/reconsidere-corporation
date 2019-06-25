@@ -1,0 +1,22 @@
+<app-toolbar></app-toolbar>
+
+<div class="container">
+    <ul class="list-group">
+        <li *ngFor="let unit of units" >
+            <div class="card">
+                <div class="card-body">
+                    <span>{{unit.name}}</span>
+                <br>
+                    <span>{{unit.location.cep}}</span>
+                <br>
+                    <span>{{unit.location.publicPlace}}</span>
+                <br>
+                    <span>{{unit.location.neighborhood}}</span>
+                <br>
+                    <span>{{unit.location.state}}</span>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+</div>

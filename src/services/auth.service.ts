@@ -83,7 +83,7 @@ export class AuthService {
     }
   }
 
-  async update(organizationId: string, corporation: Corporation, resolve, reject) {
+  async update(corporationId: string, corporation: Corporation, resolve, reject) {
     const mutation = /* GraphQL */`
     mutation updateCorporation($_id:ID!,$corporation: CorporationInput!) {
       updateCorporation(_id: $_id, input: $corporation)  { 
@@ -92,7 +92,7 @@ export class AuthService {
     }`
 
     const variables = {
-      _id: organizationId,
+      _id: corporationId,
       corporation: corporation,
     }
 
@@ -113,6 +113,7 @@ export class AuthService {
     localStorage.removeItem('currentToken');
     localStorage.removeItem('currentUserId');
     localStorage.removeItem('userName');
+    localStorage.removeItem('currentCorporationId');
     this.currenTokenSubject.next(null);
   }
 
@@ -127,6 +128,7 @@ export class AuthService {
     const query = /* GraphQL */`
     query signIn($email: String!, $password: String!) {
        signIn(email: $email, password:$password)  {
+         _id
         users{
           _id
           profile {
@@ -151,7 +153,7 @@ export class AuthService {
     })
     try {
       var signIn = await client.request(query, variables);
-      const isLogged = this.generateToken(signIn['signIn'].users[0], password);
+      const isLogged = this.generateToken(signIn['signIn']._id, signIn['signIn'].users[0], password);
       if (!isLogged) {
         throw new Error('ERE001');
       } else {
@@ -162,8 +164,8 @@ export class AuthService {
       throw new Error('ERE001');
     }
   }
-  getOrganizationId(): Observable<string> {
-    return null;
+  getCorporationId() {
+    return JSON.parse(localStorage.getItem('currentCorporationId'));
   }
 
   async getOrganization(resolve, reject) {
@@ -188,19 +190,6 @@ export class AuthService {
           providers{
             _id
             providerId
-          }
-          location {
-            _id
-            country
-            state
-            latitude
-            longitude
-            cep
-            publicPlace
-            neighborhood
-            number
-            county
-            complement
           }
           units {
             name
@@ -253,7 +242,7 @@ export class AuthService {
     }
   }
 
-  generateToken(user, password): boolean {
+  generateToken(corporationId, user, password): boolean {
     if (user) {
       const decryptPass = this.decript(user.password);
       if (password !== decryptPass) {
@@ -267,6 +256,7 @@ export class AuthService {
       localStorage.setItem('currentToken', JSON.stringify(user.token));
       localStorage.setItem('currentUserId', JSON.stringify(user._id));
       localStorage.setItem('userName', JSON.stringify(user.name));
+      localStorage.setItem('currentCorporationId', JSON.stringify(corporationId));
       this.currenTokenSubject.next(user.token);
       return true;
     }

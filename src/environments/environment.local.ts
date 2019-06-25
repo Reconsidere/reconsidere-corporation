@@ -1,6 +1,6 @@
 export const environment = {
-    production: false,
-    auth: false,
+    production: true,
+    auth: true,
     database: {
       description: 'Eowyn Reconsidere Corporation Development Mongo DataBase',
       username: 'reconsidere-corporation',

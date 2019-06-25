@@ -46,7 +46,8 @@
     "ERE005": { "status": "ERROR", "summary": "Não foi possível carregar o documento a partir do banco de dados", "message": ""},
     "ERE006": { "status": "ERROR", "summary": "Não foi possível salvar os dados", "message": ""},
     "ERE007": { "status": "ERROR", "summary": "Não foi possível remover os dados", "message": ""},
-    "ERE008": { "status": "ERROR", "summary": "Não foi possível localizar os dados solicitados.", "message": ""}
+    "ERE008": { "status": "ERROR", "summary": "Não foi possível localizar os dados solicitados.", "message": ""},
+    "ERE009": { "status": "ERROR", "summary": "Erro ao salvar os dados!", "message": ""}
   },
   "DANGER": {
     "DRE001": { "status": "DANGER", "summary": "", "message": ""},

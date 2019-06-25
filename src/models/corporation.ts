@@ -17,7 +17,6 @@ export class Corporation {
     creationDate: Date;
     activationDate: Date;
     verificationDate: Date;
-    location: Location;
     units: [Unit];
     users: [User];
     providers: [Provider];

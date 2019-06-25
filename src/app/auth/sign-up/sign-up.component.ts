@@ -392,7 +392,7 @@ export class SignUpComponent implements OnInit {
       return;
     }
 
-    if (this.corporation._id !== undefined) {
+    if (this.corporation._id === undefined) {
       this.corporation.creationDate = new Date();
     }
 

@@ -5,6 +5,20 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" routerLink="/account" routerLinkActive="active">Conta</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" routerLink="/unit" routerLinkActive="active">Unidade</a>
+      </li>
+      <li class="nav-item active">
+          <a class="nav-link" routerLink="/department" routerLinkActive="active">Departamento</a>
+        </li>
+
+    </ul>
+
+
     <div class="pull-right">
       <ul class="nav pull-right">
         <li ngbDropdown class="dropdown"><a ngbDropdownToggle class="dropdown-toggle" data-toggle="dropdown"><span class="text-muted text-uppercase" *ngIf="name">Bem vindo, {{name}}</span> <b class="caret"></b></a>
