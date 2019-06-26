@@ -42,11 +42,11 @@ export class DepartamentService {
 			});
 
 			try {
-				var allDepartaments = await client.request(query, variables);
-				if (!allDepartaments) {
+				var allDepartments = await client.request(query, variables);
+				if (!allDepartments) {
 					reject('WRE016');
 				} else {
-					resolve(allDepartaments['allDepartaments']);
+					resolve(allDepartments['allDepartments']);
 				}
 			} catch (error) {
 				throw new Error(error.response.errors[0].message);
@@ -58,7 +58,7 @@ export class DepartamentService {
 
 	async addOrUpdate(_id: String, department: Department, resolve, reject) {
 		const mutation = /* GraphQL */ `
-    mutation createorUpdateDepartment($_id:ID!, $department: DepartmentInput!) {
+    mutation createorUpdateDepartment($_id:ID!, $department: [DepartmentInput]) {
 		createorUpdateDepartment(_id:$_id, input: $department)  { 
 		_id
           name

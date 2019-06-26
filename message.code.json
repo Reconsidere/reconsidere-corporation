@@ -33,7 +33,8 @@
     "WRE016": { "status": "WARNNING", "summary": "Nenhum dado foi localizado!. ", "message": "Certifique-se que existem dados cadastrados neste período de entrada ou saída de materias"},
     "WRE017": { "status": "WARNNING", "summary": "A data inicial não pode ser maior que a data final.", "message": ""},
     "WRE018": { "status": "WARNNING", "summary": "Este cep já esta em uso!", "message": ""},
-    "WRE019": { "status": "WARNNING", "summary": "CEP não localizado!", "message": ""}
+    "WRE019": { "status": "WARNNING", "summary": "CEP não localizado!", "message": ""},
+    "WRE020": { "status": "WARNNING", "summary": "Não foram encontrados dados novos ou modificados para atualizar!", "message": ""}
 
 
 
