@@ -28,6 +28,7 @@ export class DepartamentService {
               name
               weight
               quantity
+			  active
             }
         }
   }
@@ -73,6 +74,7 @@ export class DepartamentService {
               name
               weight
               quantity
+			  active
             }
         }
       }

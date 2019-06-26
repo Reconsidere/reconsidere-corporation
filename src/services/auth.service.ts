@@ -74,9 +74,9 @@ export class AuthService {
       headers: {}
     })
     try {
-      var id = await client.request(mutation, variables);
-      if (id) {
-        resolve(id);
+      var createCorporation = await client.request(mutation, variables);
+      if (createCorporation) {
+        resolve(createCorporation['createCorporation']);
       }
     } catch (error) {
       reject(error.response.errors[0].message);

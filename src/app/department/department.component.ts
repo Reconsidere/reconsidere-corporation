@@ -5,6 +5,7 @@ import { AuthService } from 'src/services/auth.service';
 import * as messageCode from 'message.code.json';
 import { Department } from 'src/models/department';
 import { QrCode } from 'src/models/qrcode';
+import { Material } from 'src/models/material';
 
 @Component({
 	selector: 'app-department',
@@ -16,6 +17,7 @@ export class DepartmentComponent implements OnInit {
 	corporationId: string;
 	departments: any;
 	departmentsOriginal: any;
+	materialsType: any;
 
 	constructor(
 		private toastr: ToastrService,
@@ -24,6 +26,7 @@ export class DepartmentComponent implements OnInit {
 	) {
 		this.departments = [];
 		this.departmentsOriginal = [];
+		this.materialsType = Object.values(Material.Type);
 	}
 
 	ngOnInit() {
@@ -43,7 +46,6 @@ export class DepartmentComponent implements OnInit {
 			if (departments) {
 				this.departments = departments;
 				this.departmentsOriginal = JSON.parse(JSON.stringify(departments));
-				var ddd = '';
 			}
 		} catch (error) {
 			this.toastr.error(messageCode['WARNNING'][error]['summary']);
@@ -52,7 +54,7 @@ export class DepartmentComponent implements OnInit {
 
 	resetDepartments(items) {
 		this.departments = items;
-		this.departmentsOriginal.push(items);
+		this.departmentsOriginal = JSON.parse(JSON.stringify(items));
 	}
 
 	remove(department) {
@@ -68,6 +70,29 @@ export class DepartmentComponent implements OnInit {
 		var departament = new Department();
 		departament.active = true;
 		this.departments.push(departament);
+	}
+
+	addMaterial(item) {
+		if (item) {
+			if (item.qrCode === undefined) {
+				item.qrCode = [];
+			}
+			var qrCode = new QrCode();
+			qrCode.code = this.uuidv4(); /** Verificar como será o qrcde por hora apenas um cpodigo gerado na mão para teste */
+			qrCode.material = new Material();
+			item.qrCode.push(qrCode);
+		}
+	}
+
+	/**
+	 * Utilizado por hora para gerar ids unicos para cada produto no lugar do Qr code
+	 */
+	uuidv4() {
+		return '124AbCDq-0001-4120-YUZP-OIMVCx214790'.replace(/[xy]/g, function(c) {
+			var r = (Math.random() * 16) | 0,
+				v = c == 'x' ? r : (r & 0x3) | 0x8;
+			return v.toString(16);
+		});
 	}
 
 	veryfyBeforeSave() {
@@ -105,6 +130,9 @@ export class DepartmentComponent implements OnInit {
 	}
 
 	removeNonChangeds(): Boolean {
+		if (this.departmentsOriginal === undefined || this.departmentsOriginal.length <= 0) {
+			return true;
+		}
 		var existchange = false;
 		this.departments.forEach((department, index) => {
 			this.departmentsOriginal.forEach((original) => {
@@ -161,11 +189,11 @@ export class DepartmentComponent implements OnInit {
 				return;
 			}
 			this.veryfyBeforeSave();
-			let promise = await new Promise(async (resolve, reject) => {
+			var departaments = await new Promise(async (resolve, reject) => {
 				this.departmentService.addOrUpdate(this.corporationId, this.departments, resolve, reject);
 			});
+			this.resetDepartments(departaments);
 			this.toastr.success(messageCode['SUCCESS']['SRE001']['summary']);
-			this.resetDepartments(promise);
 		} catch (error) {
 			this.toastr.warning(messageCode['ERROR'][error]['summary']);
 		}
