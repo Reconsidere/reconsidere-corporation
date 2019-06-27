@@ -57,7 +57,7 @@ export class DepartamentService {
 		}
 	}
 
-	async addOrUpdate(_id: String, department: Department, resolve, reject) {
+	addOrUpdate(_id: String, department: Department, resolve, reject) {
 		const mutation = /* GraphQL */ `
     mutation createorUpdateDepartment($_id:ID!, $department: [DepartmentInput]) {
 		createorUpdateDepartment(_id:$_id, input: $department)  { 
@@ -88,13 +88,15 @@ export class DepartamentService {
 		const client = new GraphQLClient(environment.database.uri, {
 			headers: {}
 		});
-		try {
-			var allDepartaments = await client.request(mutation, variables);
-			if (allDepartaments['allDepartaments']) {
-				resolve(allDepartaments['allDepartaments']);
-			}
-		} catch (error) {
-			reject(error.response.errors[0].message);
-		}
+		var allDepartaments = client
+			.request(mutation, variables)
+			.then((allDepartaments) => {
+				if (allDepartaments['createorUpdateDepartment']) {
+					resolve(allDepartaments['createorUpdateDepartment']);
+				}
+			})
+			.catch((allDepartaments) => {
+				reject(allDepartaments.response.errors[0].message);
+			});
 	}
 }

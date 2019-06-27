@@ -72,29 +72,6 @@ export class DepartmentComponent implements OnInit {
 		this.departments.push(departament);
 	}
 
-	addMaterial(item) {
-		if (item) {
-			if (item.qrCode === undefined) {
-				item.qrCode = [];
-			}
-			var qrCode = new QrCode();
-			qrCode.code = this.uuidv4(); /** Verificar como será o qrcde por hora apenas um cpodigo gerado na mão para teste */
-			qrCode.material = new Material();
-			item.qrCode.push(qrCode);
-		}
-	}
-
-	/**
-	 * Utilizado por hora para gerar ids unicos para cada produto no lugar do Qr code
-	 */
-	uuidv4() {
-		return '124AbCDq-0001-4120-YUZP-OIMVCx214790'.replace(/[xy]/g, function(c) {
-			var r = (Math.random() * 16) | 0,
-				v = c == 'x' ? r : (r & 0x3) | 0x8;
-			return v.toString(16);
-		});
-	}
-
 	veryfyBeforeSave() {
 		if (this.departments === undefined || this.departments.length <= 0) {
 			this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
@@ -130,10 +107,14 @@ export class DepartmentComponent implements OnInit {
 	}
 
 	removeNonChangeds(): Boolean {
+		var existchange = false;
 		if (this.departmentsOriginal === undefined || this.departmentsOriginal.length <= 0) {
 			return true;
 		}
-		var existchange = false;
+		if (this.departments.length > this.departmentsOriginal.length) {
+			existchange = true;
+		}
+		var changed = false;
 		this.departments.forEach((department, index) => {
 			this.departmentsOriginal.forEach((original) => {
 				if (department._id !== undefined) {
@@ -144,39 +125,16 @@ export class DepartmentComponent implements OnInit {
 							department.active !== original.active
 						) {
 							existchange = true;
+							changed = true;
 						} else {
-							this.departments.splice(index, 1);
-						}
-						if (department.qrCode !== undefined && department.qrCode.length > 0) {
-							department.qrCode.forEach((qrCode, i) => {
-								original.qrCode.forEach((originalQrCode) => {
-									if (qrCode.code !== originalQrCode.code) {
-										existchange = true;
-									} else {
-										department.qrCode.splice(i, 1);
-									}
-									if (qrCode.material !== undefined && qrCode) {
-										qrCode.material.forEach((material, ind) => {
-											originalQrCode.material.forEach((originalMaterial) => {
-												if (
-													material.type !== originalMaterial.type ||
-													material.name !== originalMaterial.name ||
-													material.weight !== originalMaterial.weight ||
-													material.quantity !== originalMaterial.quantity
-												) {
-													existchange = true;
-												} else {
-													qrCode.material.splice(ind, 1);
-												}
-											});
-										});
-									}
-								});
-							});
+							changed = false;
 						}
 					}
 				}
 			});
+			// if (!changed) {
+			// 	this.departments.splice(index, 1);
+			// }
 		});
 		return existchange;
 	}
