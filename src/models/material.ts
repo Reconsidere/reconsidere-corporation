@@ -3,6 +3,7 @@ export class Material {
 	name: String;
 	weight: Number;
 	quantity: Number;
+	unity:String;
 }
 
 export namespace Material {
@@ -13,5 +14,13 @@ export namespace Material {
 		Metal = 'Metal',
 		Isopor = 'Isopor',
 		Tetrapack = 'Tetrapack'
+	}
+}
+
+export namespace Material {
+	export enum Unit	{
+		Kg = 'Kg',
+		L = 'l',
+		T = 'T',
 	}
 }

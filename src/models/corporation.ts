@@ -25,11 +25,11 @@ export class Corporation {
 
 export namespace Corporation {
     export enum Classification {
-        Comercio = 'Comércio Comum',
         Cooperativa = 'Cooperativa',
         Coletora = 'Empresa Coletora',
         Beneficiadora = 'Empresa Beneficiadora',
-        Municipio = 'Município',
-        Privada = 'Empresa Privada'
+        Privada = 'Empresa Privada',
+        Fornecedor = 'Fornecedor',
+        Filiais = 'Filiais',
     }
 }

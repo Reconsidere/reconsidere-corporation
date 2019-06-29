@@ -38,6 +38,8 @@ import { ProviderComponent } from './provider/provider.component';
 import { LogoutComponent } from './auth/logout/logout.component';
 import { UnitComponent } from './unit/unit.component';
 import { DepartmentComponent } from './department/department.component';
+import { CheckpointComponent } from './checkpoint/checkpoint.component';
+import { ResiduesRegisterComponent } from './residues-register/residues-register.component';
 
 
 registerLocaleData(localePt);
@@ -53,7 +55,9 @@ registerLocaleData(localePt);
     ProviderComponent,
     LogoutComponent,
     UnitComponent,
-    DepartmentComponent
+    DepartmentComponent,
+    CheckpointComponent,
+    ResiduesRegisterComponent
   ],
   imports: [
     BrowserModule,
