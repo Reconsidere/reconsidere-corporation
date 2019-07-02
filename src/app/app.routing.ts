@@ -7,6 +7,8 @@ import { SignUpComponent } from './auth/sign-up/sign-up.component';
 import { LogoutComponent } from './auth/logout/logout.component';
 import { UnitComponent } from './unit/unit.component';
 import { DepartmentComponent } from './department/department.component';
+import { ResiduesRegister } from 'src/models/residuesregister';
+import { ResiduesRegisterComponent } from './residues-register/residues-register.component';
 
 export const routes: Routes = [
 	{ path: '', component: StartcenterComponent, canActivate: [ AuthGuard ] },
@@ -17,6 +19,7 @@ export const routes: Routes = [
 	{ path: 'account', component: SignUpComponent, canActivate: [ AuthGuard ] },
 	{ path: 'unit', component: UnitComponent, canActivate: [ AuthGuard ] },
 	{ path: 'department', component: DepartmentComponent, canActivate: [ AuthGuard ] },
+	{ path: 'residue-register', component: ResiduesRegisterComponent, canActivate: [ AuthGuard ] },
 
 	{ path: '**', redirectTo: '' }
 ];

@@ -4,6 +4,7 @@ export class Material {
 	weight: Number;
 	quantity: Number;
 	unity:String;
+	active: Boolean;
 }
 
 export namespace Material {

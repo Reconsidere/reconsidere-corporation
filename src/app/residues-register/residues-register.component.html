@@ -1,3 +1,90 @@
-<p>
-  residues-register works!
-</p>
+<app-toolbar></app-toolbar>
+<div class="container">
+
+  <div class="card">
+    <div class="card-header">Lista de resíduos
+      <button type="button" id="save" (click)="save()" mat-raised-button class="col-md-2 pull-right" color="primary">
+        Salvar ações
+      </button>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10">
+          <div class="form-group">
+            <label for="nameResidue">Resíduo</label>
+            <select required [(ngModel)]="nameResidue" name="nameResidue" class="form-control">
+              <option id="residue" *ngFor="let item of residuesRegisterName">{{ item }}</option>
+            </select>
+          </div>
+          <button class="block" (click)="closeOrExpand()" type="button" mat-raised-button color="accent" data-toggle="button" aria-pressed="false" autocomplete="off">
+            <mat-icon *ngIf="!expand">expand_more</mat-icon>
+            <mat-icon *ngIf="expand">expand_less</mat-icon>
+          </button>
+
+        </div>
+        <div class="col-xl-1 col-lg-1 col-md-1 col-sm-1 col-1">
+          <div class="form-group">
+            <label for="nameResidue">Novo</label>
+            <button id="newItem" (click)="newItem()" type="button" mat-raised-button color="accent" class="btn btn-sm btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="expand">
+        <div class="tableResidueRegister">
+          <table class="table-sm">
+            <thead>
+              <tr id="Titles">
+                <th>QRCode</th>
+                <th>Departamento</th>
+                <th>Tipo</th>
+                <th>Material</th>
+                <th>Unidade</th>
+                <th>Peso</th>
+                <th>Quantidade</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-template ngFor let-department [ngForOf]="(residuesRegister.departments | paginate: { itemsPerPage: 5, currentPage: page })" let-igroup="index">
+                <ng-template ngFor let-qrCode [ngForOf]="(department.qrCode | paginate: { itemsPerPage: 5, currentPage: page })" let-igroup="index">
+                  <tr *ngIf="department.active">
+                    <td>
+                      {{qrCode.code}}
+                    </td>
+                    <td>
+                      <select required [(ngModel)]="department.name" name="departmentName" class="form-control">
+                        <option id="departmentName" *ngFor="let item of nameDepartments">{{ item.name }}</option>
+                      </select>
+                    </td>
+                    <td>
+                      <select required [(ngModel)]="qrCode.material.type" name="type" class="form-control">
+                        <option id="type" *ngFor="let item of materialsType">{{ item }}</option>
+                      </select>
+                    </td>
+                    <td>
+                      <input required [(ngModel)]="qrCode.material.name" name="name" type="text" class="form-control" id="name" aria-describedby="name" />
+                    </td>
+                    <td>
+                      <select required [(ngModel)]="qrCode.material.unity" name="unity" class="form-control">
+                        <option id="unity" *ngFor="let item of unitsType">{{ item }}</option>
+                      </select>
+                    </td>
+                    <td>
+                      <input required [(ngModel)]="qrCode.material.weight" [min]="0" name="weight" type="number" class="form-control" id="weight" aria-describedby="weight" />
+                    </td>
+                    <td>
+                      <input required [(ngModel)]="qrCode.material.quantity" [min]="1" name="quantity" type="number" class="form-control" id="quantity" aria-describedby="quantity" />
+                    </td>
+
+                  </tr>
+                </ng-template>
+              </ng-template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>

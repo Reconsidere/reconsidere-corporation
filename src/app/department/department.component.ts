@@ -4,7 +4,6 @@ import { DepartamentService } from 'src/services/departament.service';
 import { AuthService } from 'src/services/auth.service';
 import * as messageCode from 'message.code.json';
 import { Department } from 'src/models/department';
-import { QrCode } from 'src/models/qrcode';
 import { Material } from 'src/models/material';
 
 @Component({
@@ -17,7 +16,6 @@ export class DepartmentComponent implements OnInit {
 	corporationId: string;
 	departments: any;
 	departmentsOriginal: any;
-	materialsType: any;
 
 	constructor(
 		private toastr: ToastrService,
@@ -26,7 +24,6 @@ export class DepartmentComponent implements OnInit {
 	) {
 		this.departments = [];
 		this.departmentsOriginal = [];
-		this.materialsType = Object.values(Material.Type);
 	}
 
 	ngOnInit() {
@@ -82,27 +79,6 @@ export class DepartmentComponent implements OnInit {
 				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
 				throw new Error();
 			}
-			if (department.qrCode !== undefined && department.qrCode.length > 0) {
-				department.qrCode.forEach((qrCode) => {
-					if (qrCode.code === undefined) {
-						this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
-						throw new Error();
-					}
-					if (qrCode.material === undefined) {
-						this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
-						throw new Error();
-					}
-					if (
-						qrCode.material.type === undefined ||
-						qrCode.material.name === undefined ||
-						qrCode.material.weight === undefined ||
-						qrCode.material.quantity >= 0
-					) {
-						this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
-						throw new Error();
-					}
-				});
-			}
 		});
 	}
 
@@ -116,6 +92,7 @@ export class DepartmentComponent implements OnInit {
 		}
 		var changed = false;
 		this.departments.forEach((department, index) => {
+			changed = false;
 			this.departmentsOriginal.forEach((original) => {
 				if (department._id !== undefined) {
 					if (department._id === original._id) {
@@ -127,14 +104,13 @@ export class DepartmentComponent implements OnInit {
 							existchange = true;
 							changed = true;
 						} else {
-							changed = false;
 						}
 					}
 				}
 			});
-			// if (!changed) {
-			// 	this.departments.splice(index, 1);
-			// }
+			if (!changed) {
+				this.departments.splice(index, 1);
+			}
 		});
 		return existchange;
 	}

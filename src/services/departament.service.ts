@@ -19,19 +19,39 @@ export class DepartamentService {
           name
           description
 		  active
-          qrCode {
-            _id
-            code
-            material {
-              _id
-              type
-              name
-              weight
-              quantity
-			  active
-            }
-        }
   }
+    }`;
+
+			const variables = {
+				_id: corporationId
+			};
+
+			const client = new GraphQLClient(environment.database.uri, {
+				headers: {}
+			});
+
+			try {
+				var allDepartments = await client.request(query, variables);
+				if (!allDepartments) {
+					reject('WRE016');
+				} else {
+					resolve(allDepartments['allDepartments']);
+				}
+			} catch (error) {
+				throw new Error(error.response.errors[0].message);
+			}
+		} else {
+			reject(undefined);
+		}
+	}
+
+	async allDepartamentsName(corporationId: string, resolve, reject) {
+		if (corporationId !== undefined && corporationId !== null) {
+			const query = /* GraphQL */ `
+      query allDepartments($_id: ID!) {
+        allDepartments(_id: $_id)  {
+          name
+  		}
     }`;
 
 			const variables = {
@@ -65,18 +85,6 @@ export class DepartamentService {
           name
           description
 		  active
-          qrCode {
-            _id
-            code
-            material {
-              _id
-              type
-              name
-              weight
-              quantity
-			  active
-            }
-        }
       }
     }`;
 
