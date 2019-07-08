@@ -19,10 +19,10 @@ export class ResiduesRegisterService {
             _id
             name
             description
+			isEnable
             active
             qrCode {
               _id
-              description
               code
               material {
                 _id
@@ -31,6 +31,7 @@ export class ResiduesRegisterService {
                 weight
                 quantity
                 active
+				unity
               }
             }
   }
@@ -50,7 +51,7 @@ export class ResiduesRegisterService {
 				if (!allResiduesRegister) {
 					reject('WRE016');
 				} else {
-					resolve(allResiduesRegister['allResiduesRegister'][0]);
+					resolve(allResiduesRegister['allResiduesRegister']);
 				}
 			} catch (error) {
 				throw new Error(error.response.errors[0].message);
@@ -60,34 +61,50 @@ export class ResiduesRegisterService {
 		}
 	}
 
-	addOrUpdate(_id: String, residueRegister: ResiduesRegister, resolve, reject) {
+	addOrUpdate(_id: String, residuesRegister: ResiduesRegister, resolve, reject) {
 		const mutation = /* GraphQL */ `
-    mutation createorUpdateResiduesRegister($_id:ID!, $residueRegister: [ResiduesRegisterInput]) {
-		createorUpdateResiduesRegister(_id:$_id, input: $residueRegister)  { 
-		_id
-          name
-          description
-		  active
+    mutation createorUpdateResiduesRegister($_id:ID!, $residuesRegister: ResiduesRegisterInput) {
+		createorUpdateResiduesRegister(_id:$_id, input: $residuesRegister)  { 
+			departments {
+            _id
+            name
+			isEnable
+            description
+            active
+            qrCode {
+              _id
+              code
+              material {
+                _id
+                type
+                name
+                weight
+                quantity
+                active
+				unity
+              }
+            }
+  }
       }
     }`;
 
 		const variables = {
 			_id: _id,
-			residueRegister: residueRegister
+			residuesRegister: residuesRegister
 		};
 
 		const client = new GraphQLClient(environment.database.uri, {
 			headers: {}
 		});
-		var allResiduesRegister = client
+		var createorUpdateResiduesRegister = client
 			.request(mutation, variables)
-			.then((allResiduesRegister) => {
-				if (allResiduesRegister['allResiduesRegister']) {
-					resolve(allResiduesRegister['allResiduesRegister']);
+			.then((createorUpdateResiduesRegister) => {
+				if (createorUpdateResiduesRegister['createorUpdateResiduesRegister']) {
+					resolve(createorUpdateResiduesRegister['createorUpdateResiduesRegister']);
 				}
 			})
-			.catch((allResiduesRegister) => {
-				reject(allResiduesRegister.response.errors[0].message);
+			.catch((createorUpdateResiduesRegister) => {
+				reject(createorUpdateResiduesRegister.response.errors[0].message);
 			});
 	}
 }

@@ -1,8 +1,10 @@
 import { QrCode } from './qrcode';
 
 export class Department {
-	name: String;
-	description: String;
-	active: Boolean;
+	_id: string;
+	name: string;
+	description: string;
+	active: boolean;
 	qrCode: [QrCode];
+	isEnable:boolean;
 }

@@ -1,10 +1,11 @@
 export class Material {
-	type: String;
-	name: String;
-	weight: Number;
-	quantity: Number;
-	unity:String;
-	active: Boolean;
+	_id: string;
+	type: string;
+	name: string;
+	weight: number;
+	quantity: number;
+	unity:string;
+	active: boolean;
 }
 
 export namespace Material {

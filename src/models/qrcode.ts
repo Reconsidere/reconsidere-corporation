@@ -1,7 +1,7 @@
 import { Material } from "./material";
 
 export class QrCode{
-    code: String;
-    description:String;
+    _id: string;
+    code: string;
 	material:Material;
 }

@@ -23,8 +23,9 @@ export class ResiduesRegisterComponent implements OnInit {
 	materialsType: any;
 	unitsType: any;
 	nameResidue: any;
-	nameDepartments: any;
+	departments: any;
 	expand: boolean;
+	residuesToSave: ResiduesRegister;
 	constructor(
 		private toastr: ToastrService,
 		private residuesRegisterService: ResiduesRegisterService,
@@ -34,15 +35,16 @@ export class ResiduesRegisterComponent implements OnInit {
 		this.materialsType = Object.values(Material.Type);
 		this.unitsType = Object.values(Material.Unit);
 		this.residuesRegisterName = [];
-		this.nameDepartments = [];
+		this.departments = [];
 		this.expand = false;
+		this.residuesToSave = new ResiduesRegister();
 	}
 
 	ngOnInit() {
 		this.authService.isAuthenticated();
 		this.page = 1;
 		this.corporationId = this.authService.getCorporationId();
-		this.loadNameDepartments();
+		this.loadDepartments();
 		this.loadResiduesRegister();
 	}
 
@@ -54,36 +56,33 @@ export class ResiduesRegisterComponent implements OnInit {
 		material.name = this.nameResidue;
 		material.quantity = 1;
 		qrCode.material = material;
+		var newDepartment = new Department();
+		newDepartment.isEnable = true;
+		newDepartment.active = true;
 		if (this.residuesRegister === undefined) {
 			this.residuesRegister = new ResiduesRegister();
-			var departament = new Department();
-			departament.qrCode = [ qrCode ];
-			departament.active = true;
-
-			this.residuesRegister.departments = [ departament ];
+			this.residuesRegister.departments = [];
+			newDepartment.qrCode = [ qrCode ];
+			this.residuesRegister.departments.push(newDepartment);
 		} else {
-			this.residuesRegister.departments.forEach((departament) => {
-				if (departament.qrCode !== undefined && departament.qrCode.length > 0) {
-					departament.qrCode.push(qrCode);
-				} else {
-					departament.qrCode = [ qrCode ];
-				}
-			});
+			newDepartment.qrCode = [ qrCode ];
+			this.residuesRegister.departments.push(newDepartment);
 		}
 		if (!this.expand) {
 			this.expand = true;
 		}
 	}
 
-	async loadNameDepartments() {
-		var departmentsName = undefined;
+	async loadDepartments() {
+		var departments = undefined;
+		this.departments = undefined;
 		try {
-			departmentsName = await new Promise((resolve, reject) => {
-				departmentsName = this.departmentService.allDepartamentsName(this.corporationId, resolve, reject);
+			departments = await new Promise((resolve, reject) => {
+				departments = this.departmentService.allDepartaments(this.corporationId, resolve, reject);
 			});
 
-			if (departmentsName) {
-				this.nameDepartments = departmentsName;
+			if (departments) {
+				this.departments = departments;
 			}
 		} catch (error) {
 			this.toastr.error(messageCode['WARNNING'][error]['summary']);
@@ -100,20 +99,42 @@ export class ResiduesRegisterComponent implements OnInit {
 					reject
 				);
 			});
-
-			if (residuesRegister) {
-				this.residuesRegister = residuesRegister;
-				this.residuesRegisterOriginal = JSON.parse(JSON.stringify(residuesRegister));
-				this.residuesRegister.departments.forEach((departaments) => {
-					this.nameDepartments.push(departaments.name);
-					departaments.qrCode.material.forEach((material) => {
-						this.residuesRegisterName.push(material.name);
-					});
-				});
-			}
+			this.insertValues(residuesRegister);
 		} catch (error) {
 			console.log(error);
 			this.toastr.error(messageCode['WARNNING'][error]['summary']);
+		}
+	}
+
+	private insertValues(residuesRegister: any) {
+		this.residuesRegisterName = [];
+		if (
+			residuesRegister !== null &&
+			residuesRegister.departments !== undefined &&
+			residuesRegister.departments.length > 0
+		) {
+			this.residuesRegister = residuesRegister;
+			this.residuesRegisterOriginal = JSON.parse(JSON.stringify(residuesRegister));
+			this.residuesRegister.departments.forEach((departments) => {
+				departments.qrCode.forEach((qrcode) => {
+					this.residuesRegisterName.push(qrcode.material.name);
+				});
+			});
+		}
+	}
+
+	selectDepartment(object, index) {
+		var item = this.departments.find((x) => x._id === object._id);
+		if (item) {
+			object.name = item.name;
+			object.description = item.description;
+			object.active = item.active;
+			object._id = item._id;
+		} else {
+			object.name = undefined;
+			object.description = undefined;
+			object.active = undefined;
+			object._id = undefined;
 		}
 	}
 
@@ -121,7 +142,7 @@ export class ResiduesRegisterComponent implements OnInit {
 	 * Utilizado por hora para gerar ids unicos para cada produto no lugar do Qr code
 	 */
 	uuidv4() {
-		return '124AbCDq-0001-4120-YUZP-OIMVCx214790'.replace(/[xy]/g, function(c) {
+		return 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
 			var r = (Math.random() * 16) | 0,
 				v = c == 'x' ? r : (r & 0x3) | 0x8;
 			return v.toString(16);
@@ -129,6 +150,9 @@ export class ResiduesRegisterComponent implements OnInit {
 	}
 
 	closeOrExpand() {
+		if (this.residuesRegister === undefined || this.residuesRegister === null) {
+			return;
+		}
 		if (this.expand) {
 			this.expand = false;
 		} else {
@@ -136,61 +160,75 @@ export class ResiduesRegisterComponent implements OnInit {
 		}
 	}
 
-	resetResidueRegisters(items) {}
+	resetResidueRegisters(residuesRegister) {
+		this.residuesToSave = new ResiduesRegister();
+		this.insertValues(residuesRegister);
+	}
 
 	removeNonChangeds(): Boolean {
 		var existchange = false;
 		if (this.residuesRegisterOriginal === undefined || this.residuesRegisterOriginal === undefined) {
+			this.residuesToSave = JSON.parse(JSON.stringify(this.residuesRegister));
 			return true;
 		}
-		if (this.residuesRegister.departaments.length > this.residuesRegisterOriginal.departaments.length) {
+		if (this.residuesRegister.departments.length > this.residuesRegisterOriginal.departments.length) {
 			existchange = true;
 		}
-		var changed = false;
-		this.residuesRegister.departaments.forEach((department, index) => {
-			changed = false;
-			this.residuesRegisterOriginal.departament.forEach((original) => {
-				if (department._id !== undefined) {
-					if (department._id === original._id) {
-						if (department.name !== original.name) {
-							existchange = true;
-							changed = true;
-						} else {
-						}
 
-						department.qrCode.forEach((qrCode) => {
-							original.qrCode.forEach((qrCodeOriginal) => {
-								if (qrCode.code !== qrCodeOriginal) {
-									existchange = true;
-									changed = true;
-								} else {
-								}
-								if (qrCode.material._id === undefined) {
-									existchange = true;
-									changed = true;
-								} else if (qrCode.material._id === qrCodeOriginal.material._id) {
-									if (
-										qrCode.material.name !== qrCodeOriginal.name ||
-										qrCode.material.type !== qrCodeOriginal.type ||
-										qrCode.material.weight !== qrCodeOriginal.weight ||
-										qrCode.material.quantity !== qrCodeOriginal.quantity ||
-										qrCode.material.unity !== qrCodeOriginal.unity ||
-										qrCode.material.active !== qrCodeOriginal.active
-									) {
-										existchange = true;
-										changed = true;
-									} else {
-									}
-								}
-							});
-						});
+		var changed;
+		var match;
+		this.residuesRegister.departments.forEach((department) => {
+			changed = false;
+			match = false;
+			this.residuesRegisterOriginal.departments.forEach((original) => {
+				if (department._id === original._id) {
+					match = true;
+					if (
+						department.name !== original.name ||
+						department.description !== original.description ||
+						department.active !== original.active
+					) {
+						existchange = true;
+						changed = true;
 					}
-				} else {
-					existchange = true;
+
+					department.qrCode.forEach((qrCode) => {
+						original.qrCode.forEach((qrCodeOriginal) => {
+							if (qrCode.material._id === undefined) {
+								existchange = true;
+								changed = true;
+							} else if (qrCode.material._id === qrCodeOriginal.material._id) {
+								if (
+									qrCode.material.name !== qrCodeOriginal.material.name ||
+									qrCode.material.type !== qrCodeOriginal.material.type ||
+									qrCode.material.weight !== qrCodeOriginal.material.weight ||
+									qrCode.material.quantity !== qrCodeOriginal.material.quantity ||
+									qrCode.material.unity !== qrCodeOriginal.material.unity ||
+									qrCode.material.active !== qrCodeOriginal.material.active
+								) {
+									existchange = true;
+									changed = true;
+								}
+							}
+						});
+					});
 				}
 			});
-			if (!changed) {
-				this.residuesRegisterOriginal.splice(index, 1);
+			if (changed) {
+				department.isEnable = false;
+				if (!this.residuesToSave.departments) {
+					this.residuesToSave.departments = [ department ];
+				} else {
+					this.residuesToSave.departments.push(department);
+				}
+				changed = false;
+			} else if (!match) {
+				department.isEnable = false;
+				if (!this.residuesToSave.departments) {
+					this.residuesToSave.departments = [ department ];
+				} else {
+					this.residuesToSave.departments.push(department);
+				}
 			}
 		});
 		return existchange;
@@ -201,7 +239,7 @@ export class ResiduesRegisterComponent implements OnInit {
 			this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
 			throw new Error();
 		}
-		this.residuesRegister.departments.departments.forEach((department) => {
+		this.residuesRegister.departments.forEach((department) => {
 			if (department.name === undefined) {
 				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
 				throw new Error();
@@ -230,16 +268,17 @@ export class ResiduesRegisterComponent implements OnInit {
 	async save() {
 		try {
 			if (!this.removeNonChangeds()) {
-				this.loadNameDepartments();
+				this.loadDepartments();
 				this.loadResiduesRegister();
 				this.toastr.warning(messageCode['WARNNING']['WRE020']['summary']);
 				return;
 			}
 			this.veryfyBeforeSave();
 			var registerResidues = await new Promise(async (resolve, reject) => {
-				this.residuesRegister.addOrUpdate(this.corporationId, this.residuesRegister, resolve, reject);
+				this.residuesRegisterService.addOrUpdate(this.corporationId, this.residuesToSave, resolve, reject);
 			});
 			this.resetResidueRegisters(registerResidues);
+			this.loadDepartments();
 			this.toastr.success(messageCode['SUCCESS']['SRE001']['summary']);
 		} catch (error) {
 			this.toastr.warning(messageCode['ERROR'][error]['summary']);

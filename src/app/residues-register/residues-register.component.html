@@ -14,6 +14,7 @@
           <div class="form-group">
             <label for="nameResidue">Resíduo</label>
             <select required [(ngModel)]="nameResidue" name="nameResidue" class="form-control">
+              <option></option>
               <option id="residue" *ngFor="let item of residuesRegisterName">{{ item }}</option>
             </select>
           </div>
@@ -47,15 +48,17 @@
               </tr>
             </thead>
             <tbody>
-              <ng-template ngFor let-department [ngForOf]="(residuesRegister.departments | paginate: { itemsPerPage: 5, currentPage: page })" let-igroup="index">
-                <ng-template ngFor let-qrCode [ngForOf]="(department.qrCode | paginate: { itemsPerPage: 5, currentPage: page })" let-igroup="index">
+              <ng-template ngFor let-department [ngForOf]="(residuesRegister.departments | paginate: { itemsPerPage: 5, currentPage: page })" let-index="index">
+                <ng-template ngFor let-qrCode [ngForOf]="(department.qrCode | paginate: { itemsPerPage: 5, currentPage: page })" let-i="index">
                   <tr *ngIf="department.active">
                     <td>
-                      {{qrCode.code}}
+                      <span id="code" name="code">
+                        {{qrCode.code}}
+                      </span>
                     </td>
                     <td>
-                      <select required [(ngModel)]="department.name" name="departmentName" class="form-control">
-                        <option id="departmentName" *ngFor="let item of nameDepartments">{{ item.name }}</option>
+                      <select required [(ngModel)]="department._id" [disabled]="!department.isEnable" (change)="selectDepartment(department, index)" name="department" class="form-control">
+                        <option id="department" [ngValue]="item._id" *ngFor="let item of departments">{{ item.name }}</option>
                       </select>
                     </td>
                     <td>
@@ -67,15 +70,15 @@
                       <input required [(ngModel)]="qrCode.material.name" name="name" type="text" class="form-control" id="name" aria-describedby="name" />
                     </td>
                     <td>
-                      <select required [(ngModel)]="qrCode.material.unity" name="unity" class="form-control">
+                      <select required [(ngModel)]="qrCode.material.unity" name="unity" class="form-control sizeKg">
                         <option id="unity" *ngFor="let item of unitsType">{{ item }}</option>
                       </select>
                     </td>
                     <td>
-                      <input required [(ngModel)]="qrCode.material.weight" [min]="0" name="weight" type="number" class="form-control" id="weight" aria-describedby="weight" />
+                      <input required [(ngModel)]="qrCode.material.weight" [min]="0" name="weight" type="number" class="form-control size" id="weight" aria-describedby="weight" />
                     </td>
                     <td>
-                      <input required [(ngModel)]="qrCode.material.quantity" [min]="1" name="quantity" type="number" class="form-control" id="quantity" aria-describedby="quantity" />
+                      <input required [(ngModel)]="qrCode.material.quantity" [min]="1" name="quantity" type="number" class="form-control size" id="quantity" aria-describedby="quantity" />
                     </td>
 
                   </tr>

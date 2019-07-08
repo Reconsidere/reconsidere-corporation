@@ -2,6 +2,7 @@ import { Location } from './location';
 import { Unit } from './unit';
 import { User } from './user';
 import { Provider } from './provider';
+import { ResiduesRegister } from './residuesregister';
 
 export class Corporation {
 	_id: string;
@@ -20,6 +21,7 @@ export class Corporation {
 	units: [Unit];
 	users: [User];
 	providers: [Provider];
+	residuesRegister:ResiduesRegister;
 }
 
 export namespace Corporation {
