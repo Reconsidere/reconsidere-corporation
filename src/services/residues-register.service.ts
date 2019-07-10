@@ -19,7 +19,7 @@ export class ResiduesRegisterService {
             _id
             name
             description
-			isEnable
+			isChanged
             active
             qrCode {
               _id
@@ -68,7 +68,7 @@ export class ResiduesRegisterService {
 			departments {
             _id
             name
-			isEnable
+			isChanged
             description
             active
             qrCode {

@@ -19,7 +19,7 @@ export class DepartamentService {
           name
           description
 		  active
-		  isEnable
+		  isChanged
   }
     }`;
 
@@ -86,7 +86,7 @@ export class DepartamentService {
           name
           description
 		  active
-		  isEnable
+		  isChanged
       }
     }`;
 

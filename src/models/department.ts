@@ -6,5 +6,5 @@ export class Department {
 	description: string;
 	active: boolean;
 	qrCode: [QrCode];
-	isEnable:boolean;
+	isChanged:boolean;
 }

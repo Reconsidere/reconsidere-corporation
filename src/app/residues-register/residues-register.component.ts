@@ -57,7 +57,7 @@ export class ResiduesRegisterComponent implements OnInit {
 		material.quantity = 1;
 		qrCode.material = material;
 		var newDepartment = new Department();
-		newDepartment.isEnable = true;
+		newDepartment.isChanged = true;
 		newDepartment.active = true;
 		if (this.residuesRegister === undefined) {
 			this.residuesRegister = new ResiduesRegister();
@@ -123,9 +123,14 @@ export class ResiduesRegisterComponent implements OnInit {
 		}
 	}
 
-	selectDepartment(object, index) {
+	selectDepartment(old, object, index) {
 		var item = this.departments.find((x) => x._id === object._id);
 		if (item) {
+			if (old !== undefined || old !== null) {
+				if (item._id !== old) {
+					object.isChanged = true;
+				}
+			}
 			object.name = item.name;
 			object.description = item.description;
 			object.active = item.active;
@@ -213,9 +218,12 @@ export class ResiduesRegisterComponent implements OnInit {
 						});
 					});
 				}
+				if (department.isChanged) {
+					existchange = true;
+					changed = true;
+				}
 			});
 			if (changed) {
-				department.isEnable = false;
 				if (!this.residuesToSave.departments) {
 					this.residuesToSave.departments = [ department ];
 				} else {
@@ -223,7 +231,6 @@ export class ResiduesRegisterComponent implements OnInit {
 				}
 				changed = false;
 			} else if (!match) {
-				department.isEnable = false;
 				if (!this.residuesToSave.departments) {
 					this.residuesToSave.departments = [ department ];
 				} else {
