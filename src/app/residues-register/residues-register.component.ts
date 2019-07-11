@@ -113,7 +113,7 @@ export class ResiduesRegisterComponent implements OnInit {
 			residuesRegister.departments !== undefined &&
 			residuesRegister.departments.length > 0
 		) {
-			this.residuesRegister = residuesRegister;
+			this.residuesRegister = JSON.parse(JSON.stringify(residuesRegister));
 			this.residuesRegisterOriginal = JSON.parse(JSON.stringify(residuesRegister));
 			this.residuesRegister.departments.forEach((departments) => {
 				departments.qrCode.forEach((qrcode) => {
@@ -123,24 +123,101 @@ export class ResiduesRegisterComponent implements OnInit {
 		}
 	}
 
-	selectDepartment(old, object, index) {
-		var item = this.departments.find((x) => x._id === object._id);
-		if (item) {
-			if (old !== undefined || old !== null) {
-				if (item._id !== old) {
-					object.isChanged = true;
+	selectDepartment(oldID, objectCurrent, indexQrCodetoChange) {
+		if (!oldID) {
+			var item = this.departments.find((x) => x._id === objectCurrent._id);
+			objectCurrent.name = item.name;
+			objectCurrent.description = item.description;
+			objectCurrent.active = item.active;
+			objectCurrent._id = item._id;
+		} else {
+			if (this.residuesRegister.departments.length === 1) {
+				objectCurrent.isChanged = true;
+				var isReturn = false;
+				this.residuesRegister.departments.forEach((department) => {
+					if (department.qrCode.length === 1) {
+						isReturn = true;
+					}
+				});
+				if (isReturn) {
+					return;
 				}
 			}
-			object.name = item.name;
-			object.description = item.description;
-			object.active = item.active;
-			object._id = item._id;
-		} else {
-			object.name = undefined;
-			object.description = undefined;
-			object.active = undefined;
-			object._id = undefined;
+			var idNewDepartment = objectCurrent._id;
+			objectCurrent._id = oldID;
+			objectCurrent.isChanged = true;
+			//add qrCode to new
+			var isAdd = false;
+			this.residuesRegister.departments.forEach((department) => {
+				if (department._id === idNewDepartment && !isAdd) {
+					var element = objectCurrent.qrCode[indexQrCodetoChange];
+					department.qrCode.push(element);
+					isAdd = true;
+				}
+			});
+			if (!isAdd) {
+				var item = this.departments.find((x) => x._id === idNewDepartment);
+				this.newItem();
+				this.residuesRegister.departments[this.residuesRegister.departments.length - 1].name = item.name;
+				this.residuesRegister.departments[this.residuesRegister.departments.length - 1].description =
+					item.description;
+				this.residuesRegister.departments[this.residuesRegister.departments.length - 1].active = item.active;
+				this.residuesRegister.departments[this.residuesRegister.departments.length - 1]._id = item._id;
+				this.residuesRegister.departments[this.residuesRegister.departments.length - 1].qrCode[0] =
+					objectCurrent.qrCode[indexQrCodetoChange];
+			}
+
+			//remover o qrCode do antigo
+			var isRemoved = false;
+			this.residuesRegister.departments.forEach((department) => {
+				if (department._id === oldID && !isRemoved) {
+					department.qrCode.splice(indexQrCodetoChange, 1);
+					isRemoved = true;
+				}
+			});
 		}
+		// var item = this.departments.find((x) => x._id === object._id);
+		// if (item) {
+		// 	if (old !== undefined || old !== null) {
+		// 		if (item._id !== old) {
+		// 			object.isChanged = true;
+		// 			var objectToAddAndRemove = object.qrCode[index];
+		// 			var added = false;
+		// 			var removed = false;
+		// 			object.qrCode.forEach((qrCode) => {
+		// 				this.residuesRegister.departments.forEach((department, i) => {
+		// 					if (department._id === item._id) {
+		// 						if (!added) {
+		// 							if (department.qrCode === undefined || department.qrCode.length <= 0) {
+		// 								department.qrCode = [ objectToAddAndRemove ];
+		// 								added = true;
+		// 							} else {
+		// 								department.qrCode.push(objectToAddAndRemove);
+		// 								added = true;
+		// 							}
+		// 						}
+		// 					}
+		// 					if (department._id === old) {
+		// 						if (!removed) {
+		// 							object.qrCode.splite(i, 1);
+		// 							removed = true;
+		// 						}
+		// 					}
+		// 				});
+		// 			});
+		// 		}
+		// 	} else {
+		// 		object.name = item.name;
+		// 		object.description = item.description;
+		// 		object.active = item.active;
+		// 		object._id = item._id;
+		// 	}
+		// } else {
+		// 	object.name = undefined;
+		// 	object.description = undefined;
+		// 	object.active = undefined;
+		// 	object._id = undefined;
+		// }
 	}
 
 	/**

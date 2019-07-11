@@ -57,7 +57,7 @@
                       </span>
                     </td>
                     <td>
-                      <select required (click)="oldValue = department._id" [(ngModel)]="department._id"  (change)="selectDepartment(oldValue ,department, index)" name="department" class="form-control">
+                      <select required (click)="oldValue = department._id" [(ngModel)]="department._id"  (change)="selectDepartment(oldValue ,department, i)" name="department" class="form-control">
                         <option id="department" [ngValue]="item._id" *ngFor="let item of departments">{{ item.name }}</option>
                       </select>
                     </td>
