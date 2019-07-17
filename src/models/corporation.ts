@@ -3,6 +3,7 @@ import { Unit } from './unit';
 import { User } from './user';
 import { Provider } from './provider';
 import { ResiduesRegister } from './residuesregister';
+import { CheckPoints } from './checkpoints';
 
 export class Corporation {
 	_id: string;
@@ -21,7 +22,8 @@ export class Corporation {
 	units: [Unit];
 	users: [User];
 	providers: [Provider];
-	residuesRegister:ResiduesRegister;
+	residuesRegister: ResiduesRegister;
+	checkPoints: CheckPoints;
 }
 
 export namespace Corporation {
