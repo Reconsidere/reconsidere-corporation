@@ -304,6 +304,28 @@ export class AuthService {
         }
       }
     }
+    residuesRegister{
+      departments {
+        _id
+        name
+        description
+        active
+        isChanged
+        qrCode {
+          _id
+          code
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
+      }
+    }
     
   }
   }`;
