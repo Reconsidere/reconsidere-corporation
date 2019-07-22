@@ -326,6 +326,107 @@ export class AuthService {
         }
       }
     }
+    transactionHistory {
+      date
+      checkPoints{
+        wastegenerated{
+          qrCode {
+            _id
+            code
+            material {
+              _id
+              type
+              name
+              weight
+              quantity
+              active
+              unity
+            }
+          }
+          
+        }
+        collectionrequested{
+          qrCode {
+            _id
+            code
+            material {
+              _id
+              type
+              name
+              weight
+              quantity
+              active
+              unity
+            }
+          }
+          
+        }
+        collectionperformed{
+          qrCode {
+            _id
+            code
+            material {
+              _id
+              type
+              name
+              weight
+              quantity
+              active
+              unity
+            }
+          }
+          
+        }
+        arrivedcollector{
+          qrCode {
+            _id
+            code
+            material {
+              _id
+              type
+              name
+              weight
+              quantity
+              active
+              unity
+            }
+          }
+          
+        }
+        insorting{
+          qrCode {
+            _id
+            code
+            material {
+              _id
+              type
+              name
+              weight
+              quantity
+              active
+              unity
+            }
+          }
+          
+        }
+        completedestination{
+          qrCode {
+            _id
+            code
+            material {
+              _id
+              type
+              name
+              weight
+              quantity
+              active
+              unity
+            }
+          }
+          
+        }
+      }
+    }
     
   }
   }`;
