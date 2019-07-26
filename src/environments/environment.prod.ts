@@ -8,7 +8,13 @@ export const environment = {
     host: '',
     port: '27017',
     dbname: '',
-    uri: ``
+    uri: ``,
+    paths: {
+			corporation: 'corporation',
+			login: 'login',
+			checkpoint: 'checkpoint',
+			transactionhistory: 'transactionhistory'
+		}
   },
 
 };

@@ -65,7 +65,7 @@ export class AuthService {
 			corporation: corporation
 		};
 
-		const client = new GraphQLClient(environment.database.uri, {
+		const client = new GraphQLClient(environment.database.uri + `/${environment.database.paths.corporation}`, {
 			headers: {}
 		});
 		try {
@@ -91,7 +91,7 @@ export class AuthService {
 			corporation: corporation
 		};
 
-		const client = new GraphQLClient(environment.database.uri, {
+		const client = new GraphQLClient(environment.database.uri + `/${environment.database.paths.corporation}`, {
 			headers: {}
 		});
 		try {
@@ -109,6 +109,7 @@ export class AuthService {
 		localStorage.removeItem('currentUserId');
 		localStorage.removeItem('userName');
 		localStorage.removeItem('currentCorporationId');
+		localStorage.removeItem('classCorporation');
 		this.currenTokenSubject.next(null);
 	}
 
@@ -124,6 +125,7 @@ export class AuthService {
     query signIn($email: String!, $password: String!) {
        signIn(email: $email, password:$password)  {
          _id
+         class
         users{
           _id
           profile {
@@ -143,12 +145,17 @@ export class AuthService {
 			password: this.encript(password)
 		};
 
-		const client = new GraphQLClient(environment.database.uri, {
+		const client = new GraphQLClient(environment.database.uri + `/${environment.database.paths.login}`, {
 			headers: {}
 		});
 		try {
 			var signIn = await client.request(query, variables);
-			const isLogged = this.generateToken(signIn['signIn']._id, signIn['signIn'].users[0], password);
+			const isLogged = this.generateToken(
+				signIn['signIn'].class,
+				signIn['signIn']._id,
+				signIn['signIn'].users[0],
+				password
+			);
 			if (!isLogged) {
 				throw new Error('ERE001');
 			} else {
@@ -160,6 +167,10 @@ export class AuthService {
 	}
 	getCorporationId() {
 		return JSON.parse(localStorage.getItem('currentCorporationId'));
+	}
+
+	getClass() {
+		return JSON.parse(localStorage.getItem('classCorporation'));
 	}
 
 	async getOrganization(resolve, reject) {
@@ -433,7 +444,7 @@ export class AuthService {
 			const variables = {
 				_id: _id
 			};
-			const client = new GraphQLClient(environment.database.uri, {
+			const client = new GraphQLClient(environment.database.uri + `/${environment.database.paths.corporation}`, {
 				headers: {}
 			});
 			try {
@@ -451,7 +462,7 @@ export class AuthService {
 		}
 	}
 
-	generateToken(corporationId, user, password): boolean {
+	generateToken(_class, corporationId, user, password): boolean {
 		if (user) {
 			const decryptPass = this.decript(user.password);
 			if (password !== decryptPass) {
@@ -466,6 +477,7 @@ export class AuthService {
 			localStorage.setItem('currentUserId', JSON.stringify(user._id));
 			localStorage.setItem('userName', JSON.stringify(user.name));
 			localStorage.setItem('currentCorporationId', JSON.stringify(corporationId));
+			localStorage.setItem('classCorporation', JSON.stringify(_class));
 			this.currenTokenSubject.next(user.token);
 			return true;
 		}

@@ -27,7 +27,7 @@ export class DepartamentService {
 				_id: corporationId
 			};
 
-			const client = new GraphQLClient(environment.database.uri, {
+			const client = new GraphQLClient(environment.database.uri + `/${environment.database.paths.corporation}`, {
 				headers: {}
 			});
 
@@ -59,7 +59,7 @@ export class DepartamentService {
 				_id: corporationId
 			};
 
-			const client = new GraphQLClient(environment.database.uri, {
+			const client = new GraphQLClient(environment.database.uri + `/${environment.database.paths.corporation}`, {
 				headers: {}
 			});
 
@@ -95,7 +95,7 @@ export class DepartamentService {
 			department: department
 		};
 
-		const client = new GraphQLClient(environment.database.uri, {
+		const client = new GraphQLClient(environment.database.uri +`/${environment.database.paths.corporation}`, {
 			headers: {}
 		});
 		var allDepartaments = client

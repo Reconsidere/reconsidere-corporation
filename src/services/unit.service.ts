@@ -39,7 +39,7 @@ export class UnitService {
         _id: corporationId,
       }
 
-      const client = new GraphQLClient(environment.database.uri, {
+      const client = new GraphQLClient(environment.database.uri + `/${environment.database.paths.corporation}`, {
         headers: {}
       })
 

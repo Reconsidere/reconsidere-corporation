@@ -42,7 +42,7 @@ export class ResiduesRegisterService {
 				_id: corporationId
 			};
 
-			const client = new GraphQLClient(environment.database.uri, {
+			const client = new GraphQLClient(environment.database.uri + `/${environment.database.paths.corporation}`, {
 				headers: {}
 			});
 
@@ -93,7 +93,7 @@ export class ResiduesRegisterService {
 			residuesRegister: residuesRegister
 		};
 
-		const client = new GraphQLClient(environment.database.uri, {
+		const client = new GraphQLClient(environment.database.uri + `/${environment.database.paths.corporation}`, {
 			headers: {}
 		});
 		var createorUpdateResiduesRegister = client
