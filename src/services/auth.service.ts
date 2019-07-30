@@ -124,19 +124,18 @@ export class AuthService {
 		const query = /* GraphQL */ `
     query signIn($email: String!, $password: String!) {
        signIn(email: $email, password:$password)  {
-         _id
-         class
-        users{
-          _id
-          profile {
+           _id
+           class
+          users {
+            _id
             name
-            access
+            email
+            password
+            active
+            profile {
+              name
+            }
           }
-          name
-          email
-          password
-          active
-        }
       }
     }`;
 
@@ -162,6 +161,7 @@ export class AuthService {
 				return isLogged;
 			}
 		} catch (error) {
+			console.log(error);
 			throw new Error('ERE001');
 		}
 	}
