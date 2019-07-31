@@ -78,7 +78,12 @@ export class ResiduesRegisterComponent implements OnInit {
 		this.departments = undefined;
 		try {
 			departments = await new Promise((resolve, reject) => {
-				departments = this.departmentService.allDepartaments(this.corporationId, resolve, reject);
+				departments = this.departmentService.allDepartaments(
+					this.authService.getClass(),
+					this.corporationId,
+					resolve,
+					reject
+				);
 			});
 
 			if (departments) {
@@ -94,6 +99,7 @@ export class ResiduesRegisterComponent implements OnInit {
 		try {
 			residuesRegister = await new Promise((resolve, reject) => {
 				residuesRegister = this.residuesRegisterService.allResiduesRegister(
+					this.authService.getClass(),
 					this.corporationId,
 					resolve,
 					reject
@@ -359,7 +365,7 @@ export class ResiduesRegisterComponent implements OnInit {
 			}
 			this.veryfyBeforeSave();
 			var registerResidues = await new Promise(async (resolve, reject) => {
-				this.residuesRegisterService.addOrUpdate(this.corporationId, this.residuesToSave, resolve, reject);
+				this.residuesRegisterService.addOrUpdate(this.authService.getClass(), this.corporationId, this.residuesToSave, resolve, reject);
 			});
 			this.resetResidueRegisters(registerResidues);
 			this.loadDepartments();

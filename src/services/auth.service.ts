@@ -19,6 +19,7 @@ export class AuthService {
 	result: any;
 	private currenTokenSubject: BehaviorSubject<any>;
 	public currentToken: Observable<any>;
+	private path;
 
 	constructor(private http: HttpClient, private decriptEncript: DecriptEncript) {
 		this.currenTokenSubject = new BehaviorSubject<any>(JSON.parse(localStorage.getItem('currentToken')));
@@ -45,6 +46,14 @@ export class AuthService {
 	public getUserName() {
 		return JSON.parse(localStorage.getItem('userName'));
 	}
+
+	private getPath(typeCorporation): String {
+		if (typeCorporation === Corporation.Classification.Coletora) {
+			return environment.database.paths.collector;
+		} else {
+			return environment.database.paths.corporation;
+		}
+	}
 	public signup(corporation: Corporation, resolve, reject) {
 		if (corporation._id === undefined) {
 			this.add(corporation, resolve, reject);
@@ -65,7 +74,7 @@ export class AuthService {
 			corporation: corporation
 		};
 
-		const client = new GraphQLClient(environment.database.uri + `/${environment.database.paths.corporation}`, {
+		const client = new GraphQLClient(environment.database.uri + `/${this.getPath(corporation.class)}`, {
 			headers: {}
 		});
 		try {
@@ -91,7 +100,7 @@ export class AuthService {
 			corporation: corporation
 		};
 
-		const client = new GraphQLClient(environment.database.uri + `/${environment.database.paths.corporation}`, {
+		const client = new GraphQLClient(environment.database.uri + `/${this.getPath(corporation.class)}`, {
 			headers: {}
 		});
 		try {
@@ -125,7 +134,7 @@ export class AuthService {
     query signIn($email: String!, $password: String!) {
        signIn(email: $email, password:$password)  {
            _id
-           class
+           classification
           users {
             _id
             name
@@ -150,7 +159,7 @@ export class AuthService {
 		try {
 			var signIn = await client.request(query, variables);
 			const isLogged = this.generateToken(
-				signIn['signIn'].class,
+				signIn['signIn'].classification,
 				signIn['signIn']._id,
 				signIn['signIn'].users[0],
 				password
@@ -173,7 +182,7 @@ export class AuthService {
 		return JSON.parse(localStorage.getItem('classCorporation'));
 	}
 
-	async getOrganization(resolve, reject) {
+	async getOrganization(_class, resolve, reject) {
 		const _id = JSON.parse(localStorage.getItem('currentUserId'));
 		if (_id !== null && _id !== undefined) {
 			const query = /* GraphQL */ `
@@ -223,98 +232,7 @@ export class AuthService {
               access
             }
           }
-          checkPoints{
-      wastegenerated{
-        qrCode {
-          _id
-          code
-          material {
-            _id
-            type
-            name
-            weight
-            quantity
-            active
-            unity
-          }
-        }
-      }
-      collectionrequested{
-          qrCode {
-          _id
-          code
-          material {
-            _id
-            type
-            name
-            weight
-            quantity
-            active
-            unity
-          }
-        }
-      }
-      collectionperformed{
-           qrCode {
-          _id
-          code
-          material {
-            _id
-            type
-            name
-            weight
-            quantity
-            active
-            unity
-          }
-        }
-      }
-      arrivedcollector{
-          qrCode {
-          _id
-          code
-          material {
-            _id
-            type
-            name
-            weight
-            quantity
-            active
-            unity
-          }
-        }
-      }
-      insorting{
-           qrCode {
-          _id
-          code
-          material {
-            _id
-            type
-            name
-            weight
-            quantity
-            active
-            unity
-          }
-        }
-      }
-      completedestination{
-           qrCode {
-          _id
-          code
-          material {
-            _id
-            type
-            name
-            weight
-            quantity
-            active
-            unity
-          }
-        }
-      }
-    }
+        
     residuesRegister{
       departments {
         _id
@@ -337,114 +255,12 @@ export class AuthService {
         }
       }
     }
-    transactionHistory {
-      date
-      checkPoints{
-        wastegenerated{
-          qrCode {
-            _id
-            code
-            material {
-              _id
-              type
-              name
-              weight
-              quantity
-              active
-              unity
-            }
-          }
-          
-        }
-        collectionrequested{
-          qrCode {
-            _id
-            code
-            material {
-              _id
-              type
-              name
-              weight
-              quantity
-              active
-              unity
-            }
-          }
-          
-        }
-        collectionperformed{
-          qrCode {
-            _id
-            code
-            material {
-              _id
-              type
-              name
-              weight
-              quantity
-              active
-              unity
-            }
-          }
-          
-        }
-        arrivedcollector{
-          qrCode {
-            _id
-            code
-            material {
-              _id
-              type
-              name
-              weight
-              quantity
-              active
-              unity
-            }
-          }
-          
-        }
-        insorting{
-          qrCode {
-            _id
-            code
-            material {
-              _id
-              type
-              name
-              weight
-              quantity
-              active
-              unity
-            }
-          }
-          
-        }
-        completedestination{
-          qrCode {
-            _id
-            code
-            material {
-              _id
-              type
-              name
-              weight
-              quantity
-              active
-              unity
-            }
-          }
-          
-        }
-      }
-    }
-    
   }
   }`;
 			const variables = {
 				_id: _id
 			};
-			const client = new GraphQLClient(environment.database.uri + `/${environment.database.paths.corporation}`, {
+			const client = new GraphQLClient(environment.database.uri + `/${this.getPath(_class)}`, {
 				headers: {}
 			});
 			try {

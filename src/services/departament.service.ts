@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { GraphQLClient } from 'graphql-request';
 import { environment } from 'src/environments/environment';
 import { Department } from 'src/models/department';
+import { Corporation } from 'src/models/corporation';
 
 @Injectable({
 	providedIn: 'root'
@@ -10,7 +11,16 @@ import { Department } from 'src/models/department';
 export class DepartamentService {
 	constructor(private http: HttpClient) {}
 
-	async allDepartaments(corporationId: string, resolve, reject) {
+
+	private getPath(typeCorporation): String {
+		if (typeCorporation === Corporation.Classification.Coletora) {
+			return environment.database.paths.collector;
+		} else {
+			return environment.database.paths.corporation;
+		}
+	}
+
+	async allDepartaments(_class, corporationId: string, resolve, reject) {
 		if (corporationId !== undefined && corporationId !== null) {
 			const query = /* GraphQL */ `
       query allDepartments($_id: ID!) {
@@ -27,7 +37,7 @@ export class DepartamentService {
 				_id: corporationId
 			};
 
-			const client = new GraphQLClient(environment.database.uri + `/${environment.database.paths.corporation}`, {
+			const client = new GraphQLClient(environment.database.uri + `/${this.getPath(_class)}`, {
 				headers: {}
 			});
 
@@ -46,7 +56,7 @@ export class DepartamentService {
 		}
 	}
 
-	async allDepartamentsName(corporationId: string, resolve, reject) {
+	async allDepartamentsName(_class, corporationId: string, resolve, reject) {
 		if (corporationId !== undefined && corporationId !== null) {
 			const query = /* GraphQL */ `
       query allDepartments($_id: ID!) {
@@ -59,7 +69,7 @@ export class DepartamentService {
 				_id: corporationId
 			};
 
-			const client = new GraphQLClient(environment.database.uri + `/${environment.database.paths.corporation}`, {
+			const client = new GraphQLClient(environment.database.uri + `/${this.getPath(_class)}`, {
 				headers: {}
 			});
 
@@ -78,7 +88,7 @@ export class DepartamentService {
 		}
 	}
 
-	addOrUpdate(_id: String, department: Department, resolve, reject) {
+	addOrUpdate(_class, _id: String, department: Department, resolve, reject) {
 		const mutation = /* GraphQL */ `
     mutation createorUpdateDepartment($_id:ID!, $department: [DepartmentInput]) {
 		createorUpdateDepartment(_id:$_id, input: $department)  { 
@@ -95,7 +105,7 @@ export class DepartamentService {
 			department: department
 		};
 
-		const client = new GraphQLClient(environment.database.uri +`/${environment.database.paths.corporation}`, {
+		const client = new GraphQLClient(environment.database.uri +`/${this.getPath(_class)}`, {
 			headers: {}
 		});
 		var allDepartaments = client

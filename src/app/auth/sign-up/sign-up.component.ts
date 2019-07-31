@@ -83,7 +83,7 @@ export class SignUpComponent implements OnInit {
 		var corporation = undefined;
 		try {
 			corporation = await new Promise(async (resolve, reject) => {
-				corporation = this.authService.getOrganization(resolve, reject);
+				corporation = this.authService.getOrganization(this.authService.getClass(), resolve, reject);
 			});
 
 			if (corporation === undefined || corporation === null) {

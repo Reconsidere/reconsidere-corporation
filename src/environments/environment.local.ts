@@ -13,7 +13,8 @@ export const environment = {
 			corporation: 'corporation',
 			login: 'login',
 			checkpoint: 'checkpoint',
-			transactionhistory: 'transactionhistory'
+			transactionhistory: 'transactionhistory',
+			collector:'collector'
 		}
 	},
 	secret: '154097$#@$^@1ETI'

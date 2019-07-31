@@ -29,7 +29,7 @@ export class UnitComponent implements OnInit {
     var units = undefined;
     try {
       units = await new Promise((resolve, reject) => {
-        units = this.unitService.allUnits(this.corporationId, resolve, reject);
+        units = this.unitService.allUnits(this.authService.getClass(),this.corporationId, resolve, reject);
       });
 
       if (units) {

@@ -37,7 +37,7 @@ export class DepartmentComponent implements OnInit {
 		var departments = undefined;
 		try {
 			departments = await new Promise((resolve, reject) => {
-				departments = this.departmentService.allDepartaments(this.corporationId, resolve, reject);
+				departments = this.departmentService.allDepartaments(this.authService.getClass(), this.corporationId, resolve, reject);
 			});
 
 			if (departments) {
@@ -124,7 +124,7 @@ export class DepartmentComponent implements OnInit {
 			}
 			this.veryfyBeforeSave();
 			var departaments = await new Promise(async (resolve, reject) => {
-				this.departmentService.addOrUpdate(this.corporationId, this.departments, resolve, reject);
+				this.departmentService.addOrUpdate(this.authService.getClass(), this.corporationId, this.departments, resolve, reject);
 			});
 			this.resetDepartments(departaments);
 			this.toastr.success(messageCode['SUCCESS']['SRE001']['summary']);

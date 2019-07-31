@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { GraphQLClient } from 'graphql-request';
 import { environment } from 'src/environments/environment';
 import { ResiduesRegister } from 'src/models/residuesregister';
+import { Corporation } from 'src/models/corporation';
 
 @Injectable({
 	providedIn: 'root'
@@ -10,7 +11,15 @@ import { ResiduesRegister } from 'src/models/residuesregister';
 export class ResiduesRegisterService {
 	constructor(private http: HttpClient) {}
 
-	async allResiduesRegister(corporationId: string, resolve, reject) {
+	private getPath(typeCorporation): String {
+		if (typeCorporation === Corporation.Classification.Coletora) {
+			return environment.database.paths.collector;
+		} else {
+			return environment.database.paths.corporation;
+		}
+	}
+
+	async allResiduesRegister(_class, corporationId: string, resolve, reject) {
 		if (corporationId !== undefined && corporationId !== null) {
 			const query = /* GraphQL */ `
       query allResiduesRegister($_id: ID!) {
@@ -42,7 +51,7 @@ export class ResiduesRegisterService {
 				_id: corporationId
 			};
 
-			const client = new GraphQLClient(environment.database.uri + `/${environment.database.paths.corporation}`, {
+			const client = new GraphQLClient(environment.database.uri + `/${this.getPath(_class)}`, {
 				headers: {}
 			});
 
@@ -61,7 +70,7 @@ export class ResiduesRegisterService {
 		}
 	}
 
-	addOrUpdate(_id: String, residuesRegister: ResiduesRegister, resolve, reject) {
+	addOrUpdate(_class,_id: String, residuesRegister: ResiduesRegister, resolve, reject) {
 		const mutation = /* GraphQL */ `
     mutation createorUpdateResiduesRegister($_id:ID!, $residuesRegister: ResiduesRegisterInput) {
 		createorUpdateResiduesRegister(_id:$_id, input: $residuesRegister)  { 
@@ -93,7 +102,7 @@ export class ResiduesRegisterService {
 			residuesRegister: residuesRegister
 		};
 
-		const client = new GraphQLClient(environment.database.uri + `/${environment.database.paths.corporation}`, {
+		const client = new GraphQLClient(environment.database.uri + `/${this.getPath(_class)}`, {
 			headers: {}
 		});
 		var createorUpdateResiduesRegister = client

@@ -17,7 +17,8 @@ export const environment = {
 			corporation: 'corporation',
 			login: 'login',
 			checkpoint: 'checkpoint',
-			transactionhistory: 'transactionhistory'
+			transactionhistory: 'transactionhistory',
+			collector:'collector'
 		}
 	},
 	api: {
