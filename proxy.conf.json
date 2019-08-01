@@ -14,5 +14,9 @@
     "/transactionhistory": {
         "target": "http://localhost:32546/transactionhistory",
         "secure": "false"
+    },
+    "/collector": {
+        "target": "http://localhost:32546/collector",
+        "secure": "false"
     }
 }

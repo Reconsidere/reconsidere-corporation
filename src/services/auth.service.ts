@@ -19,8 +19,190 @@ export class AuthService {
 	result: any;
 	private currenTokenSubject: BehaviorSubject<any>;
 	public currentToken: Observable<any>;
-	private path;
+	private mutation;
+	private query;
 
+	//#region mutations
+
+	//#region queries
+
+	private queryCorporation = /* GraphQL */ `
+	query getCorporationByUser($_id: ID!) {
+	  getCorporationByUser(_id: $_id)  {
+		_id
+		company
+		cnpj
+		tradingName
+		active
+		class
+		phone
+		email
+		classification
+		cellPhone
+		creationDate
+		activationDate
+		verificationDate
+		providers{
+		  _id
+		  providerId
+		}
+		units {
+		  name
+		  _id
+		  location {
+			country
+			state
+			latitude
+			longitude
+			cep
+			publicPlace
+			neighborhood
+			number
+			county
+			complement
+		  }
+		}
+		users {
+		  _id
+		  name
+		  email
+		  password
+		  active
+		  profile {
+			name
+			access
+		  }
+		}
+	  
+  residuesRegister{
+	departments {
+	  _id
+	  name
+	  description
+	  active
+	  isChanged
+	  qrCode {
+		_id
+		code
+		material {
+		  _id
+		  type
+		  name
+		  weight
+		  quantity
+		  active
+		  unity
+		}
+	  }
+	}
+  }
+}
+}`;
+
+	private queryCollector = /* GraphQL */ `
+query getCollectorByUser($_id: ID!) {
+	getCollectorByUser(_id: $_id)  {
+	_id
+	company
+	cnpj
+	tradingName
+	active
+	class
+	phone
+	email
+	classification
+	cellPhone
+	creationDate
+	activationDate
+	verificationDate
+	providers{
+	  _id
+	  providerId
+	}
+	units {
+	  name
+	  _id
+	  location {
+		country
+		state
+		latitude
+		longitude
+		cep
+		publicPlace
+		neighborhood
+		number
+		county
+		complement
+	  }
+	}
+	users {
+	  _id
+	  name
+	  email
+	  password
+	  active
+	  profile {
+		name
+		access
+	  }
+	}
+  
+residuesRegister{
+departments {
+  _id
+  name
+  description
+  active
+  isChanged
+  qrCode {
+	_id
+	code
+	material {
+	  _id
+	  type
+	  name
+	  weight
+	  quantity
+	  active
+	  unity
+	}
+  }
+}
+}
+}
+}`;
+
+	//#endregion
+
+	private mutationCorporationAdd = /* GraphQL */ `
+    mutation createCorporation($corporation: CorporationInput!) {
+      createCorporation(input: $corporation)  { 
+        _id
+      }
+	}`;
+
+	private mutationCollectorAdd = /* GraphQL */ `
+		mutation createCollector($corporation: CollectorInput!) {
+		createCollector(input: $corporation)  { 
+			_id
+		}
+		}`;
+
+	private mutationCorporationUpdate = /* GraphQL */ `
+		mutation updateCorporation($_id:ID!,$corporation: CorporationInput!) {
+		updateCorporation(_id: $_id, input: $corporation)  { 
+			_id
+		}
+		}`;
+
+	private mutationCollectorUpdate = /* GraphQL */ `
+		mutation updateCollector($_id:ID!,$corporation: CollectorInput!) {
+			updateCollector(_id: $_id, input: $corporation)  { 
+			_id
+		}
+		}`;
+
+	//#endregion
 	constructor(private http: HttpClient, private decriptEncript: DecriptEncript) {
 		this.currenTokenSubject = new BehaviorSubject<any>(JSON.parse(localStorage.getItem('currentToken')));
 		this.currentToken = this.currenTokenSubject.asObservable();
@@ -54,47 +236,43 @@ export class AuthService {
 			return environment.database.paths.corporation;
 		}
 	}
-	public signup(corporation: Corporation, resolve, reject) {
+	public signup(_class, corporation: Corporation, resolve, reject) {
 		if (corporation._id === undefined) {
-			this.add(corporation, resolve, reject);
+			this.add(_class, corporation, resolve, reject);
 		} else {
-			this.update(corporation._id, corporation, resolve, reject);
+			this.update(_class, corporation._id, corporation, resolve, reject);
 		}
 	}
 
-	async add(corporation: Corporation, resolve, reject) {
-		const mutation = /* GraphQL */ `
-    mutation createCorporation($corporation: CorporationInput!) {
-      createCorporation(input: $corporation)  { 
-        _id
-      }
-    }`;
-
+	async add(_class, corporation: Corporation, resolve, reject) {
 		const variables = {
 			corporation: corporation
 		};
 
-		const client = new GraphQLClient(environment.database.uri + `/${this.getPath(corporation.class)}`, {
+		const client = new GraphQLClient(environment.database.uri + `/${this.getPath(corporation.classification)}`, {
 			headers: {}
 		});
+
+		if (corporation.classification === Corporation.Classification.Coletora) {
+			this.mutation = this.mutationCollectorAdd;
+		} else {
+			this.mutation = this.mutationCorporationAdd;
+		}
 		try {
-			var createCorporation = await client.request(mutation, variables);
+			var createCorporation = await client.request(this.mutation, variables);
 			if (createCorporation) {
-				resolve(createCorporation['createCorporation']);
+				if (corporation.classification === Corporation.Classification.Coletora) {
+					resolve(createCorporation['createCollector']);
+				} else {
+					resolve(createCorporation['createCorporation']);
+				}
 			}
 		} catch (error) {
 			reject(error.response.errors[0].message);
 		}
 	}
 
-	async update(corporationId: string, corporation: Corporation, resolve, reject) {
-		const mutation = /* GraphQL */ `
-    mutation updateCorporation($_id:ID!,$corporation: CorporationInput!) {
-      updateCorporation(_id: $_id, input: $corporation)  { 
-        _id
-      }
-    }`;
-
+	async update(_class, corporationId: string, corporation: Corporation, resolve, reject) {
 		const variables = {
 			_id: corporationId,
 			corporation: corporation
@@ -103,8 +281,15 @@ export class AuthService {
 		const client = new GraphQLClient(environment.database.uri + `/${this.getPath(corporation.class)}`, {
 			headers: {}
 		});
+
+		if (corporation.class === Corporation.Classification.Coletora) {
+			this.mutation = this.mutationCollectorUpdate;
+		} else {
+			this.mutation = this.mutationCollectorAdd;
+		}
+
 		try {
-			var id = await client.request(mutation, variables);
+			var id = await client.request(this.mutation, variables);
 			if (id) {
 				resolve(id);
 			}
@@ -185,88 +370,27 @@ export class AuthService {
 	async getOrganization(_class, resolve, reject) {
 		const _id = JSON.parse(localStorage.getItem('currentUserId'));
 		if (_id !== null && _id !== undefined) {
-			const query = /* GraphQL */ `
-      query getCorporationByUser($_id: ID!) {
-        getCorporationByUser(_id: $_id)  {
-          _id
-          company
-          cnpj
-          tradingName
-          active
-          class
-          phone
-          email
-          classification
-          cellPhone
-          creationDate
-          activationDate
-          verificationDate
-          providers{
-            _id
-            providerId
-          }
-          units {
-            name
-            _id
-            location {
-              country
-              state
-              latitude
-              longitude
-              cep
-              publicPlace
-              neighborhood
-              number
-              county
-              complement
-            }
-          }
-          users {
-            _id
-            name
-            email
-            password
-            active
-            profile {
-              name
-              access
-            }
-          }
-        
-    residuesRegister{
-      departments {
-        _id
-        name
-        description
-        active
-        isChanged
-        qrCode {
-          _id
-          code
-          material {
-            _id
-            type
-            name
-            weight
-            quantity
-            active
-            unity
-          }
-        }
-      }
-    }
-  }
-  }`;
 			const variables = {
 				_id: _id
 			};
 			const client = new GraphQLClient(environment.database.uri + `/${this.getPath(_class)}`, {
 				headers: {}
 			});
+
+			if (_class === Corporation.Classification.Coletora) {
+				this.query = this.queryCollector;
+			} else {
+				this.query = this.queryCorporation;
+			}
+
 			try {
-				var getCorporationByUser = await client.request(query, variables);
+				var getCorporationByUser = await client.request(this.query, variables);
 				if (getCorporationByUser) {
-					resolve(getCorporationByUser['getCorporationByUser']);
+					if(_class === Corporation.Classification.Coletora){
+						resolve(getCorporationByUser['getCollectorByUser']);
+					}else{
+						resolve(getCorporationByUser['getCorporationByUser']);
+					}
 				} else {
 					resolve(undefined);
 				}

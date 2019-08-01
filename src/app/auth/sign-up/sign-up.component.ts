@@ -434,7 +434,7 @@ export class SignUpComponent implements OnInit {
 		try {
 			var _id;
 			_id = await new Promise(async (resolve, reject) => {
-				this.authService.signup(this.corporation, resolve, reject);
+				this.authService.signup(this.corporation.classification,this.corporation, resolve, reject);
 			});
 			if (_id && !this.isLogged) {
 				this.router.navigate([ '/' ]);
