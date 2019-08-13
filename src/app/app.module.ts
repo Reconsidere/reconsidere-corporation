@@ -8,7 +8,7 @@ import { DecriptEncript } from './security/decriptencript';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { JwtInterceptor } from './security/jwt.interceptor';
 import { ErrorInterceptor } from './security/error.interceptor';
-import { APP_BASE_HREF, CommonModule } from '@angular/common';
+import { APP_BASE_HREF, CommonModule, DatePipe } from '@angular/common';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -40,7 +40,9 @@ import { UnitComponent } from './unit/unit.component';
 import { DepartmentComponent } from './department/department.component';
 import { CheckpointComponent } from './checkpoint/checkpoint.component';
 import { ResiduesRegisterComponent } from './residues-register/residues-register.component';
-
+import { SchedulingComponent } from './scheduling/scheduling.component';
+import { CalendarModule } from 'primeng/calendar';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 registerLocaleData(localePt);
 
@@ -57,7 +59,8 @@ registerLocaleData(localePt);
     UnitComponent,
     DepartmentComponent,
     CheckpointComponent,
-    ResiduesRegisterComponent
+    ResiduesRegisterComponent,
+    SchedulingComponent
   ],
   imports: [
     BrowserModule,
@@ -88,6 +91,8 @@ registerLocaleData(localePt);
     RecaptchaModule.forRoot({
       siteKey: '6Le4YIgUAAAAAJFj9q0jVjfxVR0D_QNfGetw0JKF'
     }),
+    CalendarModule,
+    DragDropModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
@@ -99,6 +104,7 @@ registerLocaleData(localePt);
     BrowserModule,
     RouterModule,
     DecriptEncript,
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,110 @@
+<app-toolbar></app-toolbar>
+<div class="container">
+
+
+  <div class="card">
+    <div class="card-header">Agendamento
+      <button type="button" id="save" (click)="save()" mat-raised-button class="col-md-2 pull-right" color="primary">
+        Salvar ações
+      </button>
+    </div>
+    <div class="card-body">
+      <div class="tableDepartment">
+        <table class="table-sm">
+          <thead>
+            <tr>
+              <button id="newItem" (click)="newItem()" type="button" mat-raised-button color="accent" class="btn btn-sm btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+                <mat-icon>add</mat-icon>
+              </button>
+            </tr>
+            <tr id="Titles">
+              <th>Empresa</th>
+              <th>Data</th>
+              <th>Hora</th>
+              <th>Ativo</th>
+              <th>Material</th>
+              <th>Remover</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-template ngFor let-item [ngForOf]="(schedulings | paginate: { itemsPerPage: 5, currentPage: page })" let-igroup="index">
+              <tr *ngIf="item.active">
+                <td>
+                  <select required  [(ngModel)]="item.collector._id" (change)="selectCollector(item.collector, index)" name="collector" class="form-control">
+                    <option id="collector" [ngValue]="collector._id" *ngFor="let collector of collectors">{{ collector.tradingName }}</option>
+                  </select>
+                </td>
+                <td>
+                  <p-calendar [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" (ngModelChange)="item.date = $event" required name="date" [ngModel]="item.date| date:'dd/MM/yyyy'" dateFormat="dd/mm/yy">
+                  </p-calendar>
+                </td>
+
+                <td>
+                  <p-calendar [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" required name="hour" pattern="HH:mm" timeOnly="true" hourFormat="24" (ngModelChange)="item.hour = $event" [ngModel]="item.hour | date:'HH:mm'" [readonlyInput]="false"></p-calendar>
+                </td>
+                <td>
+                  <mat-checkbox color="accent" type="checkbox" name="active" [(ngModel)]="item.active" id="active">
+                  </mat-checkbox>
+                </td>
+                <td>
+                  <button id="expandMaterial" (click)="expandMaterial(item)" type="button" mat-raised-button color="accent" class="btn btn-sm btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+                    <mat-icon *ngIf="!item.expand">expand_more</mat-icon>
+                    <mat-icon *ngIf="item.expand">expand_less</mat-icon>
+                  </button>
+                </td>
+
+                <td>
+                  <button (click)="remove(item)" type="button" mat-raised-button color="warn" class="btn btn-sm btn-danger" data-toggle="button" aria-pressed="false" autocomplete="off">
+                    <mat-icon>delete_forever</mat-icon>
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="item.expand">
+                <td colspan="5">
+                  <table class="table-sm">
+                    <thead>
+                      <tr>
+                        <th>Materiais para agendamento:</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <div class="container mx-auto p-2">
+                            <div class="row p-2">
+                            </div>
+                            <div class="row">
+                              <div cdkDropList #minha="cdkDropList" [cdkDropListConnectedTo]="[confirmados]" [cdkDropListData]="qrCodeList" class="col-lg-6" (cdkDropListDropped)="drop($event, item)">
+                                <ul class="list-group">
+                                  <li class="list-group-item list-group-item-primary py-2">
+                                    <h6>Lista</h6>
+                                  </li>
+                                  <li class="list-group-item" *ngFor="let p of qrCodeList " cdkDrag>{{p.material.name}}</li>
+                                </ul>
+                              </div>
+                              <div cdkDropList #confirmados="cdkDropList" [cdkDropListData]="item.qrCode" [cdkDropListConnectedTo]="[minha]" (cdkDropListDropped)="drop($event, item)" class="col-lg-6">
+                                <ul class="list-group">
+                                  <li class="list-group-item list-group-item-success py-2">
+                                    <h6>Confirmados</h6>
+                                  </li>
+                                  <li class="list-group-item" *ngFor="let p of item.qrCode" cdkDrag>
+                                      <mat-icon >check</mat-icon>
+                                    {{p.material.name}}</li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            </ng-template>
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

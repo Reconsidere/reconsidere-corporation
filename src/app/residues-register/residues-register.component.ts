@@ -182,48 +182,6 @@ export class ResiduesRegisterComponent implements OnInit {
 				}
 			});
 		}
-		// var item = this.departments.find((x) => x._id === object._id);
-		// if (item) {
-		// 	if (old !== undefined || old !== null) {
-		// 		if (item._id !== old) {
-		// 			object.isChanged = true;
-		// 			var objectToAddAndRemove = object.qrCode[index];
-		// 			var added = false;
-		// 			var removed = false;
-		// 			object.qrCode.forEach((qrCode) => {
-		// 				this.residuesRegister.departments.forEach((department, i) => {
-		// 					if (department._id === item._id) {
-		// 						if (!added) {
-		// 							if (department.qrCode === undefined || department.qrCode.length <= 0) {
-		// 								department.qrCode = [ objectToAddAndRemove ];
-		// 								added = true;
-		// 							} else {
-		// 								department.qrCode.push(objectToAddAndRemove);
-		// 								added = true;
-		// 							}
-		// 						}
-		// 					}
-		// 					if (department._id === old) {
-		// 						if (!removed) {
-		// 							object.qrCode.splite(i, 1);
-		// 							removed = true;
-		// 						}
-		// 					}
-		// 				});
-		// 			});
-		// 		}
-		// 	} else {
-		// 		object.name = item.name;
-		// 		object.description = item.description;
-		// 		object.active = item.active;
-		// 		object._id = item._id;
-		// 	}
-		// } else {
-		// 	object.name = undefined;
-		// 	object.description = undefined;
-		// 	object.active = undefined;
-		// 	object._id = undefined;
-		// }
 	}
 
 	/**

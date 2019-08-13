@@ -9,6 +9,7 @@ import { UnitComponent } from './unit/unit.component';
 import { DepartmentComponent } from './department/department.component';
 import { ResiduesRegister } from 'src/models/residuesregister';
 import { ResiduesRegisterComponent } from './residues-register/residues-register.component';
+import { SchedulingComponent } from './scheduling/scheduling.component';
 
 export const routes: Routes = [
 	{ path: '', component: StartcenterComponent, canActivate: [ AuthGuard ] },
@@ -20,6 +21,7 @@ export const routes: Routes = [
 	{ path: 'unit', component: UnitComponent, canActivate: [ AuthGuard ] },
 	{ path: 'department', component: DepartmentComponent, canActivate: [ AuthGuard ] },
 	{ path: 'residue-register', component: ResiduesRegisterComponent, canActivate: [ AuthGuard ] },
+	{ path: 'scheduling', component: SchedulingComponent, canActivate: [ AuthGuard ] },
 
 	{ path: '**', redirectTo: '' }
 ];

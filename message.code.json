@@ -5,7 +5,8 @@
     "IRE003": { "status": "INFO", "summary": "Usuário adicionado!", "message": ""},
     "IRE004": { "status": "INFO", "summary": "Unidade removida!", "message": ""},
     "IRE005": { "status": "INFO", "summary": "Usuário removido!", "message": ""},
-    "IRE006": { "status": "INFO", "summary": "Por favor, confirme: Não sou um robo!", "message": ""}
+    "IRE006": { "status": "INFO", "summary": "Por favor, confirme: Não sou um robo!", "message": ""},
+    "IRE007": { "status": "INFO", "summary": "Este material faz parte de outro agendamento", "message": ""}
   },
   "SUCCESS": {
     "SRE001": { "status": "SUCCESS", "summary": "Dados salvos com sucesso!", "message": ""},
