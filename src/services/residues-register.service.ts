@@ -70,7 +70,7 @@ export class ResiduesRegisterService {
 		}
 	}
 
-	addOrUpdate(_class,_id: String, residuesRegister: ResiduesRegister, resolve, reject) {
+	addOrUpdate(_class, _id: String, residuesRegister: ResiduesRegister, resolve, reject) {
 		const mutation = /* GraphQL */ `
     mutation createorUpdateResiduesRegister($_id:ID!, $residuesRegister: ResiduesRegisterInput) {
 		createorUpdateResiduesRegister(_id:$_id, input: $residuesRegister)  { 
@@ -105,15 +105,19 @@ export class ResiduesRegisterService {
 		const client = new GraphQLClient(environment.database.uri + `/${this.getPath(_class)}`, {
 			headers: {}
 		});
-		var createorUpdateResiduesRegister = client
-			.request(mutation, variables)
-			.then((createorUpdateResiduesRegister) => {
-				if (createorUpdateResiduesRegister['createorUpdateResiduesRegister']) {
-					resolve(createorUpdateResiduesRegister['createorUpdateResiduesRegister']);
-				}
-			})
-			.catch((createorUpdateResiduesRegister) => {
-				reject(createorUpdateResiduesRegister.response.errors[0].message);
-			});
+		try {
+			var createorUpdateResiduesRegister = client
+				.request(mutation, variables)
+				.then((createorUpdateResiduesRegister) => {
+					if (createorUpdateResiduesRegister['createorUpdateResiduesRegister']) {
+						resolve(createorUpdateResiduesRegister['createorUpdateResiduesRegister']);
+					}
+				})
+				.catch((createorUpdateResiduesRegister) => {
+					reject(createorUpdateResiduesRegister.response.errors[0].message);
+				});
+		} catch (error) {
+			console.log(error);
+		}
 	}
 }

@@ -4,6 +4,8 @@ import { User } from './user';
 import { Provider } from './provider';
 import { ResiduesRegister } from './residuesregister';
 import { CheckPoints } from './checkpoints';
+import { Scheduling } from './scheduling';
+import { Entries } from './entries';
 
 export class Corporation {
 	_id: string;
@@ -24,6 +26,8 @@ export class Corporation {
 	providers: [Provider];
 	residuesRegister: ResiduesRegister;
 	checkPoints: CheckPoints;
+	schedulings: Scheduling;
+	entries: Entries;
 }
 
 export namespace Corporation {

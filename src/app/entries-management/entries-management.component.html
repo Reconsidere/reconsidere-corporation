@@ -1,0 +1,71 @@
+<app-toolbar></app-toolbar>
+
+<div class="container">
+  <button type="button" id="save" (click)="save()" mat-raised-button class="col-md-2 pull-right" color="primary">
+    Salvar ações
+  </button>
+
+  <div class="tablePricing">
+    <table class="table-sm">
+      <thead>
+        <tr>
+          <button id="newItem" (click)="newItem()" type="button" mat-raised-button color="accent" class="btn btn-sm btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+            <mat-icon>add</mat-icon>
+          </button>
+        </tr>
+        <tr id="Titles">
+          <th>Coletor</th>
+          <th>Ação</th>
+          <th>Tipo</th>
+          <th>Nome</th>
+          <th>Custo</th>
+          <th>Quantidade</th>
+          <th>Peso</th>
+          <th>Valor</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-template ngFor let-item [ngForOf]="(entrieItems | paginate: { itemsPerPage: 6, currentPage: page })" igroup="index">
+          <tr>
+            <td>
+              <div  *ngIf="item.collector" class="form-control size">
+                {{item.collector.tradingName}}
+              </div>
+            </td>
+            <td>
+              <select required [(ngModel)]="item.type" name="type" class="form-control">
+                <option id="type" *ngFor="let type of types">{{type}}</option>
+              </select>
+            </td>
+            <td>
+              <select required [(ngModel)]="item.typeEntrie" name="typeEntrie" class="form-control size">
+                <option id="type" *ngFor="let type  of typeEntrie">{{ type }}</option>
+              </select>
+            </td>
+            <td>
+              <select required [(ngModel)]="item.qrCode.material" (change)="selectedMaterial(item)" name="type" class="form-control size">
+                <option id="material" [ngValue]="material" *ngFor="let material of itemsMaterials">{{ material.name }}</option>
+              </select>
+            </td>
+
+            <td>
+              <input required type="text" [ngModel]="item.cost |currency:'BRL':'symbol':'2.2':allowZero: true" name="cost" class="form-control" id="cost" aria-describedby="cost" (ngModelChange)="item.cost=$event" (focus)="oldValue = item.cost" (blur)="changePrice(oldValue, item.cost, item,$event)" [ngModelOptions]="{updateOn:'blur'}" />
+            </td>
+            <td>
+              <input required [(ngModel)]="item.quantity" name="quantity" (blur)="calculatePrice(item)" type="number" class="form-control" id="quantity" aria-describedby="quantity" min="1" />
+            </td>
+            <td>
+              <input [(ngModel)]="item.weight" name="weight" (blur)="calculatePrice(item)" type="number" class="form-control" id="weight" aria-describedby="weight" />
+            </td>
+            <td>
+              <input required type="text" disabled="disabled" [ngModel]="item.amount |currency:'BRL':'symbol':'2.2':allowZero: true" name="amount" class="form-control" id="amount" aria-describedby="amount" (ngModelChange)="item.amount=$event" (focus)="oldValue = item.amount" (blur)="changeAmount(oldValue, item.amount, item,$event)" [ngModelOptions]="{updateOn:'blur'}" />
+            </td>
+          </tr>
+
+        </ng-template>
+      </tbody>
+      <pagination-controls (pageChange)="page = $event" previousLabel="Anterior" nextLabel="Próxima" autoHide="true" responsive="true" screenReaderPaginationLabel="Pagination">
+      </pagination-controls>
+    </table>
+  </div>
+</div>

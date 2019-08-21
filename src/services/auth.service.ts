@@ -30,146 +30,346 @@ export class AuthService {
 	query getCorporationByUser($_id: ID!) {
 	  getCorporationByUser(_id: $_id)  {
 		_id
-		company
-		cnpj
-		tradingName
-		active
-		class
-		phone
-		email
-		classification
-		cellPhone
-		creationDate
-		activationDate
-		verificationDate
-		providers{
-		  _id
-		  providerId
-		}
-		units {
-		  name
-		  _id
-		  location {
-			country
-			state
-			latitude
-			longitude
-			cep
-			publicPlace
-			neighborhood
-			number
-			county
-			complement
-		  }
-		}
-		users {
-		  _id
-		  name
-		  email
-		  password
-		  active
-		  profile {
-			name
-			access
-		  }
-		}
-	  
-  residuesRegister{
-	departments {
-	  _id
-	  name
-	  description
-	  active
-	  isChanged
-	  qrCode {
-		_id
-		code
-		material {
-		  _id
-		  type
-		  name
-		  weight
-		  quantity
-		  active
-		  unity
-		}
-	  }
-	}
+    company
+    cnpj
+    tradingName
+    active
+    class
+    phone
+    email
+    classification
+    cellPhone
+    creationDate
+    activationDate
+    verificationDate
+    units {
+      _id
+      name
+      location {
+        _id
+        country
+        state
+        latitude
+        longitude
+        cep
+        publicPlace
+        neighborhood
+        number
+        county
+        complement
+        
+      }
+    }
+    users {
+      _id
+      name
+      email
+      password
+      active
+      
+      
+    }
+    providers {
+      _id
+      providerId
+      
+    
+    }
+    departments {
+      _id
+      name
+      
+      description
+      active
+      isChanged
+      qrCode {
+        _id
+        code
+        material {
+          _id
+          type
+          name
+          weight
+          quantity
+          active
+          unity
+        }
+      }
+    }
+    residuesRegister{
+      departments {
+        _id
+        name
+        description
+        active
+        isChanged
+        qrCode {
+          _id
+          code
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
+      }
+    }
+    scheduling {
+      _id
+      hour
+      date
+      active
+      collector {
+        _id
+        company
+        cnpj
+        tradingName
+        active
+        phone
+        cellPhone
+        class
+        email
+        classification
+      }
+      qrCode {
+        _id
+        code
+        material {
+          _id
+          type
+          name
+          weight
+          quantity
+          active
+          unity
+        }
+      }
+    }
+    entries {
+      _id
+      purchase {
+        date
+        name
+        cost
+        typeEntrie
+        quantity
+        weight
+        amount
+        qrCode {
+          _id
+          code
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
+      }
+      sale {
+        date
+        name
+        cost
+        typeEntrie
+        quantity
+        weight
+        amount
+        qrCode {
+          _id
+          code
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
+      }
+    }
   }
-}
 }`;
 
 	private queryCollector = /* GraphQL */ `
 query getCollectorByUser($_id: ID!) {
 	getCollectorByUser(_id: $_id)  {
-	_id
-	company
-	cnpj
-	tradingName
-	active
-	class
-	phone
-	email
-	classification
-	cellPhone
-	creationDate
-	activationDate
-	verificationDate
-	providers{
-	  _id
-	  providerId
-	}
-	units {
-	  name
-	  _id
-	  location {
-		country
-		state
-		latitude
-		longitude
-		cep
-		publicPlace
-		neighborhood
-		number
-		county
-		complement
-	  }
-	}
-	users {
-	  _id
-	  name
-	  email
-	  password
-	  active
-	  profile {
-		name
-		access
-	  }
-	}
-  
-residuesRegister{
-departments {
-  _id
-  name
-  description
-  active
-  isChanged
-  qrCode {
-	_id
-	code
-	material {
-	  _id
-	  type
-	  name
-	  weight
-	  quantity
-	  active
-	  unity
-	}
+		_id
+    company
+    cnpj
+    tradingName
+    active
+    class
+    phone
+    email
+    classification
+    cellPhone
+    creationDate
+    activationDate
+    verificationDate
+    units {
+      _id
+      name
+      location {
+        _id
+        country
+        state
+        latitude
+        longitude
+        cep
+        publicPlace
+        neighborhood
+        number
+        county
+        complement
+        
+      }
+    }
+    users {
+      _id
+      name
+      email
+      password
+      active
+      
+      
+    }
+    providers {
+      _id
+      providerId
+      
+    
+    }
+    departments {
+      _id
+      name
+      
+      description
+      active
+      isChanged
+      qrCode {
+        _id
+        code
+        material {
+          _id
+          type
+          name
+          weight
+          quantity
+          active
+          unity
+        }
+      }
+    }
+    residuesRegister{
+      departments {
+        _id
+        name
+        description
+        active
+        isChanged
+        qrCode {
+          _id
+          code
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
+      }
+    }
+    scheduling {
+      _id
+      hour
+      date
+      active
+      collector {
+        _id
+        company
+        cnpj
+        tradingName
+        active
+        phone
+        cellPhone
+        class
+        email
+        classification
+      }
+      qrCode {
+        _id
+        code
+        material {
+          _id
+          type
+          name
+          weight
+          quantity
+          active
+          unity
+        }
+      }
+    }
+    entries {
+      _id
+      purchase {
+        date
+        name
+        cost
+        typeEntrie
+        quantity
+        weight
+        amount
+        qrCode {
+          _id
+          code
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
+      }
+      sale {
+        date
+        name
+        cost
+        typeEntrie
+        quantity
+        weight
+        amount
+        qrCode {
+          _id
+          code
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
+      }
+    }
   }
-}
-}
-}
 }`;
 
 	//#endregion
@@ -268,6 +468,7 @@ departments {
 				}
 			}
 		} catch (error) {
+      console.log(error);
 			reject(error.response.errors[0].message);
 		}
 	}
@@ -285,7 +486,7 @@ departments {
 		if (corporation.class === Corporation.Classification.Coletora) {
 			this.mutation = this.mutationCollectorUpdate;
 		} else {
-			this.mutation = this.mutationCollectorAdd;
+			this.mutation = this.mutationCorporationUpdate;
 		}
 
 		try {
@@ -294,6 +495,7 @@ departments {
 				resolve(id);
 			}
 		} catch (error) {
+			console.log(error);
 			reject(error.response.errors[0].message);
 		}
 	}
@@ -355,7 +557,6 @@ departments {
 				return isLogged;
 			}
 		} catch (error) {
-			console.log(error);
 			throw new Error('ERE001');
 		}
 	}
@@ -386,9 +587,9 @@ departments {
 			try {
 				var getCorporationByUser = await client.request(this.query, variables);
 				if (getCorporationByUser) {
-					if(_class === Corporation.Classification.Coletora){
+					if (_class === Corporation.Classification.Coletora) {
 						resolve(getCorporationByUser['getCollectorByUser']);
-					}else{
+					} else {
 						resolve(getCorporationByUser['getCorporationByUser']);
 					}
 				} else {

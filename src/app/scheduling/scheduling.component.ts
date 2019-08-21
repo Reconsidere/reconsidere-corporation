@@ -116,6 +116,15 @@ export class SchedulingComponent implements OnInit {
 			});
 
 			if (schedulings) {
+				for (var i = 0; schedulings.length > i; i++) {
+					if (
+						schedulings[i].qrCode === null ||
+						schedulings[i].qrCode === undefined ||
+						schedulings[i].qrCode.length <= 0
+					) {
+						return;
+					}
+				}
 				this.schedulings = schedulings;
 				this.schedulings.forEach((scheduling) => {
 					scheduling['expand'] = false;
