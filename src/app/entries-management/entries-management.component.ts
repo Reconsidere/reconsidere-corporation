@@ -81,19 +81,36 @@ export class EntriesManagementComponent implements OnInit {
 			this.schedulingService.allSchedulings(this.authService.getClass(), this.corporationId, resolve, reject);
 		});
 		if (items !== undefined) {
-			this.insertaterials(items);
+			this.insertMaterials(items);
 			this.itemsMaterials.sort();
 		}
 	}
 
-	insertaterials(list: any) {
+	insertMaterials(list: any) {
 		list.forEach((value) => {
-			value.qrCode.forEach((item) => {
-				if (this.itemsMaterials === undefined) {
-					this.itemsMaterials = [
-						{
+			if (value.qrCode !== null) {
+				value.qrCode.forEach((item) => {
+					if (this.itemsMaterials === undefined) {
+						this.itemsMaterials = [
+							{
+								_idQrCode: item._id,
+								collector: value.collector,
+								_id: item.material._id,
+								code: item.code,
+								typeMaterial: EntriesTypes.TypeEntrie.Material,
+								type: item.material.type,
+								name: item.material.name,
+								weight: item.material.weight,
+								quantity: item.material.quantity,
+								active: item.material.active,
+								unity: item.material.unity
+							}
+						];
+					} else {
+						this.itemsMaterials.push({
+							_idQrCode: item._id,
 							collector: value.collector,
-							_id: item._id,
+							_id: item.material._id,
 							code: item.code,
 							typeMaterial: EntriesTypes.TypeEntrie.Material,
 							type: item.material.type,
@@ -102,23 +119,10 @@ export class EntriesManagementComponent implements OnInit {
 							quantity: item.material.quantity,
 							active: item.material.active,
 							unity: item.material.unity
-						}
-					];
-				} else {
-					this.itemsMaterials.push({
-						collector: value.collector,
-						_id: item._id,
-						code: item.code,
-						typeMaterial: EntriesTypes.TypeEntrie.Material,
-						type: item.material.type,
-						name: item.material.name,
-						weight: item.material.weight,
-						quantity: item.material.quantity,
-						active: item.material.active,
-						unity: item.material.unity
-					});
-				}
-			});
+						});
+					}
+				});
+			}
 		});
 	}
 
@@ -177,7 +181,7 @@ export class EntriesManagementComponent implements OnInit {
 			item.name = item.qrCode.material.name;
 			item.cost = 0;
 			item.weight = item.qrCode.material.weight;
-			item.qrCode['_id'] = item.qrCode.material._id;
+			item.qrCode['_id'] = item.qrCode.material._idQrCode;
 			item.qrCode['code'] = item.qrCode.material.code;
 			item.collector = item.qrCode.material.collector;
 		} else {
@@ -289,10 +293,36 @@ export class EntriesManagementComponent implements OnInit {
 		});
 	}
 
+	removeInvalidaValuesToSave() {
+		if (this.entries.sale) {
+			this.entries.sale.forEach((entries, index) => {
+				delete entries.qrCode.material.collector;
+				delete entries.collector;
+				delete entries.qrCode.material.code;
+				delete entries.qrCode.material._idQrCode;
+				delete entries.qrCode.material.typeMaterial;
+				delete entries.isTypeMaterial;
+				delete entries.type;
+			});
+		}
+		if (this.entries.purchase) {
+			this.entries.purchase.forEach((entries, index) => {
+				delete entries.qrCode.material.collector;
+				delete entries.collector;
+				delete entries.qrCode.material.code;
+				delete entries.qrCode.material._idQrCode;
+				delete entries.qrCode.material.typeMaterial;
+				delete entries.isTypeMaterial;
+				delete entries.type;
+			});
+		}
+	}
+
 	async save() {
 		try {
 			this.veryfyBeforeSave();
 			this.addToEntrie();
+			this.removeInvalidaValuesToSave();
 			var registerResidues = await new Promise(async (resolve, reject) => {
 				this.entriesService.addOrUpdate(
 					this.authService.getClass(),

@@ -165,9 +165,11 @@ export class EntriesManagementService {
 					}
 				})
 				.catch((createorUpdateEntries) => {
+					console.log(createorUpdateEntries.response.errors[0].message);
 					reject(createorUpdateEntries.response.errors[0].message);
 				});
 		} catch (error) {
+			console.log(error);
 			console.log(error);
 		}
 	}
