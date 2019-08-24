@@ -45,11 +45,11 @@ export class EntriesManagementComponent implements OnInit {
 		this.authService.isAuthenticated();
 		this.page = 1;
 		this.corporationId = this.authService.getCorporationId();
+		this.loadMaterials();
 		this.loadEntries();
 		this.types = Object.values(EntriesTypes.Type);
 		this.typeEntrie = Object.values(EntriesTypes.TypeEntrie);
 		this.itemsMaterials = [];
-		this.loadMaterials();
 	}
 
 	async loadEntries() {
@@ -132,7 +132,7 @@ export class EntriesManagementComponent implements OnInit {
 	}
 
 	insertItems(type: any, typeEntrie: any, list: Entries) {
-		if (list[type] !== undefined) {
+		if (list[type] !== undefined && list[type].length > 0) {
 			list[type].forEach((item) => {
 				let obj = {
 					_id: item._id,
@@ -147,7 +147,25 @@ export class EntriesManagementComponent implements OnInit {
 					quantity: item.quantity,
 					qrCode: item.qrCode
 				};
+
+				this.setMaterial(obj);
+
+				if (this.entrieItems === undefined || this.entrieItems.length <= 0) {
+					this.entrieItems = [ obj ];
+				} else {
+					this.entrieItems.push(obj);
+				}
 			});
+		}
+	}
+
+	setMaterial(item) {
+		var value = this.itemsMaterials.find((x) => x.name === item.name);
+		if(value){
+			item.qrCode.material = value;
+			item['collector'] = value.collector;
+
+
 		}
 	}
 
@@ -323,7 +341,7 @@ export class EntriesManagementComponent implements OnInit {
 			this.veryfyBeforeSave();
 			this.addToEntrie();
 			this.removeInvalidaValuesToSave();
-			var registerResidues = await new Promise(async (resolve, reject) => {
+			var entries = await new Promise(async (resolve, reject) => {
 				this.entriesService.addOrUpdate(
 					this.authService.getClass(),
 					this.corporationId,
@@ -333,6 +351,7 @@ export class EntriesManagementComponent implements OnInit {
 				);
 			});
 			this.loadMaterials();
+			this.resetEntries(entries);
 			this.toastr.success(messageCode['SUCCESS']['SRE001']['summary']);
 		} catch (error) {
 			this.toastr.warning(messageCode['ERROR'][error]['summary']);
@@ -368,5 +387,10 @@ export class EntriesManagementComponent implements OnInit {
 		} else {
 			this.entries[type] = [ itemEntrie ];
 		}
+	}
+
+	resetEntries(item) {
+		this.entries = item;
+		this.createSimpleList(this.entries);
 	}
 }
