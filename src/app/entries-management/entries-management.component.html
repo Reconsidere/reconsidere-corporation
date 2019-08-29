@@ -28,17 +28,17 @@
         <ng-template ngFor let-item [ngForOf]="(entrieItems | paginate: { itemsPerPage: 6, currentPage: page })" igroup="index">
           <tr>
             <td>
-              <div  *ngIf="item.collector" class="form-control size">
+              <div *ngIf="item.collector" class="form-control size">
                 {{item.collector.tradingName}}
               </div>
             </td>
             <td>
-              <select required [(ngModel)]="item.type" name="type" class="form-control size">
+              <select required [(ngModel)]="item.type" (change)="changedItem(item)" name="type" class="form-control size">
                 <option id="type" *ngFor="let type of types">{{type}}</option>
               </select>
             </td>
             <td>
-              <select required [(ngModel)]="item.typeEntrie" name="typeEntrie" class="form-control size">
+              <select required [(ngModel)]="item.typeEntrie" (change)="changedItem(item)" name="typeEntrie" class="form-control size">
                 <option id="type" *ngFor="let type  of typeEntrie">{{ type }}</option>
               </select>
             </td>
@@ -52,11 +52,16 @@
               <input required type="text" [ngModel]="item.cost |currency:'BRL':'symbol':'2.2':allowZero: true" name="cost" class="form-control" id="cost" aria-describedby="cost" (ngModelChange)="item.cost=$event" (focus)="oldValue = item.cost" (blur)="changePrice(oldValue, item.cost, item,$event)" [ngModelOptions]="{updateOn:'blur'}" />
             </td>
             <td>
-              <input required [(ngModel)]="item.quantity" name="quantity" (blur)="calculatePrice(item)" type="number" class="form-control" id="quantity" aria-describedby="quantity" min="1" />
+              <div class="form-control size">
+                {{item.quantity}}
+              </div>
             </td>
             <td>
-              <input [(ngModel)]="item.weight" name="weight" (blur)="calculatePrice(item)" type="number" class="form-control" id="weight" aria-describedby="weight" />
+              <div class="form-control size">
+                {{item.weight}}
+              </div>
             </td>
+
             <td>
               <input required type="text" disabled="disabled" [ngModel]="item.amount |currency:'BRL':'symbol':'2.2':allowZero: true" name="amount" class="form-control" id="amount" aria-describedby="amount" (ngModelChange)="item.amount=$event" (focus)="oldValue = item.amount" (blur)="changeAmount(oldValue, item.amount, item,$event)" [ngModelOptions]="{updateOn:'blur'}" />
             </td>

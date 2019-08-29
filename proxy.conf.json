@@ -18,5 +18,9 @@
     "/collector": {
         "target": "http://localhost:32546/collector",
         "secure": "false"
+    },
+    "/provider": {
+        "target": "http://localhost:32546/provider",
+        "secure": "false"
     }
 }

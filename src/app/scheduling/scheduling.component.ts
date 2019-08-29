@@ -275,6 +275,11 @@ export class SchedulingComponent implements OnInit {
 			this.removeNotChangedScheduling();
 			this.removeInvalidaValuesToSave();
 			this.veryfyBeforeSave();
+			if (this.schedulings.length <= 0) {
+				this.toastr.warning(messageCode['WARNNING']['WRE020']['summary']);
+				return;
+			}
+
 			var schedulings = await new Promise(async (resolve, reject) => {
 				this.schedulingstService.addOrUpdate(
 					this.authService.getClass(),

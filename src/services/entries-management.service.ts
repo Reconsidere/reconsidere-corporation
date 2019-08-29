@@ -25,6 +25,7 @@ export class EntriesManagementService {
         allEntries(_id: $_id)  {
 			_id
 			purchase {
+			_id
 			date
 			name
 			cost
@@ -47,6 +48,7 @@ export class EntriesManagementService {
 			}
 			}
 			sale {
+		    _id
 			date
 			name
 			cost
@@ -101,6 +103,7 @@ export class EntriesManagementService {
 		createorUpdateEntries(_id:$_id, input: $entries)  { 
 			_id
 		purchase {
+			_id
 			date
 			name
 			cost
@@ -123,6 +126,7 @@ export class EntriesManagementService {
 			}
 		}
 		sale {
+			_id
 			date
 			name
 			cost
@@ -165,11 +169,9 @@ export class EntriesManagementService {
 					}
 				})
 				.catch((createorUpdateEntries) => {
-					console.log(createorUpdateEntries.response.errors[0].message);
 					reject(createorUpdateEntries.response.errors[0].message);
 				});
 		} catch (error) {
-			console.log(error);
 			console.log(error);
 		}
 	}

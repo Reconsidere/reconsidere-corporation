@@ -36,20 +36,23 @@ export class EntriesManagementComponent implements OnInit {
 		private authService: AuthService,
 		private entriesService: EntriesManagementService,
 		private schedulingService: SchedulingService
-	) {
-		this.entrieItems = [];
-		this.itemsMaterials = [];
-	}
+	) {}
 
 	ngOnInit() {
 		this.authService.isAuthenticated();
 		this.page = 1;
 		this.corporationId = this.authService.getCorporationId();
-		this.loadMaterials();
-		this.loadEntries();
+		this.loadValues();
 		this.types = Object.values(EntriesTypes.Type);
 		this.typeEntrie = Object.values(EntriesTypes.TypeEntrie);
+	}
+
+	loadValues() {
+		this.entrieItems = [];
 		this.itemsMaterials = [];
+		this.entries = new Entries();
+		this.loadMaterials();
+		this.loadEntries();
 	}
 
 	async loadEntries() {
@@ -65,8 +68,7 @@ export class EntriesManagementComponent implements OnInit {
 			});
 
 			if (entries) {
-				this.entries = entries;
-				this.createSimpleList(this.entries);
+				this.createSimpleList(entries);
 			} else {
 				this.entries = new Entries();
 				this.newItem();
@@ -161,11 +163,9 @@ export class EntriesManagementComponent implements OnInit {
 
 	setMaterial(item) {
 		var value = this.itemsMaterials.find((x) => x.name === item.name);
-		if(value){
+		if (value) {
 			item.qrCode.material = value;
 			item['collector'] = value.collector;
-
-
 		}
 	}
 
@@ -194,8 +194,13 @@ export class EntriesManagementComponent implements OnInit {
 		}
 	}
 
+	changedItem(item) {
+		item['changed'] = true;
+	}
+
 	selectedMaterial(item) {
 		if (item !== undefined) {
+			item['changed'] = true;
 			item.name = item.qrCode.material.name;
 			item.cost = 0;
 			item.weight = item.qrCode.material.weight;
@@ -213,6 +218,7 @@ export class EntriesManagementComponent implements OnInit {
 		if (oldValue === value) {
 			return;
 		}
+		item['changed'] = true;
 		let number = value.replace(this.REGEX, '');
 		number = Number(number.replace(this.COMMA, this.DOT)).toFixed(2);
 		if (number === this.NOTNUMBER) {
@@ -227,6 +233,7 @@ export class EntriesManagementComponent implements OnInit {
 		if (oldValue === value) {
 			return;
 		}
+		item['changed'] = true;
 		let number = value.replace(this.REGEX, '');
 		number = Number(number.replace(this.COMMA, this.DOT)).toFixed(2);
 		if (number === this.NOTNUMBER) {
@@ -238,6 +245,7 @@ export class EntriesManagementComponent implements OnInit {
 	}
 
 	calculatePrice(item) {
+		item['changed'] = true;
 		if (
 			(item.cost === undefined && item.quantity === undefined && item.weight === undefined) ||
 			(item.quantity <= 0 && item.weight <= 0 && item.cost <= 0)
@@ -313,25 +321,51 @@ export class EntriesManagementComponent implements OnInit {
 
 	removeInvalidaValuesToSave() {
 		if (this.entries.sale) {
-			this.entries.sale.forEach((entries, index) => {
-				delete entries.qrCode.material.collector;
-				delete entries.collector;
-				delete entries.qrCode.material.code;
-				delete entries.qrCode.material._idQrCode;
-				delete entries.qrCode.material.typeMaterial;
-				delete entries.isTypeMaterial;
-				delete entries.type;
-			});
+			if (this.entries.sale !== undefined && this.entries.sale.length > 0) {
+				this.entries.sale.forEach((entries, index) => {
+					delete entries.qrCode.material.collector;
+					delete entries.collector;
+					delete entries.qrCode.material.code;
+					delete entries.qrCode.material._idQrCode;
+					delete entries.qrCode.material.typeMaterial;
+					delete entries.isTypeMaterial;
+					delete entries.type;
+					delete entries.changed;
+				});
+			}
 		}
 		if (this.entries.purchase) {
-			this.entries.purchase.forEach((entries, index) => {
-				delete entries.qrCode.material.collector;
-				delete entries.collector;
-				delete entries.qrCode.material.code;
-				delete entries.qrCode.material._idQrCode;
-				delete entries.qrCode.material.typeMaterial;
-				delete entries.isTypeMaterial;
-				delete entries.type;
+			if (this.entries.purchase !== undefined && this.entries.purchase.length > 0) {
+				this.entries.purchase.forEach((entries, index) => {
+					delete entries.qrCode.material.collector;
+					delete entries.collector;
+					delete entries.qrCode.material.code;
+					delete entries.qrCode.material._idQrCode;
+					delete entries.qrCode.material.typeMaterial;
+					delete entries.isTypeMaterial;
+					delete entries.type;
+					delete entries.changed;
+				});
+			}
+		}
+	}
+
+	removeNotChangedScheduling() {
+		if (this.entries.sale !== undefined && this.entries.sale.length > 0) {
+			this.entries.sale.forEach((sale, index) => {
+				if (!sale.changed) {
+					var sales = this.entries.sale;
+					sales.splice(index, 1);
+				}
+			});
+		}
+
+		if (this.entries.purchase !== undefined && this.entries.purchase.length > 0) {
+			this.entries.purchase.forEach((purchase, index) => {
+				if (!purchase.changed) {
+					var purchases = this.entries.purchase;
+					purchases.splice(index, 1);
+				}
 			});
 		}
 	}
@@ -340,7 +374,22 @@ export class EntriesManagementComponent implements OnInit {
 		try {
 			this.veryfyBeforeSave();
 			this.addToEntrie();
+			this.removeNotChangedScheduling();
 			this.removeInvalidaValuesToSave();
+			if (
+				this.entries.sale === undefined &&
+				this.entries.sale.length <= 0 &&
+				this.entries.purchase === undefined &&
+				this.entries.purchase.length <= 0
+			) {
+				this.toastr.warning(messageCode['WARNNING']['WRE020']['summary']);
+				this.entrieItems = [];
+				this.itemsMaterials = [];
+				this.entries = new Entries();
+				this.loadMaterials();
+				this.loadEntries();
+				return;
+			}
 			var entries = await new Promise(async (resolve, reject) => {
 				this.entriesService.addOrUpdate(
 					this.authService.getClass(),
@@ -350,7 +399,6 @@ export class EntriesManagementComponent implements OnInit {
 					reject
 				);
 			});
-			this.loadMaterials();
 			this.resetEntries(entries);
 			this.toastr.success(messageCode['SUCCESS']['SRE001']['summary']);
 		} catch (error) {
@@ -389,8 +437,11 @@ export class EntriesManagementComponent implements OnInit {
 		}
 	}
 
-	resetEntries(item) {
-		this.entries = item;
-		this.createSimpleList(this.entries);
+	async resetEntries(item) {
+		this.entrieItems = [];
+		this.itemsMaterials = [];
+		this.entries = new Entries();
+		await this.loadMaterials();
+		this.createSimpleList(item);
 	}
 }

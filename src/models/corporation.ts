@@ -36,7 +36,6 @@ export namespace Corporation {
 		Coletora = 'Empresa Coletora',
 		Beneficiadora = 'Empresa Beneficiadora',
 		Privada = 'Empresa Privada',
-		Fornecedor = 'Fornecedor',
 		Filiais = 'Filiais',
 		Municipio = 'Município'
 	}

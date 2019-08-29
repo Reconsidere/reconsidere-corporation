@@ -85,6 +85,8 @@
                 </ng-template>
               </ng-template>
             </tbody>
+            <pagination-controls (pageChange)="page = $event" previousLabel="Anterior" nextLabel="Próxima" autoHide="true" responsive="true" screenReaderPaginationLabel="Pagination">
+              </pagination-controls>
           </table>
         </div>
       </div>

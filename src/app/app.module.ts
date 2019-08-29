@@ -44,6 +44,7 @@ import { SchedulingComponent } from './scheduling/scheduling.component';
 import { CalendarModule } from 'primeng/calendar';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { EntriesManagementComponent } from './entries-management/entries-management.component';
+import { ProviderRegistrationComponent } from './provider-registration/provider-registration.component';
 
 registerLocaleData(localePt);
 
@@ -62,7 +63,8 @@ registerLocaleData(localePt);
     CheckpointComponent,
     ResiduesRegisterComponent,
     SchedulingComponent,
-    EntriesManagementComponent
+    EntriesManagementComponent,
+    ProviderRegistrationComponent
   ],
   imports: [
     BrowserModule,

@@ -18,7 +18,8 @@ export const environment = {
 			login: 'login',
 			checkpoint: 'checkpoint',
 			transactionhistory: 'transactionhistory',
-			collector:'collector'
+			collector:'collector',
+			provider:'provider'
 		}
 	},
 	api: {

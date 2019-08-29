@@ -14,7 +14,8 @@ export const environment = {
 			login: 'login',
 			checkpoint: 'checkpoint',
 			transactionhistory: 'transactionhistory',
-			collector:'collector'
+			collector:'collector',
+			provider:'provider'
 		}
 	},
 	secret: '154097$#@$^@1ETI'
