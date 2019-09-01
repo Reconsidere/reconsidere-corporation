@@ -16,9 +16,9 @@ export class ProviderRegistrationService {
 	async allProviders(_class, corporationId: string, resolve, reject) {
 		if (corporationId !== undefined && corporationId !== null) {
 			const query = /* GraphQL */ `
-      query allProviders() {
-					allProviders()  {
-						_id
+      query allProviders {
+					allProviders {
+				        _id
 						company
 						cnpj
 						tradingName
@@ -62,22 +62,19 @@ export class ProviderRegistrationService {
         }
     }`;
 
-			const variables = {
-				_id: corporationId
-			};
-
 			const client = new GraphQLClient(environment.database.uri + `/${this.getPath()}`, {
 				headers: {}
 			});
 
 			try {
-				var allProviders = await client.request(query, variables);
+				var allProviders = await client.request(query);
 				if (!allProviders) {
 					reject('WRE016');
 				} else {
 					resolve(allProviders['allProviders']);
 				}
 			} catch (error) {
+				console.log(error);
 				throw new Error(error.response.errors[0].message);
 			}
 		} else {
@@ -87,8 +84,8 @@ export class ProviderRegistrationService {
 
 	addOrUpdate(_class, _id: String, provider: ProviderRegistration, resolve, reject) {
 		const mutation = /* GraphQL */ `
-    mutation createorUpdateProvider($_id:ID!, $provider: [ProviderInput]) {
-		createorUpdateProvider(_id:$_id, input: $provider)  { 
+    mutation createorUpdateProvider($_id:ID!,$typeCorporation:String, $provider: [ProviderInput]) {
+		createorUpdateProvider(_id:$_id, typeCorporation:$typeCorporation, input: $provider)  { 
 			_id
 			company
 			cnpj
@@ -133,26 +130,30 @@ export class ProviderRegistrationService {
 			}
 	}`;
 
+		const variables = {
+			_id: _id,
+			typeCorporation: _class,
+			provider: provider
+		};
 
-	const variables = {
-		_id: _id,
-		provider: provider
-	};
-
-	const client = new GraphQLClient(environment.database.uri + `/${this.getPath()}`, {
-		headers: {}
-	});
-	var createorUpdateProvider = client
-		.request(mutation, variables)
-		.then((createorUpdateProvider) => {
-			if (createorUpdateProvider['createorUpdateProvider']) {
-				resolve(createorUpdateProvider['createorUpdateProvider']);
-			}
-		})
-		.catch((createorUpdateProvider) => {
-			console.log(createorUpdateProvider.response.errors[0].message);
-			reject(createorUpdateProvider.response.errors[0].message);
+		const client = new GraphQLClient(environment.database.uri + `/${this.getPath()}`, {
+			headers: {}
 		});
-
-
+		try {
+			var createorUpdateProvider = client
+				.request(mutation, variables)
+				.then((createorUpdateProvider) => {
+					if (createorUpdateProvider['createorUpdateProvider']) {
+						resolve(createorUpdateProvider['createorUpdateProvider']);
+					}
+				})
+				.catch((createorUpdateProvider) => {
+					console.log(createorUpdateProvider.response.errors[0].message);
+					reject(createorUpdateProvider.response.errors[0].message);
+				});
+		} catch (error) {
+			console.log(error);
+			throw new Error(error.response.errors[0].message);
+		}
+	}
 }

@@ -34,7 +34,6 @@ import { FlatpickrModule } from 'angularx-flatpickr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { BooltransformPipe } from '../pipes/booltransform.pipe';
-import { ProviderComponent } from './provider/provider.component';
 import { LogoutComponent } from './auth/logout/logout.component';
 import { UnitComponent } from './unit/unit.component';
 import { DepartmentComponent } from './department/department.component';
@@ -56,7 +55,6 @@ registerLocaleData(localePt);
     StartcenterComponent,
     SignUpComponent,
     BooltransformPipe,
-    ProviderComponent,
     LogoutComponent,
     UnitComponent,
     DepartmentComponent,
