@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { GraphQLClient } from 'graphql-request';
 import { ProviderRegistration } from 'src/models/providerregistration';
+import { Corporation } from 'src/models/corporation';
 
 @Injectable({
 	providedIn: 'root'
@@ -59,6 +60,10 @@ export class ProviderRegistrationService {
 							access
 						}
 						}
+						myProviders {
+      						_id
+      						providerId
+    					}
         }
     }`;
 
@@ -82,7 +87,50 @@ export class ProviderRegistrationService {
 		}
 	}
 
-	addOrUpdate(_class, _id: String, provider: ProviderRegistration, resolve, reject) {
+	async allProvidersId(_class, corporationId: string, resolve, reject) {
+		if (corporationId !== undefined && corporationId !== null) {
+			const query = /* GraphQL */ `
+      query allProvidersId($_id: ID!) {
+        allProvidersId(_id: $_id)  {
+			_id
+		  providerId
+  }
+    }`;
+
+			const variables = {
+				_id: corporationId
+			};
+
+			var path;
+			if (_class === Corporation.Classification.Coletora) {
+				path = environment.database.paths.collector;
+			} else if (_class === ProviderRegistration.Classification.Provider) {
+				path = environment.database.paths.provider;
+			} else {
+				path = environment.database.paths.corporation;
+			}
+
+			const client = new GraphQLClient(environment.database.uri + `/${path}`, {
+				headers: {}
+			});
+
+			try {
+				var allProvidersId = await client.request(query, variables);
+				if (!allProvidersId) {
+					reject('WRE016');
+				} else {
+					resolve(allProvidersId['allProvidersId']);
+				}
+			} catch (error) {
+				console.log(error);
+				throw new Error(error.response.errors[0].message);
+			}
+		} else {
+			reject(undefined);
+		}
+	}
+
+	addOrUpdate(_class, _id: String, provider: any, resolve, reject) {
 		const mutation = /* GraphQL */ `
     mutation createorUpdateProvider($_id:ID!,$typeCorporation:String, $provider: [ProviderInput]) {
 		createorUpdateProvider(_id:$_id, typeCorporation:$typeCorporation, input: $provider)  { 
@@ -127,6 +175,10 @@ export class ProviderRegistrationService {
 				access
 			}
 			}
+			myProviders {
+      						_id
+      						providerId
+    					}
 			}
 	}`;
 

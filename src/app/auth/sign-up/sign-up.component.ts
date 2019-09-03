@@ -10,7 +10,7 @@ import { AuthService } from 'src/services/auth.service';
 import { promise, element } from 'protractor';
 import { CepService } from 'src/services/cep.service';
 import { Unit } from 'src/models/unit';
-import { Profile } from 'src/models/profile';
+import { Profile } from 'src/models/myproviders';
 import { access } from 'fs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
@@ -19,6 +19,8 @@ import { Corporation } from 'src/models/corporation';
 import { UserService } from 'src/services/user.service';
 import * as messageCode from 'message.code.json';
 import { reject } from 'q';
+import { ProviderRegistration } from 'src/models/providerregistration';
+import { ProviderRegistrationService } from 'src/services/provider-registration.service';
 
 @Component({
 	selector: 'app-sign-up',
@@ -55,7 +57,8 @@ export class SignUpComponent implements OnInit {
 		private cepService: CepService,
 		private userService: UserService,
 		private router: Router,
-		private toastr: ToastrService
+		private toastr: ToastrService,
+		private providerService: ProviderRegistrationService
 	) {
 		this.classifications = Object.values(Corporation.Classification);
 		this.profiles = Object.values(User.Profiles);
@@ -95,6 +98,9 @@ export class SignUpComponent implements OnInit {
 				this.termService = true;
 				this.termPrivacity = true;
 				this.isLogged = true;
+				if (this.corporation.classification === ProviderRegistration.Classification.Provider) {
+					this.classifications.push(this.corporation.classification);
+				}
 			}
 		} catch (error) {
 			this.toastr.error(messageCode['WARNNING'][error]['summary']);
@@ -432,13 +438,30 @@ export class SignUpComponent implements OnInit {
 		}
 
 		try {
-			var _id;
-			_id = await new Promise(async (resolve, reject) => {
-				this.authService.signup(this.corporation.classification,this.corporation, resolve, reject);
-			});
-			if (_id && !this.isLogged) {
-				this.router.navigate([ '/' ]);
+			if (this.corporation.classification === ProviderRegistration.Classification.Provider) {
+				var _id;
+				_id = await new Promise(async (resolve, reject) => {
+					this.providerService.addOrUpdate(
+						this.authService.getClass(),
+						this.corporation._id,
+						this.corporation,
+						resolve,
+						reject
+					);
+				});
+				if (_id && !this.isLogged) {
+					this.router.navigate([ '/' ]);
+				}
+			} else {
+				var _id;
+				_id = await new Promise(async (resolve, reject) => {
+					this.authService.signup(this.corporation.classification, this.corporation, resolve, reject);
+				});
+				if (_id && !this.isLogged) {
+					this.router.navigate([ '/' ]);
+				}
 			}
+
 			this.toastr.success(messageCode['SUCCESS']['SRE001']['summary']);
 		} catch (error) {
 			this.toastr.error(messageCode['WARNNING'][error]['summary']);

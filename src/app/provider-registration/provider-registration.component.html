@@ -1,14 +1,20 @@
 <app-toolbar></app-toolbar>
 
 <div class="container">
+
   <div class="card">
-    <div class="card-header">Adicionar Fornecedores
+    <div class="card-header">
+      <button class="block" (click)="expandCreate()" type="button" mat-raised-button color="accent" data-toggle="button" aria-pressed="false" autocomplete="off">
+        <mat-icon *ngIf="!expandNew">expand_more</mat-icon>
+        <mat-icon *ngIf="expandNew">expand_less</mat-icon>
+      </button>
+      Adicionar Fornecedores
       <button type="button" id="save" (click)="save()" mat-raised-button class="col-md-2 pull-right" color="primary">
         Salvar ações
       </button>
     </div>
 
-    <div class="card-body">
+    <div *ngIf="expandNew" class="card-body">
       <div class="tableProvider">
         <table class="table-sm">
           <thead>
@@ -56,5 +62,36 @@
       </div>
     </div>
   </div>
+
+  <div class="card">
+    <div class="card-header">
+      <button class="block" (click)="expandProviders()" type="button" mat-raised-button color="accent" data-toggle="button" aria-pressed="false" autocomplete="off">
+        <mat-icon *ngIf="!expandProvider">expand_more</mat-icon>
+        <mat-icon *ngIf="expandProvider">expand_less</mat-icon>
+      </button>
+      Meus fornecedores
+    </div>
+    <div *ngIf="expandProvider" class="card-body">
+      <ul class="list-group">
+        <li *ngFor="let provider of myProviders">
+          <div class="card">
+            <div class="card-header">
+              {{provider.company}}
+            </div>
+            <div class="card-body">
+              <span>{{provider.cnpj}}</span>
+              <span>{{provider.email}}</span>
+              <span>{{provider.phone}}</span>
+              <span>{{provider.cellPhone}}</span>
+              <span>{{provider.classification}}</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+
+
 
 </div>

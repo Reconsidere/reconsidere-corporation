@@ -1,7 +1,7 @@
 import { Location } from './location';
 import { Unit } from './unit';
 import { User } from './user';
-import { Provider } from './provider';
+import { MyProviders } from './provider';
 import { ResiduesRegister } from './residuesregister';
 import { CheckPoints } from './checkpoints';
 import { Scheduling } from './scheduling';
@@ -23,7 +23,7 @@ export class Corporation {
 	verificationDate: Date;
 	units: [Unit];
 	users: [User];
-	providers: [Provider];
+	myProviders: [MyProviders];
 	residuesRegister: ResiduesRegister;
 	checkPoints: CheckPoints;
 	schedulings: Scheduling;

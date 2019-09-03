@@ -1,5 +1,10 @@
 import { Unit } from './unit';
 import { User } from './user';
+import { Provider } from '@angular/core';
+import { ResiduesRegister } from './residuesregister';
+import { CheckPoints } from './checkpoints';
+import { Scheduling } from './scheduling';
+import { Entries } from './entries';
 
 export class ProviderRegistration {
 	_id: string;
@@ -17,6 +22,11 @@ export class ProviderRegistration {
 	verificationDate: Date;
 	units: [Unit];
 	users: [User];
+	myProviders: [Provider];
+	residuesRegister: ResiduesRegister;
+	checkPoints: CheckPoints;
+	schedulings: Scheduling;
+	entries: Entries;
 }
 
 export namespace ProviderRegistration {

@@ -12,6 +12,9 @@ import { Corporation } from 'src/models/corporation';
 import { request, GraphQLClient } from 'graphql-request';
 import { ObserveOnSubscriber } from 'rxjs/internal/operators/observeOn';
 import { resolve } from 'q';
+import { MyProviders } from 'src/models/provider';
+import { ProviderRegistration } from 'src/models/providerregistration';
+import { ProviderRegistrationService } from './provider-registration.service';
 @Injectable({
 	providedIn: 'root'
 })
@@ -22,9 +25,178 @@ export class AuthService {
 	private mutation;
 	private query;
 
-	//#region mutations
-
 	//#region queries
+
+	private queryProvider = /* GraphQL */ `
+	query getProviderByUser($_id: ID!) {
+	  getProviderByUser(_id: $_id)  {
+		_id
+    company
+    cnpj
+    tradingName
+    active
+    class
+    phone
+    email
+    classification
+    cellPhone
+    creationDate
+    activationDate
+    verificationDate
+    units {
+      _id
+      name
+      location {
+        _id
+        country
+        state
+        latitude
+        longitude
+        cep
+        publicPlace
+        neighborhood
+        number
+        county
+        complement
+        
+      }
+    }
+    users {
+      _id
+      name
+      email
+      password
+      active
+      
+      
+    }
+    myProviders {
+      _id
+      providerId
+    }
+    departments {
+      _id
+      name
+      
+      description
+      active
+      isChanged
+      qrCode {
+        _id
+        code
+        material {
+          _id
+          type
+          name
+          weight
+          quantity
+          active
+          unity
+        }
+      }
+    }
+    residuesRegister{
+      departments {
+        _id
+        name
+        description
+        active
+        isChanged
+        qrCode {
+          _id
+          code
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
+      }
+    }
+    scheduling {
+      _id
+      hour
+      date
+      active
+      collector {
+        _id
+        company
+        cnpj
+        tradingName
+        active
+        phone
+        cellPhone
+        class
+        email
+        classification
+      }
+      qrCode {
+        _id
+        code
+        material {
+          _id
+          type
+          name
+          weight
+          quantity
+          active
+          unity
+        }
+      }
+    }
+    entries {
+      _id
+      purchase {
+        date
+        name
+        cost
+        typeEntrie
+        quantity
+        weight
+        amount
+        qrCode {
+          _id
+          code
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
+      }
+      sale {
+        date
+        name
+        cost
+        typeEntrie
+        quantity
+        weight
+        amount
+        qrCode {
+          _id
+          code
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
+      }
+    }
+  }
+}`;
 
 	private queryCorporation = /* GraphQL */ `
 	query getCorporationByUser($_id: ID!) {
@@ -69,7 +241,7 @@ export class AuthService {
       
       
     }
-    providers {
+    myProviders {
       _id
       providerId
       
@@ -242,7 +414,7 @@ query getCollectorByUser($_id: ID!) {
       
       
     }
-    providers {
+    myProviders {
       _id
       providerId
       
@@ -374,6 +546,7 @@ query getCollectorByUser($_id: ID!) {
 
 	//#endregion
 
+	//#region mutations
 	private mutationCorporationAdd = /* GraphQL */ `
     mutation createCorporation($corporation: CorporationInput!) {
       createCorporation(input: $corporation)  { 
@@ -432,6 +605,8 @@ query getCollectorByUser($_id: ID!) {
 	private getPath(typeCorporation): String {
 		if (typeCorporation === Corporation.Classification.Coletora) {
 			return environment.database.paths.collector;
+		} else if (typeCorporation === ProviderRegistration.Classification.Provider) {
+			return environment.database.paths.provider;
 		} else {
 			return environment.database.paths.corporation;
 		}
@@ -468,7 +643,7 @@ query getCollectorByUser($_id: ID!) {
 				}
 			}
 		} catch (error) {
-      console.log(error);
+			console.log(error);
 			reject(error.response.errors[0].message);
 		}
 	}
@@ -580,6 +755,8 @@ query getCollectorByUser($_id: ID!) {
 
 			if (_class === Corporation.Classification.Coletora) {
 				this.query = this.queryCollector;
+			} else if (_class === ProviderRegistration.Classification.Provider) {
+				this.query = this.queryProvider;
 			} else {
 				this.query = this.queryCorporation;
 			}
@@ -589,6 +766,8 @@ query getCollectorByUser($_id: ID!) {
 				if (getCorporationByUser) {
 					if (_class === Corporation.Classification.Coletora) {
 						resolve(getCorporationByUser['getCollectorByUser']);
+					} else if (_class === ProviderRegistration.Classification.Provider) {
+						resolve(getCorporationByUser['getProviderByUser']);
 					} else {
 						resolve(getCorporationByUser['getCorporationByUser']);
 					}
@@ -596,6 +775,7 @@ query getCollectorByUser($_id: ID!) {
 					resolve(undefined);
 				}
 			} catch (error) {
+        console.log(error);
 				reject(error.response.errors[0].message);
 			}
 		} else {

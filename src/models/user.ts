@@ -1,4 +1,4 @@
-import { Profile } from "./profile";
+import { Profile } from "./myproviders";
 
 export class User {
     _id: string;

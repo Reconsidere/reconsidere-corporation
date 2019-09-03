@@ -16,6 +16,10 @@ export class ProviderRegistrationComponent implements OnInit {
 	corporationId: string;
 	newProviders: any;
 	providers: any;
+	myProviders: any;
+	myIdsProviders: any;
+	expandNew;
+	expandProvider;
 	constructor(
 		private toastr: ToastrService,
 		private authService: AuthService,
@@ -23,13 +27,20 @@ export class ProviderRegistrationComponent implements OnInit {
 	) {
 		this.newProviders = [];
 		this.providers = [];
+		this.myProviders = [];
 	}
 
 	ngOnInit() {
 		this.authService.isAuthenticated();
 		this.page = 1;
 		this.corporationId = this.authService.getCorporationId();
-		this.loadProviders();
+		this.init();
+	}
+
+	async init() {
+		await this.loadMyIdsProviders();
+		await this.loadProviders();
+		await this.loadMyProviders();
 	}
 
 	async loadProviders() {
@@ -52,6 +63,31 @@ export class ProviderRegistrationComponent implements OnInit {
 		}
 	}
 
+	async loadMyIdsProviders() {
+		var ids = undefined;
+		try {
+			ids = await new Promise((resolve, reject) => {
+				ids = this.providerService.allProvidersId(this.authService.getClass(), this.corporationId, resolve, reject);
+			});
+
+			if (ids !== undefined) {
+				this.myIdsProviders = ids;
+			}
+		} catch (error) {
+			this.toastr.error(messageCode['WARNNING'][error]['summary']);
+		}
+	}
+
+	loadMyProviders() {
+		this.myIdsProviders.forEach((myProvider) => {
+			this.providers.forEach((provider) => {
+				if (myProvider.providerId === provider._id) {
+					this.myProviders.push(provider);
+				}
+			});
+		});
+	}
+
 	newItem() {
 		var item = new ProviderRegistration();
 		item.active = true;
@@ -59,6 +95,22 @@ export class ProviderRegistrationComponent implements OnInit {
 		var user = new User();
 		item.users = [ user ];
 		this.newProviders.push(item);
+	}
+
+	expandCreate() {
+		if (!this.expandNew) {
+			this.expandNew = true;
+		} else {
+			this.expandNew = false;
+		}
+	}
+
+	expandProviders() {
+		if (!this.expandProvider) {
+			this.expandProvider = true;
+		} else {
+			this.expandProvider = false;
+		}
 	}
 
 	verifyPassword(item) {
