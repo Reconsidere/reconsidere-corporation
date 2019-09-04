@@ -74,16 +74,25 @@
     <div *ngIf="expandProvider" class="card-body">
       <ul class="list-group">
         <li *ngFor="let provider of myProviders">
-          <div class="card">
-            <div class="card-header">
-              {{provider.company}}
-            </div>
+          <div class="card" style="width: 30rem;">
+            <img class="card-img-top" src="{{path}}" alt="fornecedora">
             <div class="card-body">
-              <span>{{provider.cnpj}}</span>
-              <span>{{provider.email}}</span>
-              <span>{{provider.phone}}</span>
-              <span>{{provider.cellPhone}}</span>
-              <span>{{provider.classification}}</span>
+              <div class="">
+                <h5 class="card-title">{{provider.company}}</h5>
+                <small><b>CNPJ </b></small>
+                <input [(ngModel)]="provider.cnpj" class="inputStyle form-control" mask="00.000.000/0000-00" disabled="disabled" />
+                <small><b>Email </b></small>
+                <input [(ngModel)]="provider.email" class="inputStyle form-control" disabled="disabled" />
+                <small><b>Telefone </b></small>
+                <input [(ngModel)]="provider.phone" class="inputStyle form-control" mask="(00) 0000-0000" disabled="disabled" />
+                <small><b>Celular </b></small>
+                <input [(ngModel)]="provider.cellPhone" class="inputStyle form-control" mask="(00) 00000-0000" disabled="disabled" />
+                <small><b>Classificação </b></small>
+                <input [(ngModel)]="provider.classification" class="inputStyle form-control" disabled="disabled" />
+                <button class="pull-right" (click)="details()" type="button" mat-raised-button color="accent" data-toggle="button" aria-pressed="false" autocomplete="off">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+              </div>
             </div>
           </div>
         </li>

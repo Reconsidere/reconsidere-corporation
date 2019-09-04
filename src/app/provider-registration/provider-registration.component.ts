@@ -20,6 +20,7 @@ export class ProviderRegistrationComponent implements OnInit {
 	myIdsProviders: any;
 	expandNew;
 	expandProvider;
+	path ="/reconsidere-corp/images/55853673_2401026243466510_691587599780806656_n.jpg";
 	constructor(
 		private toastr: ToastrService,
 		private authService: AuthService,

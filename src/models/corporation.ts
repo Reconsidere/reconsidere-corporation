@@ -9,6 +9,7 @@ import { Entries } from './entries';
 
 export class Corporation {
 	_id: string;
+	picture: string;
 	company: string;
 	cnpj: string;
 	tradingName: string;

@@ -123,6 +123,20 @@
     </div>
 
     <div *ngIf="isLogged">
+      <form (ngSubmit)="uploadPicture()">
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+          <div class="form-group">
+            <label for="pictureCorporation">Carregar imagem </label>
+            <div class="input-group">
+              <input id="uploadFile" type="file" name="image" accept="image/*" (change)="fileProgress($event)" />
+              <button type="submit" mat-raised-button color="accent" data-toggle="button" aria-pressed="false" autocomplete="off">
+                <mat-icon>arrow_upward</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+
       <div class="card">
         <div class="card-header">Unidade</div>
         <div class="card-body">

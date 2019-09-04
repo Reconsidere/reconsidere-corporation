@@ -1,6 +1,6 @@
 import { first } from 'rxjs/operators';
-import { User } from './../../../models/user';
-import { Location } from './../../../models/location';
+import { User } from '../../models/user';
+import { Location } from '../../models/location';
 import { Observable } from 'rxjs/internal/Observable';
 import { Component, OnInit, ViewChild, ElementRef, QueryList } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -21,6 +21,9 @@ import * as messageCode from 'message.code.json';
 import { reject } from 'q';
 import { ProviderRegistration } from 'src/models/providerregistration';
 import { ProviderRegistrationService } from 'src/services/provider-registration.service';
+import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
+import { PictureService } from '../picture.service';
+import { Picture } from 'src/models/picture';
 
 @Component({
 	selector: 'app-sign-up',
@@ -51,6 +54,7 @@ export class SignUpComponent implements OnInit {
 	loading: boolean;
 	termService: boolean;
 	termPrivacity: boolean;
+	fileData: File = null;
 
 	constructor(
 		private authService: AuthService,
@@ -58,7 +62,9 @@ export class SignUpComponent implements OnInit {
 		private userService: UserService,
 		private router: Router,
 		private toastr: ToastrService,
-		private providerService: ProviderRegistrationService
+		private providerService: ProviderRegistrationService,
+		private pictureService: PictureService,
+		private http: HttpClient
 	) {
 		this.classifications = Object.values(Corporation.Classification);
 		this.profiles = Object.values(User.Profiles);
@@ -104,6 +110,26 @@ export class SignUpComponent implements OnInit {
 			}
 		} catch (error) {
 			this.toastr.error(messageCode['WARNNING'][error]['summary']);
+		}
+	}
+
+	fileProgress(event) {
+		this.fileData = <File>event.target.files[0];
+	}
+
+	async uploadPicture() {
+		try {
+			var picture = new Picture();
+			picture.name = this.fileData.name;
+			picture.extension = this.fileData.type;
+			picture.image = this.fileData;
+			var result = await new Promise(async (resolve, reject) => {
+				this.pictureService.uploadImage(undefined, picture, resolve, reject);
+			});
+			this.toastr.success(messageCode['SUCCESS']['SRE003']['summary']);
+			this.corporation.picture = this.fileData.name;
+		} catch (error) {
+			console.log(error);
 		}
 	}
 

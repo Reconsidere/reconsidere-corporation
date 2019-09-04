@@ -8,6 +8,7 @@ import { Entries } from './entries';
 
 export class ProviderRegistration {
 	_id: string;
+	picture: string;
 	company: string;
 	cnpj: string;
 	tradingName: string;

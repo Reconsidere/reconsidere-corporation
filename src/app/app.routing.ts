@@ -3,7 +3,7 @@ import { SignInComponent } from './auth/sign-in/sign-in.component';
 import { ModuleWithProviders } from '@angular/core';
 import { StartcenterComponent } from './startcenter/startcenter.component';
 import { AuthGuard } from '../guards/auth.guard';
-import { SignUpComponent } from './auth/sign-up/sign-up.component';
+import { SignUpComponent } from '../services/sign-up/sign-up.component';
 import { LogoutComponent } from './auth/logout/logout.component';
 import { UnitComponent } from './unit/unit.component';
 import { DepartmentComponent } from './department/department.component';

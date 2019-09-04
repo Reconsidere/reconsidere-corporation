@@ -25,6 +25,7 @@ export class UnitService {
         allUnits(_id: $_id)  {
           _id
           name
+		  picture
           location {
             _id
             country

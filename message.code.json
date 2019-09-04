@@ -11,7 +11,7 @@
   "SUCCESS": {
     "SRE001": { "status": "SUCCESS", "summary": "Dados salvos com sucesso!", "message": ""},
     "SRE002": { "status": "SUCCESS", "summary": "Unidade registrada com sucesso :)", "message": "Muito obrigado pelo seu precioso tempo e apoio"},
-    "SRE003": { "status": "SUCCESS", "summary": "", "message": ""},
+    "SRE003": { "status": "SUCCESS", "summary": "Upload Finalizado!", "message": ""},
     "SRE004": { "status": "SUCCESS", "summary": "", "message": ""},
     "SRE005": { "status": "SUCCESS", "summary": "", "message": ""}
   },

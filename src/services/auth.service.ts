@@ -31,6 +31,7 @@ export class AuthService {
 	query getProviderByUser($_id: ID!) {
 	  getProviderByUser(_id: $_id)  {
 		_id
+    picture
     company
     cnpj
     tradingName
@@ -46,6 +47,7 @@ export class AuthService {
     units {
       _id
       name
+      picture
       location {
         _id
         country
@@ -202,6 +204,7 @@ export class AuthService {
 	query getCorporationByUser($_id: ID!) {
 	  getCorporationByUser(_id: $_id)  {
 		_id
+    picture
     company
     cnpj
     tradingName
@@ -217,6 +220,7 @@ export class AuthService {
     units {
       _id
       name
+      picture
       location {
         _id
         country
@@ -375,6 +379,7 @@ export class AuthService {
 query getCollectorByUser($_id: ID!) {
 	getCollectorByUser(_id: $_id)  {
 		_id
+    picture
     company
     cnpj
     tradingName
@@ -390,6 +395,7 @@ query getCollectorByUser($_id: ID!) {
     units {
       _id
       name
+      picture
       location {
         _id
         country

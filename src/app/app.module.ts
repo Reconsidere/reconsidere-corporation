@@ -27,7 +27,7 @@ import { registerLocaleData } from '@angular/common';
 import { StartcenterComponent } from './startcenter/startcenter.component';
 import { ROUTING, routes } from 'src/app/app.routing';
 import { NgxMaskModule } from 'ngx-mask';
-import { SignUpComponent } from './auth/sign-up/sign-up.component';
+import { SignUpComponent } from '../services/sign-up/sign-up.component';
 import { ToastrModule } from 'ngx-toastr';
 import { RecaptchaModule } from 'angular-google-recaptcha';
 import { FlatpickrModule } from 'angularx-flatpickr';

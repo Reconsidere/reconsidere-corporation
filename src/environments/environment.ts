@@ -19,7 +19,8 @@ export const environment = {
 			checkpoint: 'checkpoint',
 			transactionhistory: 'transactionhistory',
 			collector:'collector',
-			provider:'provider'
+			provider:'provider',
+			images:'reconsidere/images'
 		}
 	},
 	api: {

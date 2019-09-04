@@ -22,5 +22,9 @@
     "/provider": {
         "target": "http://localhost:32546/provider",
         "secure": "false"
+    },
+    "/reconsidere/images": {
+        "target": "http://localhost:32546/reconsidere/images",
+        "secure": "false"
     }
 }
