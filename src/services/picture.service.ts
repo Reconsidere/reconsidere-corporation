@@ -13,11 +13,7 @@ export class PictureService {
 		const mutation = /* GraphQL */ `
     mutation uploadImage($_id:ID, $picture: PictureInput!) {
       uploadImage(_id:$_id, input: $picture)  { 
-		  image{
-				name
-				type
-				size
-		  }
+		  file
 	      name
 	      extension
       }

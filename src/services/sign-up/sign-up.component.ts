@@ -24,6 +24,8 @@ import { ProviderRegistrationService } from 'src/services/provider-registration.
 import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { PictureService } from '../picture.service';
 import { Picture } from 'src/models/picture';
+import { async } from '@angular/core/testing';
+var myReader: FileReader = new FileReader();
 
 @Component({
 	selector: 'app-sign-up',
@@ -119,15 +121,20 @@ export class SignUpComponent implements OnInit {
 
 	async uploadPicture() {
 		try {
-			var picture = new Picture();
-			picture.name = this.fileData.name;
-			picture.extension = this.fileData.type;
-			picture.image = this.fileData;
-			var result = await new Promise(async (resolve, reject) => {
-				this.pictureService.uploadImage(undefined, picture, resolve, reject);
-			});
-			this.toastr.success(messageCode['SUCCESS']['SRE003']['summary']);
-			this.corporation.picture = this.fileData.name;
+			var object;
+			myReader.onloadend = async (e) => {
+				object = myReader.result;
+				var picture = new Picture();
+				picture.name = this.fileData.name;
+				picture.extension = this.fileData.type;
+				picture.file = object;
+				var result = await new Promise(async (resolve, reject) => {
+					this.pictureService.uploadImage(undefined, picture, resolve, reject);
+				});
+				this.toastr.success(messageCode['SUCCESS']['SRE003']['summary']);
+				this.corporation.picture = this.fileData.name;
+			};
+			myReader.readAsDataURL(this.fileData);
 		} catch (error) {
 			console.log(error);
 		}
