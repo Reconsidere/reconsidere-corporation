@@ -6,12 +6,13 @@
     "IRE004": { "status": "INFO", "summary": "Unidade removida!", "message": ""},
     "IRE005": { "status": "INFO", "summary": "Usuário removido!", "message": ""},
     "IRE006": { "status": "INFO", "summary": "Por favor, confirme: Não sou um robo!", "message": ""},
-    "IRE007": { "status": "INFO", "summary": "Este material faz parte de outro agendamento", "message": ""}
+    "IRE007": { "status": "INFO", "summary": "Este material faz parte de outro agendamento", "message": ""},
+    "IRE008": { "status": "INFO", "summary": "Upload finalizado, por favor clique em salvar para completar as ações.", "message": ""}
   },
   "SUCCESS": {
     "SRE001": { "status": "SUCCESS", "summary": "Dados salvos com sucesso!", "message": ""},
     "SRE002": { "status": "SUCCESS", "summary": "Unidade registrada com sucesso :)", "message": "Muito obrigado pelo seu precioso tempo e apoio"},
-    "SRE003": { "status": "SUCCESS", "summary": "Upload Finalizado!", "message": ""},
+    "SRE003": { "status": "SUCCESS", "summary": "", "message": ""},
     "SRE004": { "status": "SUCCESS", "summary": "", "message": ""},
     "SRE005": { "status": "SUCCESS", "summary": "", "message": ""}
   },

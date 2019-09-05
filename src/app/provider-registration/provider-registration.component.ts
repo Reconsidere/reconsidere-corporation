@@ -5,6 +5,7 @@ import { AuthService } from 'src/services/auth.service';
 import { ProviderRegistrationService } from 'src/services/provider-registration.service';
 import { ProviderRegistration } from 'src/models/providerregistration';
 import { User } from 'src/models/user';
+import { environment } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-provider-registration',
@@ -20,7 +21,6 @@ export class ProviderRegistrationComponent implements OnInit {
 	myIdsProviders: any;
 	expandNew;
 	expandProvider;
-	path ="/reconsidere-corp/images/55853673_2401026243466510_691587599780806656_n.jpg";
 	constructor(
 		private toastr: ToastrService,
 		private authService: AuthService,
@@ -68,7 +68,12 @@ export class ProviderRegistrationComponent implements OnInit {
 		var ids = undefined;
 		try {
 			ids = await new Promise((resolve, reject) => {
-				ids = this.providerService.allProvidersId(this.authService.getClass(), this.corporationId, resolve, reject);
+				ids = this.providerService.allProvidersId(
+					this.authService.getClass(),
+					this.corporationId,
+					resolve,
+					reject
+				);
 			});
 
 			if (ids !== undefined) {
@@ -83,11 +88,19 @@ export class ProviderRegistrationComponent implements OnInit {
 		this.myIdsProviders.forEach((myProvider) => {
 			this.providers.forEach((provider) => {
 				if (myProvider.providerId === provider._id) {
+					if (provider.picture === undefined || provider.picture === '' || provider.picture === null) {
+						provider.path = `http://localhost:4200/assets/images/no-image.jpg`;
+					} else {
+						provider.path = `${environment.database.uri}/${provider.picture}`;
+					}
 					this.myProviders.push(provider);
+					console.log(provider.path);
 				}
 			});
 		});
 	}
+
+	details() {}
 
 	newItem() {
 		var item = new ProviderRegistration();

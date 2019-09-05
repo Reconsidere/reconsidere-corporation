@@ -20,6 +20,7 @@ export class ProviderRegistrationService {
       query allProviders {
 					allProviders {
 				        _id
+						picture
 						company
 						cnpj
 						tradingName
@@ -35,6 +36,7 @@ export class ProviderRegistrationService {
 						units {
 						_id
 						name
+						picture
 						location {
 							_id
 							country

@@ -122,19 +122,19 @@ export class SignUpComponent implements OnInit {
 	async uploadPicture() {
 		try {
 			var object;
+			var picture = new Picture();
+			myReader.readAsDataURL(this.fileData);
 			myReader.onloadend = async (e) => {
 				object = myReader.result;
-				var picture = new Picture();
 				picture.name = this.fileData.name;
 				picture.extension = this.fileData.type;
 				picture.file = object;
 				var result = await new Promise(async (resolve, reject) => {
 					this.pictureService.uploadImage(undefined, picture, resolve, reject);
 				});
-				this.toastr.success(messageCode['SUCCESS']['SRE003']['summary']);
-				this.corporation.picture = this.fileData.name;
+				this.toastr.info(messageCode['INFO']['IRE008']['summary']);
+				this.corporation.picture = picture.name;
 			};
-			myReader.readAsDataURL(this.fileData);
 		} catch (error) {
 			console.log(error);
 		}

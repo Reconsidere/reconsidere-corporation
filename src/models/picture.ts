@@ -1,6 +1,6 @@
 
 export class Picture {
-	file: String;
-	name: String;
-	extension: String;
+	file: string;
+	name: string;
+	extension: string;
 }
