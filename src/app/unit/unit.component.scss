@@ -1,4 +1,21 @@
+#container {
+	overflow: auto !important;
+}
+
 ul {
-    list-style-type: none;
-  }
-  
+	list-style-type: none;
+}
+
+.card-img-top {
+	width: 100%;
+	height: 15vw;
+	object-fit: cover;
+}
+
+.inputStyle {
+	border: none;
+}
+
+input[disabled] {
+	background-color: white;
+}

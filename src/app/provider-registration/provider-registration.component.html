@@ -15,14 +15,12 @@
     </div>
 
     <div *ngIf="expandNew" class="card-body">
+        <button id="newItem" (click)="newItem()" type="button" mat-raised-button color="accent" class="btn btn-sm btn-primary col-sm-12" data-toggle="button" aria-pressed="false" autocomplete="off">
+          <mat-icon>add</mat-icon>
+        </button>
       <div class="tableProvider">
         <table class="table-sm">
           <thead>
-            <tr>
-              <button id="newItem" (click)="newItem()" type="button" mat-raised-button color="accent" class="btn btn-sm btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
-                <mat-icon>add</mat-icon>
-              </button>
-            </tr>
             <tr id="Titles">
               <th></th>
               <th>Classificação</th>
@@ -47,7 +45,7 @@
                       <input minlength="6" maxlength="20" required [(ngModel)]="user.password" name="password" type="password" class="form-control" id="password" aria-describedby="password" (blur)="verifyPassword(user)" />
                       <div class="input-group-append">
                         <span class="input-group-text">
-                          <mat-hint>{{ item.password?.length || 0 }}/20</mat-hint>
+                          <mat-hint>{{ user.password?.length || 0 }}/20</mat-hint>
                         </span>
                       </div>
                     </div>
@@ -72,14 +70,9 @@
       Meus fornecedores
     </div>
     <div *ngIf="expandProvider" class="card-body">
-
-
-
-
       <div class="container-fluid">
         <div class="row">
           <div class="col-sm-4" *ngFor="let provider of myProviders">
-
             <div class="card">
               <img class="card-img-top img-fluid" src="{{provider.path}}" alt="fornecedora">
               <div class="card-block">
@@ -103,28 +96,7 @@
           </div>
         </div>
       </div>
-
-      <!-- <div class="" *ngFor="let provider of myProviders">
-        <div class="container row col-sm-4">
-          <img class="card-img-top" src="{{provider.path}}" alt="fornecedora">
-          <h5 class="card-title">{{provider.company}}</h5>
-          <small><b>CNPJ </b></small>
-          <input [(ngModel)]="provider.cnpj" class="inputStyle form-control" mask="00.000.000/0000-00" disabled="disabled" />
-          <small><b>Email </b></small>
-          <input [(ngModel)]="provider.email" class="inputStyle form-control" disabled="disabled" />
-          <small><b>Telefone </b></small>
-          <input [(ngModel)]="provider.phone" class="inputStyle form-control" mask="(00) 0000-0000" disabled="disabled" />
-          <small><b>Celular </b></small>
-          <input [(ngModel)]="provider.cellPhone" class="inputStyle form-control" mask="(00) 00000-0000" disabled="disabled" />
-          <button class="pull-right" (click)="details()" type="button" mat-raised-button color="accent" data-toggle="button" aria-pressed="false" autocomplete="off">
-            <mat-icon>more_vert</mat-icon>
-          </button>
-        </div>
-      </div> -->
-
     </div>
   </div>
-
-
 
 </div>

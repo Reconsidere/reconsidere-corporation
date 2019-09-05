@@ -36,7 +36,8 @@
     "WRE017": { "status": "WARNNING", "summary": "A data inicial não pode ser maior que a data final.", "message": ""},
     "WRE018": { "status": "WARNNING", "summary": "Este cep já esta em uso!", "message": ""},
     "WRE019": { "status": "WARNNING", "summary": "CEP não localizado!", "message": ""},
-    "WRE020": { "status": "WARNNING", "summary": "Não foram encontrados dados novos ou modificados para atualizar!", "message": ""}
+    "WRE020": { "status": "WARNNING", "summary": "Não foram encontrados dados novos ou modificados para atualizar!", "message": ""},
+    "WRE021": { "status": "WARNNING", "summary": "Não foi possível carregar a imagem!", "message": ""}
 
 
 

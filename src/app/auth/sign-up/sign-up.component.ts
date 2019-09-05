@@ -1,6 +1,6 @@
 import { first } from 'rxjs/operators';
-import { User } from '../../models/user';
-import { Location } from '../../models/location';
+import { User } from 'src/models/user';
+import { Location } from 'src/models/location';
 import { Observable } from 'rxjs/internal/Observable';
 import { Component, OnInit, ViewChild, ElementRef, QueryList } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -22,9 +22,9 @@ import { reject } from 'q';
 import { ProviderRegistration } from 'src/models/providerregistration';
 import { ProviderRegistrationService } from 'src/services/provider-registration.service';
 import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
-import { PictureService } from '../picture.service';
 import { Picture } from 'src/models/picture';
 import { async } from '@angular/core/testing';
+import { PictureService } from 'src/services/picture.service';
 var myReader: FileReader = new FileReader();
 
 @Component({
@@ -119,7 +119,7 @@ export class SignUpComponent implements OnInit {
 		this.fileData = <File>event.target.files[0];
 	}
 
-	async uploadPicture() {
+	async uploadPicture(item) {
 		try {
 			var object;
 			var picture = new Picture();
@@ -133,10 +133,11 @@ export class SignUpComponent implements OnInit {
 					this.pictureService.uploadImage(undefined, picture, resolve, reject);
 				});
 				this.toastr.info(messageCode['INFO']['IRE008']['summary']);
-				this.corporation.picture = picture.name;
+				item.picture = picture.name;
 			};
 		} catch (error) {
 			console.log(error);
+			this.toastr.warning(messageCode['WARNNING']['WRE021']['summary']);
 		}
 	}
 
@@ -179,9 +180,7 @@ export class SignUpComponent implements OnInit {
 	}
 
 	typeCorporation(value, e) {
-		if (value === Corporation.Classification.Cooperativa) {
-			this.dynamicCnpj = true;
-		} else if (value === Corporation.Classification.Privada) {
+		if (value !== Corporation.Classification.Municipio) {
 			this.dynamicCnpj = true;
 		} else if (value === Corporation.Classification.Municipio) {
 			this.corporation.cnpj = '';

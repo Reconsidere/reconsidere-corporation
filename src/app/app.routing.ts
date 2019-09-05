@@ -3,7 +3,6 @@ import { SignInComponent } from './auth/sign-in/sign-in.component';
 import { ModuleWithProviders } from '@angular/core';
 import { StartcenterComponent } from './startcenter/startcenter.component';
 import { AuthGuard } from '../guards/auth.guard';
-import { SignUpComponent } from '../services/sign-up/sign-up.component';
 import { LogoutComponent } from './auth/logout/logout.component';
 import { UnitComponent } from './unit/unit.component';
 import { DepartmentComponent } from './department/department.component';
@@ -12,6 +11,7 @@ import { ResiduesRegisterComponent } from './residues-register/residues-register
 import { SchedulingComponent } from './scheduling/scheduling.component';
 import { EntriesManagementComponent } from './entries-management/entries-management.component';
 import { ProviderRegistrationComponent } from './provider-registration/provider-registration.component';
+import { SignUpComponent } from './auth/sign-up/sign-up.component';
 
 export const routes: Routes = [
 	{ path: '', component: StartcenterComponent, canActivate: [ AuthGuard ] },

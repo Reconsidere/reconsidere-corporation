@@ -27,7 +27,6 @@ import { registerLocaleData } from '@angular/common';
 import { StartcenterComponent } from './startcenter/startcenter.component';
 import { ROUTING, routes } from 'src/app/app.routing';
 import { NgxMaskModule } from 'ngx-mask';
-import { SignUpComponent } from '../services/sign-up/sign-up.component';
 import { ToastrModule } from 'ngx-toastr';
 import { RecaptchaModule } from 'angular-google-recaptcha';
 import { FlatpickrModule } from 'angularx-flatpickr';
@@ -44,6 +43,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { EntriesManagementComponent } from './entries-management/entries-management.component';
 import { ProviderRegistrationComponent } from './provider-registration/provider-registration.component';
+import { SignUpComponent } from './auth/sign-up/sign-up.component';
 
 registerLocaleData(localePt);
 
