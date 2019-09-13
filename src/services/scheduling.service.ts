@@ -42,6 +42,7 @@ export class SchedulingService {
 			qrCode {
 			_id
 			code
+			date
 			material {
 				_id
 				type
@@ -102,6 +103,7 @@ export class SchedulingService {
 		qrCode {
 		_id
 		code
+		date
 		material {
 			_id
 			type

@@ -36,6 +36,7 @@ export class EntriesManagementService {
 			qrCode {
 				_id
 				code
+				date
 				material {
 				_id
 				type
@@ -59,6 +60,7 @@ export class EntriesManagementService {
 			qrCode {
 				_id
 				code
+				date
 				material {
 				_id
 				type
@@ -114,6 +116,7 @@ export class EntriesManagementService {
 			qrCode {
 			_id
 			code
+			date
 			material {
 				_id
 				type
@@ -137,6 +140,7 @@ export class EntriesManagementService {
 			qrCode {
 			_id
 			code
+			date
 			material {
 				_id
 				type

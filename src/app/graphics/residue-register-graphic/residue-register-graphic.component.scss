@@ -1,0 +1,30 @@
+#container {
+	overflow: auto !important;
+}
+
+.filterStyle {
+	font-size: 14px;
+	color: #333333;
+	background: #ffffff;
+	padding: 0.429em;
+	border: 1px solid #a6a6a6;
+	transition: border-color 0.2s;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	border-radius: 3px;
+	font-family: "Open Sans", "Helvetica Neue", sans-serif;
+	text-decoration: none;
+}
+
+.size {
+	width: 9.8em;
+}
+
+.borderColorStyle {
+	border: 1px solid #a6a6a6;
+}
+
+.styleTable {
+	margin: 2px;
+}

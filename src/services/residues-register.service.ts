@@ -33,6 +33,7 @@ export class ResiduesRegisterService {
             qrCode {
               _id
               code
+			  date
               material {
                 _id
                 type
@@ -83,6 +84,7 @@ export class ResiduesRegisterService {
             qrCode {
               _id
               code
+			  date
               material {
                 _id
                 type

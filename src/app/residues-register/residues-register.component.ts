@@ -52,6 +52,7 @@ export class ResiduesRegisterComponent implements OnInit {
 		var material = new Material();
 		var qrCode = new QrCode();
 		qrCode.code = this.uuidv4();
+		qrCode.date = new Date();
 		material.active = true;
 		material.name = this.nameResidue;
 		material.quantity = 1;
@@ -293,7 +294,7 @@ export class ResiduesRegisterComponent implements OnInit {
 				throw new Error();
 			}
 			department.qrCode.forEach((qrCode) => {
-				if (qrCode.code === undefined) {
+				if (qrCode.code === undefined || qrCode.date === undefined) {
 					this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
 					throw new Error();
 				}
@@ -313,6 +314,14 @@ export class ResiduesRegisterComponent implements OnInit {
 		});
 	}
 
+	changeDate() {
+		this.residuesToSave.departments.forEach((department) => {
+			department.qrCode.forEach((qrCode) => {
+				qrCode.date = new Date();
+			});
+		});
+	}
+
 	async save() {
 		try {
 			if (!this.removeNonChangeds()) {
@@ -321,9 +330,16 @@ export class ResiduesRegisterComponent implements OnInit {
 				this.toastr.warning(messageCode['WARNNING']['WRE020']['summary']);
 				return;
 			}
+			this.changeDate();
 			this.veryfyBeforeSave();
 			var registerResidues = await new Promise(async (resolve, reject) => {
-				this.residuesRegisterService.addOrUpdate(this.authService.getClass(), this.corporationId, this.residuesToSave, resolve, reject);
+				this.residuesRegisterService.addOrUpdate(
+					this.authService.getClass(),
+					this.corporationId,
+					this.residuesToSave,
+					resolve,
+					reject
+				);
 			});
 			this.resetResidueRegisters(registerResidues);
 			this.loadDepartments();

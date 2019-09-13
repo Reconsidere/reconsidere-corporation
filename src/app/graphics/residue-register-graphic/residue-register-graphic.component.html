@@ -1,0 +1,74 @@
+<app-toolbar></app-toolbar>
+<div class="container">
+    <div class="card">
+        <div class="card-header" style=" height: 2.5rem;">
+            Filtros
+        </div>
+        <div class="card-body">
+            <div class="container">
+                <div class="row">
+                    <table class="table-sm styleTable">
+                        <thead>
+                            <tr>
+                                <th>Data inicial</th>
+                                <th>Data final</th>
+                                <th>Departamento</th>
+                                <th>Material</th>
+                                <th>Unidade</th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <p-calendar (ngModelChange)="dateInitial = $event" name="date" [ngModel]="dateInitial| date:'dd/MM/yyyy'" dateFormat="dd/mm/yy">
+                                    </p-calendar>
+                                </th>
+                                <th>
+                                    <p-calendar (ngModelChange)="dateFinal = $event" name="date" [ngModel]="dateFinal| date:'dd/MM/yyyy'" dateFormat="dd/mm/yy">
+                                    </p-calendar>
+                                </th>
+                                <th>
+                                    <select [(ngModel)]="department" name="department" class="form-control size borderColorStyle" style=" height: 2.2rem;">
+                                        <option></option>
+                                        <option id="department" *ngFor="let item of departmentsName">{{ item }}</option>
+                                    </select>
+                                </th>
+                                <th>
+                                    <select [(ngModel)]="material" name="material" class="form-control size borderColorStyle" style=" height: 2.2rem;">
+                                        <option></option>
+                                        <option id="material" *ngFor="let item of materialName">{{ item }}</option>
+                                    </select>
+                                </th>
+                                <th>
+                                    <select [(ngModel)]="unity" name="unity" class="form-control  borderColorStyle" style=" height: 2.2rem;">
+                                        <option></option>
+                                        <option id="unity" *ngFor="let item of unitsType">{{ item }}</option>
+                                    </select>
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div name="filterArray" *ngFor="let item of residuesRegister.departments | searchGraphicResidueRegister:dateInitial:dateFinal:department:material:unity:this">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            Gráfico de peso por setor
+        </div>
+        <div class="card-body">
+            <p-chart type="doughnut" [options]="options" [data]="data"></p-chart>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            Gráfico de peso por mês
+        </div>
+        <div class="card-body">
+            <p-chart type="line" [data]="dataLine" [options]="optionsLine" (onDataSelect)="selectData($event)"></p-chart>
+
+        </div>
+    </div>
+</div>

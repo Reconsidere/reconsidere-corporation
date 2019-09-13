@@ -44,7 +44,10 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { EntriesManagementComponent } from './entries-management/entries-management.component';
 import { ProviderRegistrationComponent } from './provider-registration/provider-registration.component';
 import { SignUpComponent } from './auth/sign-up/sign-up.component';
-
+import {ChartModule} from 'primeng/chart';
+import { ResidueRegisterGraphicComponent } from './graphics/residue-register-graphic/residue-register-graphic.component';
+import 'chartjs-plugin-labels';
+import { SearchGraphicResidueRegisterPipe } from '../pipes/residue-register-graphic/search-graphic-residue-register.pipe';
 registerLocaleData(localePt);
 
 @NgModule({
@@ -62,7 +65,9 @@ registerLocaleData(localePt);
     ResiduesRegisterComponent,
     SchedulingComponent,
     EntriesManagementComponent,
-    ProviderRegistrationComponent
+    ProviderRegistrationComponent,
+    ResidueRegisterGraphicComponent,
+    SearchGraphicResidueRegisterPipe
   ],
   imports: [
     BrowserModule,
@@ -94,7 +99,8 @@ registerLocaleData(localePt);
       siteKey: '6Le4YIgUAAAAAJFj9q0jVjfxVR0D_QNfGetw0JKF'
     }),
     CalendarModule,
-    DragDropModule
+    DragDropModule,
+    ChartModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

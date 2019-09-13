@@ -86,6 +86,7 @@ export class AuthService {
       qrCode {
         _id
         code
+        date
         material {
           _id
           type
@@ -107,6 +108,7 @@ export class AuthService {
         qrCode {
           _id
           code
+          date
           material {
             _id
             type
@@ -139,6 +141,7 @@ export class AuthService {
       qrCode {
         _id
         code
+        date
         material {
           _id
           type
@@ -163,6 +166,7 @@ export class AuthService {
         qrCode {
           _id
           code
+          date
           material {
             _id
             type
@@ -185,6 +189,7 @@ export class AuthService {
         qrCode {
           _id
           code
+          date
           material {
             _id
             type
@@ -261,6 +266,7 @@ export class AuthService {
       qrCode {
         _id
         code
+        date
         material {
           _id
           type
@@ -282,6 +288,7 @@ export class AuthService {
         qrCode {
           _id
           code
+          date
           material {
             _id
             type
@@ -314,6 +321,7 @@ export class AuthService {
       qrCode {
         _id
         code
+        date
         material {
           _id
           type
@@ -338,6 +346,7 @@ export class AuthService {
         qrCode {
           _id
           code
+          date
           material {
             _id
             type
@@ -360,6 +369,7 @@ export class AuthService {
         qrCode {
           _id
           code
+          date
           material {
             _id
             type
@@ -436,6 +446,7 @@ query getCollectorByUser($_id: ID!) {
       qrCode {
         _id
         code
+        date
         material {
           _id
           type
@@ -457,6 +468,7 @@ query getCollectorByUser($_id: ID!) {
         qrCode {
           _id
           code
+          date
           material {
             _id
             type
@@ -489,6 +501,7 @@ query getCollectorByUser($_id: ID!) {
       qrCode {
         _id
         code
+        date
         material {
           _id
           type
@@ -513,6 +526,7 @@ query getCollectorByUser($_id: ID!) {
         qrCode {
           _id
           code
+          date
           material {
             _id
             type
@@ -535,6 +549,7 @@ query getCollectorByUser($_id: ID!) {
         qrCode {
           _id
           code
+          date
           material {
             _id
             type

@@ -12,6 +12,7 @@ import { SchedulingComponent } from './scheduling/scheduling.component';
 import { EntriesManagementComponent } from './entries-management/entries-management.component';
 import { ProviderRegistrationComponent } from './provider-registration/provider-registration.component';
 import { SignUpComponent } from './auth/sign-up/sign-up.component';
+import { ResidueRegisterGraphicComponent } from './graphics/residue-register-graphic/residue-register-graphic.component';
 
 export const routes: Routes = [
 	{ path: '', component: StartcenterComponent, canActivate: [ AuthGuard ] },
@@ -26,6 +27,7 @@ export const routes: Routes = [
 	{ path: 'scheduling', component: SchedulingComponent, canActivate: [ AuthGuard ] },
 	{ path: 'entries-management', component: EntriesManagementComponent, canActivate: [ AuthGuard ] },
 	{ path: 'registration-provider', component: ProviderRegistrationComponent, canActivate: [ AuthGuard ] },
+	{ path: 'residue-register-graph', component: ResidueRegisterGraphicComponent, canActivate: [ AuthGuard ] },
 
 	{ path: '**', redirectTo: '' }
 ];
