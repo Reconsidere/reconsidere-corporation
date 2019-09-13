@@ -44,77 +44,77 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { EntriesManagementComponent } from './entries-management/entries-management.component';
 import { ProviderRegistrationComponent } from './provider-registration/provider-registration.component';
 import { SignUpComponent } from './auth/sign-up/sign-up.component';
-import {ChartModule} from 'primeng/chart';
+import { ChartModule } from 'primeng/chart';
 import { ResidueRegisterGraphicComponent } from './graphics/residue-register-graphic/residue-register-graphic.component';
 import 'chartjs-plugin-labels';
 import { SearchGraphicResidueRegisterPipe } from '../pipes/residue-register-graphic/search-graphic-residue-register.pipe';
 registerLocaleData(localePt);
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    SignInComponent,
-    ToolbarComponent,
-    StartcenterComponent,
-    SignUpComponent,
-    BooltransformPipe,
-    LogoutComponent,
-    UnitComponent,
-    DepartmentComponent,
-    CheckpointComponent,
-    ResiduesRegisterComponent,
-    SchedulingComponent,
-    EntriesManagementComponent,
-    ProviderRegistrationComponent,
-    ResidueRegisterGraphicComponent,
-    SearchGraphicResidueRegisterPipe
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    ROUTING,
-    NgxMaskModule.forRoot(),
-    RouterModule.forRoot(routes),
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatListModule,
-    MatSidenavModule,
-    MatFormFieldModule,
-    MatSlideToggleModule,
-    MatButtonModule,
-    MatIconModule,
-    MatCheckboxModule,
-    NgbModule.forRoot(),
-    CommonModule,
-    BrowserAnimationsModule,
-    NgxPaginationModule,
-    FlatpickrModule.forRoot(),
-    ToastrModule.forRoot({
-      timeOut: 5000,
-      progressBar: true,
-      preventDuplicates: true
-    }),
-    RecaptchaModule.forRoot({
-      siteKey: '6Le4YIgUAAAAAJFj9q0jVjfxVR0D_QNfGetw0JKF'
-    }),
-    CalendarModule,
-    DragDropModule,
-    ChartModule
-  ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    { provide: APP_BASE_HREF, useValue: '/' },
-    { provide: LOCALE_ID, useValue: 'pt' },
-    AuthService,
-    ReactiveFormsModule,
-    BrowserModule,
-    RouterModule,
-    DecriptEncript,
-    DatePipe
-  ],
-  bootstrap: [AppComponent]
+	declarations: [
+		AppComponent,
+		SignInComponent,
+		ToolbarComponent,
+		StartcenterComponent,
+		SignUpComponent,
+		BooltransformPipe,
+		LogoutComponent,
+		UnitComponent,
+		DepartmentComponent,
+		CheckpointComponent,
+		ResiduesRegisterComponent,
+		SchedulingComponent,
+		EntriesManagementComponent,
+		ProviderRegistrationComponent,
+		ResidueRegisterGraphicComponent,
+		SearchGraphicResidueRegisterPipe
+	],
+	imports: [
+		BrowserModule,
+		AppRoutingModule,
+		ROUTING,
+		NgxMaskModule.forRoot(),
+		RouterModule.forRoot(routes),
+		HttpClientModule,
+		FormsModule,
+		ReactiveFormsModule,
+		MatListModule,
+		MatSidenavModule,
+		MatFormFieldModule,
+		MatSlideToggleModule,
+		MatButtonModule,
+		MatIconModule,
+		MatCheckboxModule,
+		NgbModule.forRoot(),
+		CommonModule,
+		BrowserAnimationsModule,
+		NgxPaginationModule,
+		FlatpickrModule.forRoot(),
+		ToastrModule.forRoot({
+			timeOut: 5000,
+			progressBar: true,
+			preventDuplicates: true
+		}),
+		RecaptchaModule.forRoot({
+			siteKey: '6Le4YIgUAAAAAJFj9q0jVjfxVR0D_QNfGetw0JKF'
+		}),
+		CalendarModule,
+		DragDropModule,
+		ChartModule
+	],
+	providers: [
+		{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+		{ provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+		{ provide: APP_BASE_HREF, useValue: '/' },
+		{ provide: LOCALE_ID, useValue: 'pt' },
+		AuthService,
+		ReactiveFormsModule,
+		BrowserModule,
+		RouterModule,
+		DecriptEncript,
+		DatePipe
+	],
+	bootstrap: [ AppComponent ]
 })
-export class AppModule { }
+export class AppModule {}
 platformBrowserDynamic().bootstrapModule(AppModule);

@@ -125,16 +125,26 @@ export class ResidueRegisterGraphicComponent implements OnInit {
 
 	generateLineGraph(item) {
 		var values = [];
+		var datasets = [];
 		this.departmentsName.forEach((name) => {
 			var department = item.departments.find((x) => x.name === name);
 			var mouth = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
-			department.forEach((department) => {
-				department.qrCode.forEach((qrCode) => {
-					var index = qrCode.date.getMonth();
-					mouth[index] += qrCode.material.weight;
-				});
+			department.qrCode.forEach((qrCode) => {
+				var date = new Date(qrCode.date);
+				var index = date.getMonth();
+				mouth[index] += this.calcWeight(qrCode.material);
 			});
-			values.push(mouth);
+
+			var dataset = {
+				label: name,
+				fill: true,
+				borderWidth: 2,
+				fillColor: this.dynamicColors(),
+				strokeColor: this.dynamicColors(),
+				borderColor: this.dynamicColors(),
+				data: mouth
+			};
+			datasets.push(dataset);
 		});
 
 		this.dataLine = {
@@ -152,23 +162,21 @@ export class ResidueRegisterGraphicComponent implements OnInit {
 				'Novembro',
 				'Dezembro'
 			],
-			datasets: [
-				{
-					label: 'First Dataset',
-					data: [ 65, 59, 80, 81, 56, 55, 40, 1, 2, 33, 44, 1 ],
-					fill: false,
-					borderColor: this.dynamicColors()
-				},
-				{
-					label: 'Second Dataset',
-					data: [ 12, 59, 80, 81, 56, 55, 40, 1, 2, 33, 44, 1 ],
-					fill: false,
-					borderColor: this.dynamicColors()
-				}
-			]
+			datasets
 		};
 
-		this.optionsLine = {};
+		this.optionsLine = {
+			responsive: true,
+			maintainAspectRatio: true,
+			pan: {
+				enabled: true,
+				mode: 'xy'
+			},
+			zoom: {
+				enabled: true,
+				mode: 'xy'
+			}
+		};
 	}
 
 	selectData(item) {}
@@ -179,6 +187,8 @@ export class ResidueRegisterGraphicComponent implements OnInit {
 		}
 		var values = [];
 		var labels = [];
+		var backgroundColor = [];
+		var hoverBackgroundColor = [];
 		item.departments.forEach((department) => {
 			var value = 0;
 			department.qrCode.forEach((qrCode) => {
@@ -186,18 +196,22 @@ export class ResidueRegisterGraphicComponent implements OnInit {
 			});
 			values.push(value);
 			labels.push(department.name);
+			backgroundColor.push(this.dynamicColors());
+			hoverBackgroundColor.push(this.dynamicColors());
 		});
 		this.data = {
 			labels: labels,
 			datasets: [
 				{
 					data: values,
-					backgroundColor: [ this.dynamicColors() ],
-					hoverBackgroundColor: [ this.dynamicColors() ]
+					backgroundColor: backgroundColor,
+					hoverBackgroundColor: hoverBackgroundColor
 				}
 			]
 		};
 		this.options = {
+			responsive: true,
+			maintainAspectRatio: true,
 			plugins: {
 				labels: {
 					render: 'percentage',
@@ -205,8 +219,7 @@ export class ResidueRegisterGraphicComponent implements OnInit {
 					precision: 2,
 					fontSize: 16
 				}
-			},
-			responsive: true
+			}
 		};
 	}
 
