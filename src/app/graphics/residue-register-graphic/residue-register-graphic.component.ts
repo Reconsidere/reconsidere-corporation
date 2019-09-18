@@ -38,15 +38,6 @@ export class ResidueRegisterGraphicComponent implements OnInit {
 		private departmentService: DepartamentService
 	) {}
 
-	// name: department.name,
-	// 				qrCode: qrCode.code,
-	// 				type: qrCode.material.type,
-	// 				material: qrCode.material.name,
-	// 				unity: qrCode.material.unity,
-	// 				weight: qrCode.material.weight,
-	// 				quantity: qrCode.material.quantity
-	//			labels: [ 'Departamento', 'QrCode', 'Tipo', 'Material', 'Unidade', 'Peso', 'Quantidade' ],
-
 	ngOnInit() {
 		this.residuesRegister = [];
 		this.materialName = [];

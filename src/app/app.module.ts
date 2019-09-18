@@ -48,6 +48,8 @@ import { ChartModule } from 'primeng/chart';
 import { ResidueRegisterGraphicComponent } from './graphics/residue-register-graphic/residue-register-graphic.component';
 import 'chartjs-plugin-labels';
 import { SearchGraphicResidueRegisterPipe } from '../pipes/residue-register-graphic/search-graphic-residue-register.pipe';
+import { EntriesManagementGraphicComponent } from './graphics/entries-management-graphic/entries-management-graphic.component';
+import { SearchGraphicEntriePipe } from '../pipes/search-graphic-entrie/search-graphic-entrie.pipe';
 registerLocaleData(localePt);
 
 @NgModule({
@@ -67,7 +69,9 @@ registerLocaleData(localePt);
 		EntriesManagementComponent,
 		ProviderRegistrationComponent,
 		ResidueRegisterGraphicComponent,
-		SearchGraphicResidueRegisterPipe
+		SearchGraphicResidueRegisterPipe,
+		EntriesManagementGraphicComponent,
+		SearchGraphicEntriePipe
 	],
 	imports: [
 		BrowserModule,

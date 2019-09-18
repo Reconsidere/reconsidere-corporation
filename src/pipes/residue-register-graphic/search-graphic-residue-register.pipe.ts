@@ -13,7 +13,13 @@ export class SearchGraphicResidueRegisterPipe implements PipeTransform {
 		unity: string,
 		component: any
 	) {
-		if (!dateInitial && !dateFinal && !department && !material && !unity) {
+		if (!dateInitial && !dateFinal && !department && !material && !unity && !items) {
+			return items;
+		} else if (!dateInitial && !dateFinal && !department && !material && !unity && items) {
+			var registerResidues = new Object({
+				departments: items
+			});
+			component.generatePieGraph(registerResidues);
 			return items;
 		}
 		if (items && items.length) {
@@ -21,7 +27,7 @@ export class SearchGraphicResidueRegisterPipe implements PipeTransform {
 				if (department && item.name.toLowerCase().indexOf(department.toLowerCase()) === -1) {
 					return false;
 				}
-				for(var x =0; item.qrCode.length > x; x++){
+				for (var x = 0; item.qrCode.length > x; x++) {
 					if (dateInitial && dateInitial.getDate() < item.qrCode[x].date.getDate()) {
 						return false;
 					}
@@ -31,7 +37,7 @@ export class SearchGraphicResidueRegisterPipe implements PipeTransform {
 					if (unity && item.qrCode[x].material.unity.toLowerCase().indexOf(unity.toLowerCase()) === -1) {
 						return false;
 					}
-					if (material &&  item.qrCode[x].material.name.toLowerCase().indexOf(material.toLowerCase()) === -1) {
+					if (material && item.qrCode[x].material.name.toLowerCase().indexOf(material.toLowerCase()) === -1) {
 						return false;
 					}
 				}

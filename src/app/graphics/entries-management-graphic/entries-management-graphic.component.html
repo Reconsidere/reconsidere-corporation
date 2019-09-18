@@ -21,54 +21,37 @@
                     </div>
                 </div>
                 <div class="col-xl-2 col-lg-12 col-md-12 col-sm-12 col-12 stylePadding">
-                    <label>Departamento</label>
+                    <label>Coletor</label>
                     <div class="form-group">
-                        <select [(ngModel)]="department" name="department" class="form-control  borderColorStyle size" style=" height: 2.2rem;">
+                        <select [(ngModel)]="collector" name="collector" class="form-control  borderColorStyle size" style=" height: 2.2rem;">
                             <option></option>
-                            <option id="department" *ngFor="let item of departmentsName">{{ item }}</option>
+                            <option id="collector" *ngFor="let item of collectors">{{ item }}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-xl-2 col-lg-12 col-md-12 col-sm-12 col-12 stylePadding">
-                    <label>Material</label>
+                    <label>Categoria</label>
                     <div class="form-group">
                         <select [(ngModel)]="material" name="material" class="form-control  borderColorStyle size" style=" height: 2.2rem;">
                             <option></option>
-                            <option id="material" *ngFor="let item of materialName">{{ item }}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-xl-2 col-lg-12 col-md-12 col-sm-12 col-12 stylePadding">
-                    <label>Unidade</label>
-                    <div class="form-group">
-                        <select [(ngModel)]="unity" name="unity" class="form-control  borderColorStyle size" style=" height: 2.2rem;">
-                            <option></option>
-                            <option id="unity" *ngFor="let item of unitsType">{{ item }}</option>
+                            <option id="material" *ngFor="let item of typesMaterials">{{ item }}</option>
                         </select>
                     </div>
                 </div>
             </div>
-            <div name="filterArray" *ngFor="let item of residuesRegister.departments | searchGraphicResidueRegister:dateInitial:dateFinal:department:material:unity:this">
+            <div name="filterArray" *ngFor="let item of entrieItems | searchGraphicEntrie:dateInitial:dateFinal:colletor:material:this">
             </div>
         </div>
     </div>
 
-    <div class="card col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
-        <div class="card-header bg-light text-dark">
-            Gráfico de peso por setor - KG
-        </div>
-        <div class="card-body">
-            <p-chart type="doughnut" [options]="options" [data]="data"></p-chart>
-        </div>
-    </div>
 
-    <div class="card col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-        <div class="card-header bg-light text-dark">
-            Gráfico de peso por mês - KG
-        </div>
-        <div class="card-body">
-            <p-chart type="line" [data]="dataLine" [options]="optionsLine" (onDataSelect)="selectData($event)"></p-chart>
-
-        </div>
+  <div class="card col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 ">
+    <div class="card-header bg-light text-dark">
+      Gráfico de saída de material - total por categoria
     </div>
+    <div class="card-body">
+      <p-chart [options]="options" type="bar" [data]="data"></p-chart>
+    </div>
+  </div>
+
 </div>
