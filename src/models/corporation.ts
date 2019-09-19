@@ -29,6 +29,7 @@ export class Corporation {
 	checkPoints: CheckPoints;
 	schedulings: Scheduling;
 	entries: Entries;
+	location: Location;
 }
 
 export namespace Corporation {

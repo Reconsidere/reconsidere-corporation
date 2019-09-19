@@ -137,133 +137,73 @@
         </div>
       </form>
 
+
       <div class="card">
-        <div class="card-header">Unidade</div>
+        <div class="card-header">Localização</div>
         <div class="card-body">
-          <div class="tableUnits">
-            <table class="table-sm table-striped">
-              <thead>
-                <tr id="Titles">
-                  <th>Nome</th>
-                  <th>Endereço</th>
-                  <th>Estado</th>
-                  <th>Editar</th>
-                  <th>Remover</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let unit of (corporation.units | paginate: { itemsPerPage: 5, currentPage: pageUnit })">
-                  <td hidden>{{ unit._id }}</td>
-                  <td>{{ unit.name }}</td>
-                  <td>{{ unit.location.neighborhood }}</td>
-                  <td>{{ unit.location.state }}</td>
-                  <td>
-                    <button (click)="editLocation(unit)" type="button" mat-raised-button color="accent" class="btn btn-sm btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
-                      <mat-icon>edit</mat-icon>
-                    </button>
-                  </td>
-                  <td>
-                    <button (click)="removeUnit(unit)" type="button" mat-raised-button color="warn" class="btn btn-sm btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
-                      <mat-icon>delete_forever</mat-icon>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-              <pagination-controls (pageChange)="pageUnit = $event" previousLabel="Anterior" nextLabel="Próxima" autoHide="true" responsive="true" screenReaderPaginationLabel="Pagination">
-              </pagination-controls>
-            </table>
+          <div class="row">
+            <div class="col-xl-2 col-lg-6 col-md-12 col-sm-12 col-12">
+              <div class="form-group">
+                <label for="cep">CEP</label>
+                <input required [(ngModel)]="corporation.location.cep" cep="ngModel" name="cep" type="text" class="form-control" id="cep" aria-describedby="cep" placeholder="00.000-000" mask="00.000-000" #cepVal (blur)="CEPSearch(cepVal.value, $event)" />
+              </div>
+            </div>
+          </div>
+
+          <div class="centered">
+            <img *ngIf="loading" class="pl-2"
+              src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
           </div>
 
           <div class="row">
             <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
               <div class="form-group">
-                <label for="nameUnit">Nome</label>
-                <input required [(ngModel)]="unit.name" name="nameUnit" type="text" class="form-control" id="nameUnit" aria-describedby="nameUnit" (blur)="requiredCheck($event)" />
+                <label for="publicPlace">Logradouro</label>
+                <input required [(ngModel)]="corporation.location.publicPlace" name="publicPlace" type="text" class="form-control" id="publicPlace" aria-describedby="publicPlace" (blur)="requiredCheck($event)" />
+              </div>
+            </div>
+            <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+              <div class="form-group">
+                <label for="neighborhood">Bairro</label>
+                <input required [(ngModel)]="corporation.location.neighborhood" name="neighborhood" type="text" class="form-control" id="neighborhood" aria-describedby="neighborhood" (blur)="requiredCheck($event)" />
+              </div>
+            </div>
+            <div class="col-xl-1 col-lg-6 col-md-12 col-sm-12 col-12">
+              <div class="form-group">
+                <label for="number">Número</label>
+                <input required [(ngModel)]="corporation.location.number" name="number" min="0" type="number" class="form-control" id="number" numbers-only aria-describedby="number" (blur)="requiredCheck($event)" oninput="this.value = Math.abs(this.value)" />
               </div>
             </div>
           </div>
-
-          <div class="card">
-            <div class="card-header">Localização</div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-xl-2 col-lg-6 col-md-12 col-sm-12 col-12">
-                  <div class="form-group">
-                    <label for="cep">CEP</label>
-                    <input required [(ngModel)]="unit.location.cep" cep="ngModel" name="cep" type="text" class="form-control" id="cep" aria-describedby="cep" placeholder="00.000-000" mask="00.000-000" #cepVal (blur)="CEPSearch(cepVal.value, $event)" />
-                  </div>
-                </div>
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+              <div class="form-group">
+                <label for="county">Município</label>
+                <input required [(ngModel)]="corporation.location.county" name="county" type="text" class="form-control" id="county" aria-describedby="county" (blur)="requiredCheck($event)" />
               </div>
-
-              <div class="centered">
-                <img *ngIf="loading" class="pl-2"
-                  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+            </div>
+            <div class="col-xl-1 col-lg-6 col-md-12 col-sm-12 col-12">
+              <div class="form-group">
+                <label for="state">UF</label>
+                <input required [(ngModel)]="corporation.location.state" name="state" type="text" class="form-control" id="state" numbers-only aria-describedby="state" (blur)="requiredCheck($event)" />
               </div>
-
-              <div class="row">
-                <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
-                  <div class="form-group">
-                    <label for="publicPlace">Logradouro</label>
-                    <input required [(ngModel)]="unit.location.publicPlace" name="publicPlace" type="text" class="form-control" id="publicPlace" aria-describedby="publicPlace" (blur)="requiredCheck($event)" />
-                  </div>
-                </div>
-                <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
-                  <div class="form-group">
-                    <label for="neighborhood">Bairro</label>
-                    <input required [(ngModel)]="unit.location.neighborhood" name="neighborhood" type="text" class="form-control" id="neighborhood" aria-describedby="neighborhood" (blur)="requiredCheck($event)" />
-                  </div>
-                </div>
-                <div class="col-xl-1 col-lg-6 col-md-12 col-sm-12 col-12">
-                  <div class="form-group">
-                    <label for="number">Número</label>
-                    <input required [(ngModel)]="unit.location.number" name="number" min="0" type="number" class="form-control" id="number" numbers-only aria-describedby="number" (blur)="requiredCheck($event)" oninput="this.value = Math.abs(this.value)" />
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                  <div class="form-group">
-                    <label for="county">Município</label>
-                    <input required [(ngModel)]="unit.location.county" name="county" type="text" class="form-control" id="county" aria-describedby="county" (blur)="requiredCheck($event)" />
-                  </div>
-                </div>
-                <div class="col-xl-1 col-lg-6 col-md-12 col-sm-12 col-12">
-                  <div class="form-group">
-                    <label for="state">UF</label>
-                    <input required [(ngModel)]="unit.location.state" name="state" type="text" class="form-control" id="state" numbers-only aria-describedby="state" (blur)="requiredCheck($event)" />
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                  <div class="form-group">
-                    <label for="complement">Complemento</label>
-                    <input required [(ngModel)]="unit.location.complement" name="complement" type="text" class="form-control" id="complement" aria-describedby="complement" (blur)="requiredCheck($event)" />
-                  </div>
-                </div>
-              </div>
-
-                <form (ngSubmit)="uploadPicture(unit)">
-                  <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                    <div class="form-group">
-                      <label for="pictureUnit">Carregar imagem </label>
-                      <div class="input-group">
-                        <input id="uploadFileUnit" type="file" name="imageUnit" accept="image/*" (change)="fileProgress($event)" />
-                        <button type="submit" mat-raised-button color="accent" data-toggle="button" aria-pressed="false" autocomplete="off">
-                          <mat-icon>arrow_upward</mat-icon>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-
             </div>
           </div>
-          <button type="button" id="addLocation" (click)="addOrUpdateLocation()" mat-raised-button class="col-md-2" color="primary">
-            Adicionar
-          </button>
+          <div class="row">
+            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+              <div class="form-group">
+                <label for="complement">Complemento</label>
+                <input required [(ngModel)]="corporation.location.complement" name="complement" type="text" class="form-control" id="complement" aria-describedby="complement" (blur)="requiredCheck($event)" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
+
+
+
+
 
       <div class="card">
         <div class="card-header">Usuários</div>

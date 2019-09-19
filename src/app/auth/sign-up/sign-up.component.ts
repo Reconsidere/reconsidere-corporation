@@ -9,7 +9,6 @@ import { CNPJValidator } from 'src/validations/valid-cnpj.validator';
 import { AuthService } from 'src/services/auth.service';
 import { promise, element } from 'protractor';
 import { CepService } from 'src/services/cep.service';
-import { Unit } from 'src/models/unit';
 import { Profile } from 'src/models/myproviders';
 import { access } from 'fs';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -43,10 +42,8 @@ export class SignUpComponent implements OnInit {
 	passwordUser: string;
 	confirmPasswordUser: string;
 	myRecaptcha: boolean;
-	unit: Unit;
 	showUnit: boolean;
 	page: number;
-	pageUnit: number;
 	pageUser: number;
 	corporationId: string;
 	returnUrl: string;
@@ -71,9 +68,8 @@ export class SignUpComponent implements OnInit {
 		this.classifications = Object.values(Corporation.Classification);
 		this.profiles = Object.values(User.Profiles);
 		this.corporation = new Corporation();
+		this.corporation.location = new Location();
 		this.corporation.active = true;
-		this.unit = new Unit();
-		this.unit.location = new Location();
 		this.user = new User();
 		this.user.profile = new Profile();
 		this.user.active = true;
@@ -83,7 +79,6 @@ export class SignUpComponent implements OnInit {
 		this.authService.isAuthenticated();
 		this.dynamicCnpj = true;
 		this.page = 1;
-		this.pageUnit = 1;
 		this.pageUser = 1;
 		this.loading = false;
 		this.isLogged = false;
@@ -154,25 +149,24 @@ export class SignUpComponent implements OnInit {
 
 	loadAddress(result) {
 		if (result === undefined || result === null) {
-			this.unit.location = new Location();
+			this.corporation.location = new Location();
 		}
 		if (result.erro !== undefined && result.erro === true) {
 			this.toastr.warning(messageCode['WARNNING']['WRE019']['summary']);
 		}
-		this.unit.location.cep = result.cep;
-		this.unit.location.publicPlace = result.logradouro;
-		this.unit.location.complement = result.complemento;
-		this.unit.location.neighborhood = result.bairro;
-		this.unit.location.county = result.localidade;
-		this.unit.location.state = result.uf;
+		this.corporation.location.cep = result.cep;
+		this.corporation.location.publicPlace = result.logradouro;
+		this.corporation.location.complement = result.complemento;
+		this.corporation.location.neighborhood = result.bairro;
+		this.corporation.location.county = result.localidade;
+		this.corporation.location.state = result.uf;
 		this.loading = false;
 	}
 
 	clean() {
 		this.corporation = new Corporation();
+		this.corporation.location = new Location();
 		this.corporation.active = true;
-		this.unit = new Unit();
-		this.unit.location = new Location();
 		this.user = new User();
 		this.user.profile = new Profile();
 		this.user.active = true;
@@ -258,8 +252,6 @@ export class SignUpComponent implements OnInit {
 			this.corporation.cellPhone === undefined ||
 			this.corporation.classification === undefined ||
 			this.corporation.company === undefined ||
-			this.corporation.units === undefined ||
-			this.corporation.units.length <= 0 ||
 			this.termPrivacity === false ||
 			this.termService === false
 		) {
@@ -290,59 +282,6 @@ export class SignUpComponent implements OnInit {
 		console.log('Something went long when loading the Google reCAPTCHA');
 	}
 
-	addOrUpdateLocation() {
-		let add = false;
-		if (!this.veryfyBeforeAddLocation()) {
-			return;
-		}
-
-		if (this.corporation.units === undefined && this.unit._id === undefined) {
-			const unit = new Unit();
-			unit.name = this.unit.name;
-			unit.location = this.unit.location;
-			this.corporation.units = [ unit ];
-			add = true;
-		} else if (this.corporation.units !== undefined) {
-			this.corporation.units.forEach((unit, index) => {
-				if (this.unit === unit) {
-					this.corporation.units[index] = unit;
-					this.corporation.units[index].name = this.unit.name;
-					add = true;
-				}
-			});
-		}
-		if (!add) {
-			this.corporation.units.push(this.unit);
-		}
-		this.cleanLocation();
-		this.showUnit = true;
-		this.toastr.info(messageCode['INFO']['IRE002']['summary']);
-	}
-
-	cleanLocation() {
-		this.unit = new Unit();
-		this.unit.location = new Location();
-	}
-
-	veryfyBeforeAddLocation() {
-		if (this.unit.location === undefined) {
-			this.toastr.warning(messageCode['WARNNING']['WRE003']['summary']);
-			return false;
-		}
-		if (
-			this.unit.location.state === undefined ||
-			this.unit.location.cep === undefined ||
-			this.unit.location.publicPlace === undefined ||
-			this.unit.location.neighborhood === undefined ||
-			this.unit.location.number === undefined ||
-			this.unit.location.number < 0 ||
-			this.unit.location.county === undefined
-		) {
-			this.toastr.warning(messageCode['WARNNING']['WRE004']['summary']);
-			return false;
-		}
-		return true;
-	}
 
 	enableDisbale(item, e) {
 		item.active = e.checked;
@@ -411,19 +350,9 @@ export class SignUpComponent implements OnInit {
 			this.confirmPasswordUser = this.passwordUser;
 		}
 	}
-	editLocation(unit: any) {
-		this.unit = unit;
-	}
 
-	removeUnit(unit) {
-		this.corporation.units.forEach((item, index) => {
-			if (item === unit) {
-				this.corporation.units.splice(index, 1);
-				this.toastr.info(messageCode['INFO']['IRE004']['summary']);
-			} else {
-			}
-		});
-	}
+
+
 
 	/**Remove from the list, if user not exist in database, if user exist dont remove from the list
    * because delete is blocked. Is permited only remove new user.

@@ -33,24 +33,24 @@ export class ProviderRegistrationService {
 						creationDate
 						activationDate
 						verificationDate
-						units {
-						_id
-						name
-						picture
 						location {
-							_id
-							country
-							state
-							latitude
-							longitude
-							cep
-							publicPlace
-							neighborhood
-							number
-							county
-							complement
-						}
-						}
+        _id
+        country
+        state
+        latitude
+        longitude
+        cep
+        publicPlace
+        neighborhood
+        number
+        county
+        complement
+        
+      }
+    units {
+      _id
+      unitsId
+    }
 						users {
 						_id
 						name
@@ -149,23 +149,24 @@ export class ProviderRegistrationService {
 			creationDate
 			activationDate
 			verificationDate
-			units {
-			_id
-			name
 			location {
-				_id
-				country
-				state
-				latitude
-				longitude
-				cep
-				publicPlace
-				neighborhood
-				number
-				county
-				complement
-			}
-			}
+        _id
+        country
+        state
+        latitude
+        longitude
+        cep
+        publicPlace
+        neighborhood
+        number
+        county
+        complement
+        
+      }
+    units {
+      _id
+      unitsId
+    }
 			users {
 			_id
 			name

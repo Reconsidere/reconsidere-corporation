@@ -44,10 +44,6 @@ export class AuthService {
     creationDate
     activationDate
     verificationDate
-    units {
-      _id
-      name
-      picture
       location {
         _id
         country
@@ -62,6 +58,9 @@ export class AuthService {
         complement
         
       }
+    units {
+      _id
+      unitsId
     }
     users {
       _id
@@ -222,11 +221,7 @@ export class AuthService {
     creationDate
     activationDate
     verificationDate
-    units {
-      _id
-      name
-      picture
-      location {
+    location {
         _id
         country
         state
@@ -240,6 +235,9 @@ export class AuthService {
         complement
         
       }
+    units {
+      _id
+      unitsId
     }
     users {
       _id
@@ -402,11 +400,7 @@ query getCollectorByUser($_id: ID!) {
     creationDate
     activationDate
     verificationDate
-    units {
-      _id
-      name
-      picture
-      location {
+    location {
         _id
         country
         state
@@ -420,6 +414,9 @@ query getCollectorByUser($_id: ID!) {
         complement
         
       }
+    units {
+      _id
+      unitsId
     }
     users {
       _id
@@ -568,6 +565,21 @@ query getCollectorByUser($_id: ID!) {
 	//#endregion
 
 	//#region mutations
+
+	private mutationCorporationAddUnit = /* GraphQL */ `
+  mutation createCorporationUnit($_id:ID!, $typeCorporation:String ,$corporation: [CorporationInput]!) {
+    createCorporationUnit(_id: $_id, typeCorporation:$typeCorporation,input: $corporation)  { 
+      _id
+    }
+}`;
+
+	private mutationCollectorAddUnit = /* GraphQL */ `
+		mutation createCollectorUnit($_id:ID!, $typeCorporation:String , $corporation: [CollectorInput]!) {
+      createCollectorUnit(_id: $_id, typeCorporation:$typeCorporation, input: $corporation)  { 
+			_id
+		}
+		}`;
+
 	private mutationCorporationAdd = /* GraphQL */ `
     mutation createCorporation($corporation: CorporationInput!) {
       createCorporation(input: $corporation)  { 
@@ -661,6 +673,37 @@ query getCollectorByUser($_id: ID!) {
 					resolve(createCorporation['createCollector']);
 				} else {
 					resolve(createCorporation['createCorporation']);
+				}
+			}
+		} catch (error) {
+			console.log(error);
+			reject(error.response.errors[0].message);
+		}
+	}
+
+	async addUnit(_class, corporationId, typeCorporation, corporation: Corporation, resolve, reject) {
+		const variables = {
+			_id: corporationId,
+			typeCorporation: typeCorporation,
+			corporation: corporation
+		};
+
+		const client = new GraphQLClient(environment.database.uri + `/${this.getPath(_class)}`, {
+			headers: {}
+		});
+
+		if (_class === Corporation.Classification.Coletora) {
+			this.mutation = this.mutationCollectorAddUnit;
+		} else {
+			this.mutation = this.mutationCorporationAddUnit;
+		}
+		try {
+			var createCorporationUnit = await client.request(this.mutation, variables);
+			if (createCorporationUnit) {
+				if (corporation.classification === Corporation.Classification.Coletora) {
+					resolve(createCorporationUnit['createCollectorUnit']);
+				} else {
+					resolve(createCorporationUnit['createCorporationUnit']);
 				}
 			}
 		} catch (error) {
@@ -796,7 +839,7 @@ query getCollectorByUser($_id: ID!) {
 					resolve(undefined);
 				}
 			} catch (error) {
-        console.log(error);
+				console.log(error);
 				reject(error.response.errors[0].message);
 			}
 		} else {

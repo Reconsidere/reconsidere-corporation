@@ -23,23 +23,180 @@ export class UnitService {
 			const query = /* GraphQL */ `
       query allUnits($_id: ID!) {
         allUnits(_id: $_id)  {
-          _id
-          name
-		  picture
-          location {
             _id
-            country
-            state
-            latitude
-            longitude
-            cep
-            publicPlace
-            neighborhood
-            number
-            county
-            complement
-    }
-  }
+          picture
+          company
+          cnpj
+          tradingName
+          active
+          class
+          phone
+          email
+          classification
+          cellPhone
+          creationDate
+          activationDate
+          verificationDate
+          location {
+              _id
+              country
+              state
+              latitude
+              longitude
+              cep
+              publicPlace
+              neighborhood
+              number
+              county
+              complement
+              
+            }
+          units {
+            _id
+            unitsId
+          }
+          users {
+            _id
+            name
+            email
+            password
+            active
+            
+            
+          }
+          myProviders {
+            _id
+            providerId
+            
+          
+          }
+          departments {
+            _id
+            name
+            
+            description
+            active
+            isChanged
+            qrCode {
+              _id
+              code
+              date
+              material {
+                _id
+                type
+                name
+                weight
+                quantity
+                active
+                unity
+              }
+            }
+          }
+          residuesRegister{
+            departments {
+              _id
+              name
+              description
+              active
+              isChanged
+              qrCode {
+                _id
+                code
+                date
+                material {
+                  _id
+                  type
+                  name
+                  weight
+                  quantity
+                  active
+                  unity
+                }
+              }
+            }
+          }
+          scheduling {
+            _id
+            hour
+            date
+            active
+            collector {
+              _id
+              company
+              cnpj
+              tradingName
+              active
+              phone
+              cellPhone
+              class
+              email
+              classification
+            }
+            qrCode {
+              _id
+              code
+              date
+              material {
+                _id
+                type
+                name
+                weight
+                quantity
+                active
+                unity
+              }
+            }
+          }
+          entries {
+            _id
+            purchase {
+              date
+              name
+              cost
+              typeEntrie
+              quantity
+              weight
+              amount
+              qrCode {
+                _id
+                code
+                date
+                material {
+                  _id
+                  type
+                  name
+                  weight
+                  quantity
+                  active
+                  unity
+                }
+              }
+            }
+            sale {
+              date
+              name
+              cost
+              typeEntrie
+              quantity
+              weight
+              amount
+              qrCode {
+                _id
+                code
+                date
+                material {
+                  _id
+                  type
+                  name
+                  weight
+                  quantity
+                  active
+                  unity
+                }
+              }
+            }
+        }
+          }
     }`;
 
 			const variables = {
@@ -58,6 +215,7 @@ export class UnitService {
 					resolve(allUnits['allUnits']);
 				}
 			} catch (error) {
+        console.log(error);
 				throw new Error(error.response.errors[0].message);
 			}
 		} else {

@@ -1,39 +1,102 @@
 <app-toolbar></app-toolbar>
 
 <div class="container">
-    <div class="card">
-        <div class="card-header">
-            Minhas unidades
-        </div>
-        <div  class="card-body">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-sm-4" *ngFor="let  unit of units">
-                        <div class="card">
-                            <img class="card-img-top img-fluid" src="{{unit.path}}" alt="fornecedora">
-                            <div class="card-block">
-                                <h4 class="card-title">{{unit.company}}</h4>
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                <small><b>Nome </b></small>
-                                <input [(ngModel)]="unit.name" class="inputStyle form-control" disabled="disabled" />
-                                <small><b>Cep </b></small>
-                                <input [(ngModel)]="unit.location.cep" class="inputStyle form-control" mask="00.000-000" disabled="disabled" />
-                                <small><b>Logradouro </b></small>
-                                <input [(ngModel)]="unit.location.publicPlace" class="inputStyle form-control" disabled="disabled" />
-                                <small><b>Bairro </b></small>
-                                <input [(ngModel)]="unit.location.neighborhood" class="inputStyle form-control" disabled="disabled" />
-                                <small><b>Estado </b></small>
-                                <input [(ngModel)]="unit.location.state" class="inputStyle form-control" disabled="disabled" />
-                                <button class="pull-right" (click)="details()" type="button" mat-raised-button color="accent" data-toggle="button" aria-pressed="false" autocomplete="off">
-                                    <mat-icon>more_vert</mat-icon>
-                                </button>
-                            </ul>
-                        </div>
 
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="card">
+    <div class="card-header">
+      <button class="block" (click)="expandCreate()" type="button" mat-raised-button color="accent" data-toggle="button" aria-pressed="false" autocomplete="off">
+        <mat-icon *ngIf="!expandNew">expand_more</mat-icon>
+        <mat-icon *ngIf="expandNew">expand_less</mat-icon>
+      </button>
+      Adicionar Unidades
+      <button type="button" id="save" (click)="save()" mat-raised-button class="col-md-2 pull-right" color="primary">
+        Salvar ações
+      </button>
     </div>
+
+    <div *ngIf="expandNew" class="card-body">
+        <button id="newItem" (click)="newItem()" type="button" mat-raised-button color="accent" class="btn btn-sm btn-primary col-sm-12" data-toggle="button" aria-pressed="false" autocomplete="off">
+          <mat-icon>add</mat-icon>
+        </button>
+      <div class="tableUnit">
+        <table class="table-sm">
+          <thead>
+            <tr id="Titles">
+              <th></th>
+              <th>Classificação</th>
+              <th>Email</th>
+              <th>Senha</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-template ngFor let-item [ngForOf]="(newUnits | paginate: { itemsPerPage: 5, currentPage: page })" let-index="index">
+              <ng-template ngFor let-user [ngForOf]="(item.users | paginate: { itemsPerPage: 5, currentPage: page })" let-index="index">
+
+                <tr *ngIf="item.active">
+                  <td></td>
+                  <td>
+                    <label>{{item.classification}}</label>
+                  </td>
+                  <td>
+                    <input required [(ngModel)]="user.email" name="email" type="text" class="form-control" id="email" aria-describedby="email" />
+                  </td>
+                  <td>
+                    <div class="input-group">
+                      <input minlength="6" maxlength="20" required [(ngModel)]="user.password" name="password" type="password" class="form-control" id="password" aria-describedby="password" (blur)="verifyPassword(user)" />
+                      <div class="input-group-append">
+                        <span class="input-group-text">
+                          <mat-hint>{{ user.password?.length || 0 }}/20</mat-hint>
+                        </span>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </ng-template>
+          </tbody>
+          <pagination-controls (pageChange)="page = $event" previousLabel="Anterior" nextLabel="Próxima" autoHide="true" responsive="true" screenReaderPaginationLabel="Pagination">
+          </pagination-controls>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <button class="block" (click)="expandUnits()" type="button" mat-raised-button color="accent" data-toggle="button" aria-pressed="false" autocomplete="off">
+        <mat-icon *ngIf="!expandUnit">expand_more</mat-icon>
+        <mat-icon *ngIf="expandUnit">expand_less</mat-icon>
+      </button>
+      Minhas unidades 
+    </div>
+    <div *ngIf="expandUnit" class="card-body">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-4" *ngFor="let unit of myUnits">
+            <div class="card">
+              <img class="card-img-top img-fluid" src="{{unit.path}}" alt="unidade">
+              <div class="card-block">
+                <h4 class="card-title">{{unit.company}}</h4>
+              </div>
+              <ul class="list-group list-group-flush">
+                <small><b>CNPJ </b></small>
+                <input [(ngModel)]="unit.cnpj" class="inputStyle form-control" mask="00.000.000/0000-00" disabled="disabled" />
+                <small><b>Email </b></small>
+                <input [(ngModel)]="unit.email" class="inputStyle form-control" disabled="disabled" />
+                <small><b>Telefone </b></small>
+                <input [(ngModel)]="unit.phone" class="inputStyle form-control" mask="(00) 0000-0000" disabled="disabled" />
+                <small><b>Celular </b></small>
+                <input [(ngModel)]="unit.cellPhone" class="inputStyle form-control" mask="(00) 00000-0000" disabled="disabled" />
+                <button class="pull-right" (click)="details()" type="button" mat-raised-button color="accent" data-toggle="button" aria-pressed="false" autocomplete="off">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
