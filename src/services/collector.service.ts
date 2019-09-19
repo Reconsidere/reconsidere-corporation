@@ -33,7 +33,6 @@ export class CollectorService {
           class
           email
           classification
-		  location
   }
     }`;
 
