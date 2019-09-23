@@ -44,7 +44,7 @@ export class UnitComponent implements OnInit {
 				this.myUnits = myUnits;
 				this.myUnits.forEach((unit) => {
 					if (unit.picture === undefined || unit.picture === '' || unit.picture === null) {
-						unit.path = `http://localhost:4200/assets/images/no-image.jpg`;
+						unit.path = `http://localhost:4200/assets/images/no-image.png`;
 					} else {
 						unit.path = `${environment.database.uri}/${unit.picture}`;
 					}

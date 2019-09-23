@@ -17,6 +17,7 @@ import { EntriesManagementGraphicComponent } from './graphics/entries-management
 
 export const routes: Routes = [
 	{ path: '', component: StartcenterComponent, canActivate: [ AuthGuard ] },
+	{ path: 'start-center', component: StartcenterComponent, canActivate: [ AuthGuard ] },
 	{ path: 'sign-in', component: SignInComponent },
 	{ path: 'sign-up', component: SignUpComponent },
 	{ path: 'logout', component: LogoutComponent },

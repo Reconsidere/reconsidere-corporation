@@ -89,7 +89,7 @@ export class ProviderRegistrationComponent implements OnInit {
 			this.providers.forEach((provider) => {
 				if (myProvider.providerId === provider._id) {
 					if (provider.picture === undefined || provider.picture === '' || provider.picture === null) {
-						provider.path = `http://localhost:4200/assets/images/no-image.jpg`;
+						provider.path = `http://localhost:4200/assets/images/no-image.png`;
 					} else {
 						provider.path = `${environment.database.uri}/${provider.picture}`;
 					}
