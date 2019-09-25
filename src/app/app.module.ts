@@ -50,9 +50,13 @@ import 'chartjs-plugin-labels';
 import { SearchGraphicResidueRegisterPipe } from '../pipes/residue-register-graphic/search-graphic-residue-register.pipe';
 import { EntriesManagementGraphicComponent } from './graphics/entries-management-graphic/entries-management-graphic.component';
 import { SearchGraphicEntriePipe } from '../pipes/search-graphic-entrie/search-graphic-entrie.pipe';
+import { GridsterModule } from 'angular-gridster2';
+import { WidgetComponent } from './widget/widget.component';
+import { LayoutItemDirective } from './directives/layout-item.directive';
 registerLocaleData(localePt);
 
 @NgModule({
+	entryComponents: [ WidgetComponent ],
 	declarations: [
 		AppComponent,
 		SignInComponent,
@@ -71,7 +75,9 @@ registerLocaleData(localePt);
 		ResidueRegisterGraphicComponent,
 		SearchGraphicResidueRegisterPipe,
 		EntriesManagementGraphicComponent,
-		SearchGraphicEntriePipe
+		SearchGraphicEntriePipe,
+		LayoutItemDirective,
+		WidgetComponent
 	],
 	imports: [
 		BrowserModule,
@@ -104,7 +110,8 @@ registerLocaleData(localePt);
 		}),
 		CalendarModule,
 		DragDropModule,
-		ChartModule
+		ChartModule,
+		GridsterModule
 	],
 	providers: [
 		{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

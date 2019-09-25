@@ -7,6 +7,8 @@ import { UnitComponent } from '../unit/unit.component';
 import { UnitService } from 'src/services/unit.service';
 import * as messageCode from 'message.code.json';
 import { ToastrService } from 'ngx-toastr';
+import { GridsterConfig, GridsterItem } from 'angular-gridster2';
+import { LayoutService, IComponent } from 'src/services/layout.service';
 
 @Component({
 	selector: 'app-startcenter',
@@ -21,7 +23,22 @@ export class StartcenterComponent implements OnInit {
 	itemListUnits: any;
 	NoImageUrl = `http://localhost:4200/assets/images/no-image.png`;
 
-	constructor(private toastr: ToastrService, private authService: AuthService, private unitService: UnitService) {}
+	constructor(
+		private layoutService: LayoutService,
+		private toastr: ToastrService,
+		private authService: AuthService,
+		private unitService: UnitService
+	) {}
+	get options(): GridsterConfig {
+		return this.layoutService.options;
+	}
+	get layout(): GridsterItem[] {
+		return this.layoutService.layout;
+	}
+
+	get components(): IComponent[] {
+		return this.layoutService.components;
+	}
 
 	ngOnInit() {
 		this.authService.isAuthenticated();
@@ -75,23 +92,4 @@ export class StartcenterComponent implements OnInit {
 			this.toastr.error(messageCode['WARNNING'][error]['summary']);
 		}
 	}
-
-	drop(event: CdkDragDrop<[]>, item) {
-		try {
-			if (event.previousContainer === event.container) {
-				moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-			} else {
-				transferArrayItem(
-					event.previousContainer.data,
-					event.container.data,
-					event.previousIndex,
-					event.currentIndex
-				);
-			}
-		} catch (error) {
-			console.log(error);
-		}
-	}
-
-	goToUnits() {}
 }
