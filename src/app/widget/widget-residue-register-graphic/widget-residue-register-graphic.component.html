@@ -1,0 +1,11 @@
+<h6>
+    Gráfico de peso por setor - KG
+</h6>
+
+<p-chart type="doughnut" [options]="options" [data]="data"></p-chart>
+
+<h6>
+    Gráfico de peso por mês - KG
+</h6>
+
+<p-chart type="line" [data]="dataLine" [options]="optionsLine" (onDataSelect)="selectData($event)"></p-chart>
