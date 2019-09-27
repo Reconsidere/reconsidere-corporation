@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GridsterConfig, GridsterItem } from 'angular-gridster2';
+import { GridsterConfig, GridsterItem, DisplayGrid, CompactType, GridType } from 'angular-gridster2';
 import { UUID } from 'angular2-uuid';
 
 export interface IComponent {
@@ -17,12 +17,34 @@ export class LayoutService {
 
 	public options: GridsterConfig = {
 		draggable: {
-			enabled: true
+			enabled: true,
+			dropOverItems: true
 		},
-		pushItems: true,
 		resizable: {
-			enabled: true
-		}
+			enabled: true,
+			handles: {
+				s: true,
+				e: true,
+				n: true,
+				w: true,
+				se: true,
+				ne: true,
+				sw: true,
+				nw: true
+			}
+		},
+		margin: 10,
+		displayGrid: DisplayGrid.None,
+		compactType: CompactType.CompactLeftAndUp,
+		pushItems: true,
+		pushResizeItems: false,
+		mobileBreakPoint: 600,
+		isMobile: false,
+		swap: true,
+		mobileModeEnabled: true,
+		width: 'auto',
+		gridType: 'scrollVertical',
+		pushDirections: { north: true, east: true, south: true, west: true }
 	};
 	constructor() {}
 

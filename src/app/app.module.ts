@@ -51,12 +51,18 @@ import { SearchGraphicResidueRegisterPipe } from '../pipes/residue-register-grap
 import { EntriesManagementGraphicComponent } from './graphics/entries-management-graphic/entries-management-graphic.component';
 import { SearchGraphicEntriePipe } from '../pipes/search-graphic-entrie/search-graphic-entrie.pipe';
 import { GridsterModule } from 'angular-gridster2';
-import { WidgetComponent } from './widget/widget.component';
+import { WidgetUnitComponent } from './widget/widget-unit/widget-unit.component';
 import { LayoutItemDirective } from './directives/layout-item.directive';
+import { WidgetEntriesManagementGraphicComponent } from './widget/widget-entries-management-graphic/widget-entries-management-graphic.component';
+import { WidgetResidueRegisterGraphicComponent } from './widget/widget-residue-register-graphic/widget-residue-register-graphic.component';
 registerLocaleData(localePt);
 
 @NgModule({
-	entryComponents: [ WidgetComponent ],
+	entryComponents: [
+		WidgetUnitComponent,
+		WidgetEntriesManagementGraphicComponent,
+		WidgetResidueRegisterGraphicComponent
+	],
 	declarations: [
 		AppComponent,
 		SignInComponent,
@@ -77,7 +83,9 @@ registerLocaleData(localePt);
 		EntriesManagementGraphicComponent,
 		SearchGraphicEntriePipe,
 		LayoutItemDirective,
-		WidgetComponent
+		WidgetUnitComponent,
+		WidgetEntriesManagementGraphicComponent,
+		WidgetResidueRegisterGraphicComponent
 	],
 	imports: [
 		BrowserModule,

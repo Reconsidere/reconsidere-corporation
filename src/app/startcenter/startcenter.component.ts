@@ -8,7 +8,7 @@ import { UnitService } from 'src/services/unit.service';
 import * as messageCode from 'message.code.json';
 import { ToastrService } from 'ngx-toastr';
 import { GridsterConfig, GridsterItem } from 'angular-gridster2';
-import { LayoutService, IComponent } from 'src/services/layout.service';
+import { LayoutService, IComponent } from 'src/services/widget-layout/layout.service';
 
 @Component({
 	selector: 'app-startcenter',
@@ -17,18 +17,10 @@ import { LayoutService, IComponent } from 'src/services/layout.service';
 })
 export class StartcenterComponent implements OnInit {
 	page: number;
-	corporation: any;
-	myUnits: any;
 	corporationId: string;
-	itemListUnits: any;
-	NoImageUrl = `http://localhost:4200/assets/images/no-image.png`;
+	expand;
 
-	constructor(
-		private layoutService: LayoutService,
-		private toastr: ToastrService,
-		private authService: AuthService,
-		private unitService: UnitService
-	) {}
+	constructor(private layoutService: LayoutService, private authService: AuthService) {}
 	get options(): GridsterConfig {
 		return this.layoutService.options;
 	}
@@ -43,53 +35,14 @@ export class StartcenterComponent implements OnInit {
 	ngOnInit() {
 		this.authService.isAuthenticated();
 		this.page = 1;
-		this.itemListUnits = [];
 		this.corporationId = this.authService.getCorporationId();
-		this.load();
 	}
 
-	async load() {
-		await this.loadValues();
-		await this.loadUnit();
-	}
-
-	async loadValues() {
-		this.corporation = await new Promise(async (resolve, reject) => {
-			this.authService.getOrganization(this.authService.getClass(), resolve, reject);
-		});
-
-		if (
-			this.corporation.picture === undefined ||
-			this.corporation.picture === '' ||
-			this.corporation.picture === null
-		) {
-			this.corporation.path = this.NoImageUrl;
+	expands() {
+		if (!this.expand) {
+			this.expand = true;
 		} else {
-			this.corporation.path = `${environment.database.uri}/${this.corporation.picture}`;
-		}
-	}
-
-	async loadUnit() {
-		var myUnits = undefined;
-		try {
-			myUnits = await new Promise((resolve, reject) => {
-				myUnits = this.unitService.allUnits(this.authService.getClass(), this.corporationId, resolve, reject);
-			});
-
-			if (myUnits) {
-				this.myUnits = myUnits;
-				this.myUnits.forEach((unit) => {
-					if (unit.picture === undefined || unit.picture === '' || unit.picture === null) {
-						unit.path = this.NoImageUrl;
-					} else {
-						unit.path = `${environment.database.uri}/${unit.picture}`;
-					}
-				});
-			} else {
-				this.toastr.error(messageCode['WARNNING']['WRE016']['summary']);
-			}
-		} catch (error) {
-			this.toastr.error(messageCode['WARNNING'][error]['summary']);
+			this.expand = false;
 		}
 	}
 }

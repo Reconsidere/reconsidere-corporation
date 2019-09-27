@@ -1,34 +1,52 @@
 <app-toolbar></app-toolbar>
 <div class="container">
 
-    <!-- <div class="toolbar"> -->
-    <!-- <button id="addItem" (click)="addItem()" type="button" mat-raised-button color="accent" class="btn btn-sm btn-primary col-sm-12" data-toggle="button" aria-pressed="false" autocomplete="off">
-            <mat-icon>add</mat-icon>
-        </button>
-    </div>
-    <gridster [options]="options">
-        <gridster-item *ngFor="let item of layout" [item]="item">
-                <button (click)="deleteItem(item)" type="button" mat-raised-button color="warn" class="btn btn-sm btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
-                        <mat-icon>delete_forever</mat-icon>
-                      </button>
-        </gridster-item>
-    </gridster> -->
-
-
-
-
-    <!-- </div> -->
-
-
     <div class="toolbar">
-        <button (click)="layoutService.addItem()">Add Item</button>
-        <div class="draggable" draggable="true" (dragend)="layoutService.dropItem('widget')">widget</div>
-        <div class="draggable" draggable="true" (dragend)="layoutService.dropItem('example2')">Example 2</div>
+        <button id="addItem" (click)="layoutService.addItem()" type="button" mat-raised-button color="accent" class="btn btn-sm btn-primary col-sm-12" data-toggle="button" aria-pressed="false" autocomplete="off">
+            <mat-icon>add</mat-icon> Novo layout
+        </button>
+        <div class="card">
+            <div class="card-header">
+                <button class="block" (click)="expands()" type="button" mat-raised-button color="accent" data-toggle="button" aria-pressed="false" autocomplete="off">
+                    <mat-icon *ngIf="!expand">expand_more</mat-icon>
+                    <mat-icon *ngIf="expand">expand_less</mat-icon>
+                </button>
+                Meus widgets
+            </div>
+            <div *ngIf="expand" class="card-body col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
+
+                <div class="row">
+
+                    <div class="col-sm">
+                        <div class="card bg-info cardStyle">
+                            <div class="text-white text-center text-uppercase align-middle cardStyleText" draggable="true" (dragend)="layoutService.dropItem('widget-unit')">unidades</div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm">
+                        <div class="card bg-info cardStyle">
+                            <div class="text-white text-center text-uppercase align-middle cardStyleText" draggable="true" (dragend)="layoutService.dropItem('widget-entries-management-graphic')">gráfico entrada e saída </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm">
+                        <div class="card bg-info cardStyle">
+                            <div class="text-white text-center text-uppercase align-middle cardStyleText" draggable="true" (dragend)="layoutService.dropItem('widget-residue-register-graphic')">gráfico resíduos </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
     </div>
-    <gridster [options]="options">
-        <gridster-item *ngFor="let item of layout" [item]="item" (dragover)="layoutService.setDropId(item.id)">
-            <ng-container appLayoutItem [componentRef]="layoutService.getComponentRef(item.id)"></ng-container>
-            <button (click)="layoutService.deleteItem(item)">Delete Item</button>
+
+    <gridster  [options]="options">
+        <gridster-item  class="shadow-lg rounded bg-white" *ngFor="let item of layout" [item]="item" (dragover)="layoutService.setDropId(item.id)">
+            <button (click)="layoutService.deleteItem(item)" type="button" mat-raised-button color="warn" class="btn btn-sm btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+                <mat-icon>delete_forever</mat-icon>
+            </button>
+            <ng-container  appLayoutItem [componentRef]="layoutService.getComponentRef(item.id)"></ng-container>
         </gridster-item>
     </gridster>
 

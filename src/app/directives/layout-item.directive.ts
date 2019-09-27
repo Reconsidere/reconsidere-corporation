@@ -1,8 +1,12 @@
 import { Directive, Input, OnChanges, ViewContainerRef, ComponentFactoryResolver, ComponentRef } from '@angular/core';
-import { WidgetComponent } from '../widget/widget.component';
+import { WidgetUnitComponent } from '../widget/widget-unit/widget-unit.component';
+import { WidgetEntriesManagementGraphicComponent } from '../widget/widget-entries-management-graphic/widget-entries-management-graphic.component';
+import { WidgetResidueRegisterGraphicComponent } from '../widget/widget-residue-register-graphic/widget-residue-register-graphic.component';
 
 const components = {
-	widget: WidgetComponent
+	'widget-unit': WidgetUnitComponent,
+	'widget-entries-management-graphic': WidgetEntriesManagementGraphicComponent,
+	'widget-residue-register-graphic': WidgetResidueRegisterGraphicComponent
 };
 
 @Directive({

@@ -1,0 +1,24 @@
+<div class="row">
+  <div class="col-sm-4" *ngFor="let unit of myUnits">
+    <div class="card">
+      <img class="card-img-top img-fluid" src="{{unit.path}}" alt="unidade">
+      <div class="card-block">
+        <h4 class="card-title">{{unit.company}}</h4>
+      </div>
+      <ul class="list-group list-group-flush">
+        <small><b>CNPJ </b></small>
+        <input [(ngModel)]="unit.cnpj" class="inputStyle form-control" mask="00.000.000/0000-00" disabled="disabled" />
+        <small><b>Email </b></small>
+        <input [(ngModel)]="unit.email" class="inputStyle form-control" disabled="disabled" />
+        <small><b>Telefone </b></small>
+        <input [(ngModel)]="unit.phone" class="inputStyle form-control" mask="(00) 0000-0000" disabled="disabled" />
+        <small><b>Celular </b></small>
+        <input [(ngModel)]="unit.cellPhone" class="inputStyle form-control" mask="(00) 00000-0000" disabled="disabled" />
+        <button class="pull-right" (click)="details()" type="button" mat-raised-button color="accent" data-toggle="button" aria-pressed="false" autocomplete="off">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </ul>
+    </div>
+
+  </div>
+</div>
