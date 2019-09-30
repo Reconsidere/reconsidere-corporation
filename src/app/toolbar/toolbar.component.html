@@ -1,5 +1,5 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand">Reconsidere Corporation</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand text-white">Reconsidere Corporation</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -45,7 +45,7 @@
 
     <div class="pull-right">
       <ul class="nav pull-right">
-        <li ngbDropdown class="dropdown"><a ngbDropdownToggle class="dropdown-toggle" data-toggle="dropdown"><span class="text-muted text-uppercase" *ngIf="name">Bem vindo, {{name}}</span> <b class="caret"></b></a>
+        <li ngbDropdown class="dropdown"><a ngbDropdownToggle class="dropdown-toggle" data-toggle="dropdown"><span class=" text-white  text-uppercase" *ngIf="name">Bem vindo, {{name}}</span> <b class="caret"></b></a>
           <ul ngbDropdownMenu class="dropdown-menu">
             <li><a class="text-muted" routerLink="/logout" routerLinkActive="active" (click)="auth.logout()"><i class="icon-off text-muted"></i>Sair</a></li>
           </ul>

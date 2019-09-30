@@ -111,7 +111,8 @@ registerLocaleData(localePt);
 		ToastrModule.forRoot({
 			timeOut: 5000,
 			progressBar: true,
-			preventDuplicates: true
+			preventDuplicates: true,
+			positionClass: 'toast-top-right'
 		}),
 		RecaptchaModule.forRoot({
 			siteKey: '6Le4YIgUAAAAAJFj9q0jVjfxVR0D_QNfGetw0JKF'

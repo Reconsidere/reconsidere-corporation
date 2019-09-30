@@ -156,8 +156,8 @@ export class WidgetResidueRegisterGraphicComponent implements OnInit {
 		};
 
 		this.optionsLine = {
-			responsive: true,
 			maintainAspectRatio: true,
+			responsive: true,
 			pan: {
 				enabled: true,
 				mode: 'xy'

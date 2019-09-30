@@ -7,32 +7,34 @@
 @import '~ngx-toastr/toastr.css';
 @import 'theme';
 
-
 table {
 	width: 100%;
 	border-collapse: collapse;
-	margin:50px auto;
-	}
+	margin: 50px auto;
+}
 
 th {
 	font-weight: bold;
 	font-size: small;
-	}
+}
 
-td, th {
+td,
+th {
 	padding: 5px;
 	text-align: left;
-	}
+}
 
-@media
-only screen and (max-width: 760px),
-(min-device-width: 768px) and (max-device-width: 1024px)  {
-
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
 	table {
-	  	width: 100%;
+		width: 100%;
 	}
 
-	table, thead, tbody, th, td, tr {
+	table,
+	thead,
+	tbody,
+	th,
+	td,
+	tr {
 		display: block;
 	}
 
@@ -58,4 +60,8 @@ only screen and (max-width: 760px),
 		content: attr(data-column);
 		font-weight: bold;
 	}
+}
+
+#toast-container > div {
+	opacity: 1;
 }

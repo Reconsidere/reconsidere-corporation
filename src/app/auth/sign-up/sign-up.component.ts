@@ -207,7 +207,8 @@ export class SignUpComponent implements OnInit {
 		this.isValidPasswordUser = ConfirmPasswordValidator.MatchPassword(this.user.password, this.confirmPasswordUser);
 		setTimeout(function() {}.bind(this), 1000);
 		if (this.isValidPasswordUser) {
-			this.confirmPasswordUser = this.passwordUser;
+			this.confirmPasswordUser = this.user.password;
+			this.passwordUser = this.user.password;
 		} else {
 			this.confirmPasswordUser = this.authService.decript(this.confirmPasswordUser);
 		}
@@ -282,7 +283,6 @@ export class SignUpComponent implements OnInit {
 		console.log('Something went long when loading the Google reCAPTCHA');
 	}
 
-
 	enableDisbale(item, e) {
 		item.active = e.checked;
 	}
@@ -350,9 +350,6 @@ export class SignUpComponent implements OnInit {
 			this.confirmPasswordUser = this.passwordUser;
 		}
 	}
-
-
-
 
 	/**Remove from the list, if user not exist in database, if user exist dont remove from the list
    * because delete is blocked. Is permited only remove new user.
