@@ -1,0 +1,140 @@
+<app-toolbar></app-toolbar>
+<div class="container">
+
+
+  <div class="card">
+    <div class="card-header">
+      <button class="block" (click)="expandCreate()" type="button" mat-raised-button color="accent" data-toggle="button" aria-pressed="false" autocomplete="off">
+        <mat-icon *ngIf="!expandNew">expand_more</mat-icon>
+        <mat-icon *ngIf="expandNew">expand_less</mat-icon>
+      </button>
+      Adicionar documentos
+      <button type="button" id="save" (click)="save()" mat-raised-button class="col-md-2 pull-right" color="primary">
+        Salvar ações
+      </button>
+    </div>
+
+    <div *ngIf="expandNew" class="card-body">
+      <button id="newItem" (click)="newItem()" type="button" mat-raised-button color="accent" class="btn btn-sm btn-primary col-sm-12" data-toggle="button" aria-pressed="false" autocomplete="off">
+        <mat-icon>add</mat-icon>
+      </button>
+      <div class="tableDepartment">
+        <table class="table-sm">
+          <thead>
+            <tr id="Titles">
+              <th>Nome</th>
+              <th>tipo</th>
+              <th>Expira</th>
+              <th>Data</th>
+              <th>Notificar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-template ngFor let-item [ngForOf]="(documents | paginate: { itemsPerPage: 5, currentPage: page })" let-igroup="index">
+              <tr>
+                <td>
+                  <input (input)="ChangedItem(item)" [(ngModel)]="item.name" name="name" type="text" class="form-control" id="name" aria-describedby="name" />
+                </td>
+                <td>
+                  <select required [(ngModel)]="item.type" (change)="ChangedItem(item)" name="type" class="form-control">
+                    <option id="type" *ngFor="let item of types">{{ item }}</option>
+                  </select>
+                </td>
+
+                <td>
+                  <mat-slide-toggle color="accent" name="expire" [(ngModel)]="item.expire" (change)="Expire(item)"></mat-slide-toggle>
+                </td>
+                <td *ngIf="item.expire">
+                  <p-calendar [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" (ngModelChange)="ChangeDate($event, item)" required name="date" [ngModel]="item.date| date:'dd/MM/yyyy'" dateFormat="dd/mm/yy">
+                  </p-calendar>
+                </td>
+                <td *ngIf="item.expire">
+                  <select [(ngModel)]="item.daysNotification" name="daysNotification" class="form-control" (change)="ChangedItem(item)">
+                    <option id="daysNotification" *ngFor="let item of expires">{{ item }}</option>
+                  </select>
+                </td>
+
+              </tr>
+              <tr>
+                <td>
+                  <h6><span class="label label-default">Arquivo</span></h6>
+                  <form (ngSubmit)="uploadDocument(item)">
+                    <div class="form-group">
+                      <input id="uploadFile" type="file" name="archive" accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf" (change)="fileProgress($event)" />
+                      <button id="submit" type="submit" mat-raised-button color="accent">
+                        <mat-icon>arrow_upward</mat-icon>
+                      </button>
+                    </div>
+                  </form>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="mt-5"></div>
+                </td>
+              </tr>
+            </ng-template>
+          </tbody>
+          <pagination-controls (pageChange)="page = $event" previousLabel="Anterior" nextLabel="Próxima" autoHide="true" responsive="true" screenReaderPaginationLabel="Pagination">
+          </pagination-controls>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="card">
+    <div class="card-header">
+      <button class="block" (click)="expandDocuments()" type="button" mat-raised-button color="accent" data-toggle="button" aria-pressed="false" autocomplete="off">
+        <mat-icon *ngIf="!expandDocument">expand_more</mat-icon>
+        <mat-icon *ngIf="expandDocument">expand_less</mat-icon>
+      </button>
+      Meus documentos unidades
+    </div>
+    <div *ngIf="expandDocument" class="card-body">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-12" *ngFor="let doc of documents">
+            <div class="card shadow p-3 mb-5 bg-white rounded">
+              <div [style.backgroundColor]="doc.color" class="card-header rounded text-white text-center text-uppercase align-middle font-weight-light">
+                {{doc.status}}
+              </div>
+              <ul class="list-group list-group-flush card-body">
+                <label class="font-weight-light" for="name">Nome </label>
+                <input name="name" id="name" [(ngModel)]="doc.name" class="form-control border-0" />
+                <label class="font-weight-light" for="expire">Tipo</label>
+                <select required [(ngModel)]="doc.type" (change)="ChangedItem(daysNotification)" name="type" class=" border-0 form-control">
+                  <option id="type" *ngFor="let item of types">{{ item }}</option>
+                </select>
+                <label class="font-weight-light" for="expire">Expira</label>
+                <mat-slide-toggle color="accent" name="expire" [(ngModel)]="doc.expire" (change)="Expire(doc)"></mat-slide-toggle>
+                <label *ngIf="doc.expire" class="font-weight-light" for="expire">Notificar</label>
+                <select *ngIf="doc.expire" [(ngModel)]="doc.daysNotification" name="daysNotification" class="form-control border-0" (change)="ChangedItem(doc)">
+                  <option id="daysNotification" *ngFor="let item of expires">{{ item }}</option>
+                </select>
+                <label class="font-weight-light" for="expire">Arquivo</label>
+                <form (ngSubmit)="uploadDocument(item)">
+                  <div class="form-group">
+                    <input id="uploadFile" type="file" name="archive" accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf" (change)="fileProgress($event)" />
+                    <button id="submit" type="submit" mat-raised-button color="accent">
+                      <mat-icon>arrow_upward</mat-icon>
+                    </button>
+                  </div>
+                </form>
+
+
+              </ul>
+              <div class="card-footer">
+                <label *ngIf="doc.expire" class="text-uppercase  font-weight-light" for="expire">Data</label>
+                <p-calendar *ngIf="doc.expire" class="float-right text-muted border-0" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" (ngModelChange)="ChangeDate($event, doc)" required name="date" [ngModel]="doc.date| date:'dd/MM/yyyy'" dateFormat="dd/mm/yy">
+                </p-calendar>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

@@ -4,6 +4,8 @@ import { GraphQLClient } from 'graphql-request';
 import { environment } from 'src/environments/environment';
 import { Department } from 'src/models/department';
 import { Corporation } from 'src/models/corporation';
+import { ProviderAst } from '@angular/compiler';
+import { ProviderRegistration } from 'src/models/providerregistration';
 
 @Injectable({
 	providedIn: 'root'
@@ -11,10 +13,11 @@ import { Corporation } from 'src/models/corporation';
 export class DepartamentService {
 	constructor(private http: HttpClient) {}
 
-
 	private getPath(typeCorporation): String {
 		if (typeCorporation === Corporation.Classification.Coletora) {
 			return environment.database.paths.collector;
+		} else if (typeCorporation === ProviderRegistration.Classification.Provider) {
+			return environment.database.paths.provider;
 		} else {
 			return environment.database.paths.corporation;
 		}
@@ -105,7 +108,7 @@ export class DepartamentService {
 			department: department
 		};
 
-		const client = new GraphQLClient(environment.database.uri +`/${this.getPath(_class)}`, {
+		const client = new GraphQLClient(environment.database.uri + `/${this.getPath(_class)}`, {
 			headers: {}
 		});
 		var allDepartaments = client

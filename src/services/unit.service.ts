@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { GraphQLClient } from 'graphql-request';
 import { Corporation } from 'src/models/corporation';
+import { ProviderRegistration } from 'src/models/providerregistration';
 
 @Injectable({
 	providedIn: 'root'
@@ -13,6 +14,8 @@ export class UnitService {
 	private getPath(typeCorporation): String {
 		if (typeCorporation === Corporation.Classification.Coletora) {
 			return environment.database.paths.collector;
+		} else if (typeCorporation === ProviderRegistration.Classification.Provider) {
+			return environment.database.paths.provider;
 		} else {
 			return environment.database.paths.corporation;
 		}
@@ -215,7 +218,7 @@ export class UnitService {
 					resolve(allUnits['allUnits']);
 				}
 			} catch (error) {
-        console.log(error);
+				console.log(error);
 				throw new Error(error.response.errors[0].message);
 			}
 		} else {

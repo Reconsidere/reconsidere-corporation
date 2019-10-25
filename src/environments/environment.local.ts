@@ -17,6 +17,7 @@ export const environment = {
 			collector:'collector',
 			provider:'provider',
 			images:'reconsidere/images',
+			archives:'reconsidere/archives',
 		}
 	},
 	secret: '154097$#@$^@1ETI'

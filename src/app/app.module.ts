@@ -55,6 +55,7 @@ import { WidgetUnitComponent } from './widget/widget-unit/widget-unit.component'
 import { LayoutItemDirective } from './directives/layout-item.directive';
 import { WidgetEntriesManagementGraphicComponent } from './widget/widget-entries-management-graphic/widget-entries-management-graphic.component';
 import { WidgetResidueRegisterGraphicComponent } from './widget/widget-residue-register-graphic/widget-residue-register-graphic.component';
+import { DocumentsManagementComponent } from './documents-management/documents-management.component';
 registerLocaleData(localePt);
 
 @NgModule({
@@ -85,7 +86,8 @@ registerLocaleData(localePt);
 		LayoutItemDirective,
 		WidgetUnitComponent,
 		WidgetEntriesManagementGraphicComponent,
-		WidgetResidueRegisterGraphicComponent
+		WidgetResidueRegisterGraphicComponent,
+		DocumentsManagementComponent
 	],
 	imports: [
 		BrowserModule,

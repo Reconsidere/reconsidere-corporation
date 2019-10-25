@@ -14,6 +14,7 @@ import { ProviderRegistrationComponent } from './provider-registration/provider-
 import { SignUpComponent } from './auth/sign-up/sign-up.component';
 import { ResidueRegisterGraphicComponent } from './graphics/residue-register-graphic/residue-register-graphic.component';
 import { EntriesManagementGraphicComponent } from './graphics/entries-management-graphic/entries-management-graphic.component';
+import { DocumentsManagementComponent } from './documents-management/documents-management.component';
 
 export const routes: Routes = [
 	{ path: '', component: StartcenterComponent, canActivate: [ AuthGuard ] },
@@ -28,6 +29,7 @@ export const routes: Routes = [
 	{ path: 'residue-register', component: ResiduesRegisterComponent, canActivate: [ AuthGuard ] },
 	{ path: 'scheduling', component: SchedulingComponent, canActivate: [ AuthGuard ] },
 	{ path: 'entries-management', component: EntriesManagementComponent, canActivate: [ AuthGuard ] },
+	{ path: 'documents-management', component: DocumentsManagementComponent, canActivate: [ AuthGuard ] },
 	{ path: 'registration-provider', component: ProviderRegistrationComponent, canActivate: [ AuthGuard ] },
 	{ path: 'residue-register-graph', component: ResidueRegisterGraphicComponent, canActivate: [ AuthGuard ] },
 	{ path: 'entries-management-graphic', component: EntriesManagementGraphicComponent, canActivate: [ AuthGuard ] },

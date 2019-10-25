@@ -3,6 +3,7 @@ import { GraphQLClient } from 'graphql-request';
 import { environment } from 'src/environments/environment';
 import { Corporation } from 'src/models/corporation';
 import { Entries } from 'src/models/entries';
+import { ProviderRegistration } from 'src/models/providerregistration';
 
 @Injectable({
 	providedIn: 'root'
@@ -13,6 +14,8 @@ export class EntriesManagementService {
 	private getPath(typeCorporation): String {
 		if (typeCorporation === Corporation.Classification.Coletora) {
 			return environment.database.paths.collector;
+		} else if (typeCorporation === ProviderRegistration.Classification.Provider) {
+			return environment.database.paths.provider;
 		} else {
 			return environment.database.paths.corporation;
 		}

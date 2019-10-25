@@ -20,7 +20,8 @@ export const environment = {
 			transactionhistory: 'transactionhistory',
 			collector:'collector',
 			provider:'provider',
-			images:'reconsidere/images'
+			images:'reconsidere/images',
+			archives:'reconsidere/archives',
 		}
 	},
 	api: {

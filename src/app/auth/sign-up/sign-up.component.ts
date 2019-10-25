@@ -121,7 +121,7 @@ export class SignUpComponent implements OnInit {
 			myReader.readAsDataURL(this.fileData);
 			myReader.onloadend = async (e) => {
 				object = myReader.result;
-				picture.name = this.fileData.name;
+				picture.name = '_' + Date.now() + this.fileData.name;
 				picture.extension = this.fileData.type;
 				picture.file = object;
 				var result = await new Promise(async (resolve, reject) => {
