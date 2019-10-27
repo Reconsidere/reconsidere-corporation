@@ -29,17 +29,17 @@
             <ng-template ngFor let-item [ngForOf]="(departments | paginate: { itemsPerPage: 5, currentPage: page })" let-igroup="index">
               <tr *ngIf="item.active">
                 <td>
-                  <input required [(ngModel)]="item.name" name="name" type="text" class="form-control" id="name" aria-describedby="name" />
+                  <input required [(ngModel)]="item.name" name="name" (change)="ChangedItem(item)" type="text" class="form-control" id="name" aria-describedby="name" />
                 </td>
                 <td>
-                  <input [(ngModel)]="item.description" name="description" type="text" class="form-control" id="description" aria-describedby="description" />
+                  <input [(ngModel)]="item.description" (change)="ChangedItem(item)" name="description" type="text" class="form-control" id="description" aria-describedby="description" />
                 </td>
                 <td>
-                  <mat-checkbox color="accent" type="checkbox" name="active" [(ngModel)]="item.active" id="active">
+                  <mat-checkbox color="accent" type="checkbox" name="active" (change)="ChangedItem(item)" [(ngModel)]="item.active" id="active">
                   </mat-checkbox>
                 </td>
                 <td>
-                  <button (click)="remove(item)" type="button" mat-raised-button color="warn" class="btn btn-sm btn-danger" data-toggle="button" aria-pressed="false" autocomplete="off">
+                  <button (click)="remove(item)" type="button"  mat-raised-button color="warn" class="btn btn-sm btn-danger" data-toggle="button" aria-pressed="false" autocomplete="off">
                     <mat-icon>delete_forever</mat-icon>
                   </button>
                 </td>

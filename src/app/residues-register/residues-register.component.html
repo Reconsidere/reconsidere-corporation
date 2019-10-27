@@ -62,23 +62,23 @@
                       </select>
                     </td>
                     <td>
-                      <select required [(ngModel)]="qrCode.material.type" name="type" class="form-control">
+                      <select required  (change)="ChangedQrItem(qrCode)" [(ngModel)]="qrCode.material.type" name="type" class="form-control">
                         <option id="type" *ngFor="let item of materialsType">{{ item }}</option>
                       </select>
                     </td>
                     <td>
-                      <input required [(ngModel)]="qrCode.material.name" name="name" type="text" class="form-control" id="name" aria-describedby="name" />
+                      <input required [(ngModel)]="qrCode.material.name" (change)="ChangedQrItem(qrCode)" name="name" type="text" class="form-control" id="name" aria-describedby="name" />
                     </td>
                     <td>
-                      <select required [(ngModel)]="qrCode.material.unity" name="unity" class="form-control sizeKg">
+                      <select required (change)="ChangedQrItem(qrCode)" [(ngModel)]="qrCode.material.unity" name="unity" class="form-control sizeKg">
                         <option id="unity" *ngFor="let item of unitsType">{{ item }}</option>
                       </select>
                     </td>
                     <td>
-                      <input required [(ngModel)]="qrCode.material.weight" [min]="0" name="weight" type="number" class="form-control size" id="weight" aria-describedby="weight" />
+                      <input required [(ngModel)]="qrCode.material.weight" (change)="ChangedQrItem(qrCode)" [min]="0" name="weight" type="number" class="form-control size" id="weight" aria-describedby="weight" />
                     </td>
                     <td>
-                      <input required [(ngModel)]="qrCode.material.quantity" [min]="1" name="quantity" type="number" class="form-control size" id="quantity" aria-describedby="quantity" />
+                      <input required [(ngModel)]="qrCode.material.quantity" (change)="ChangedQrItem(qrCode)" [min]="1" name="quantity" type="number" class="form-control size" id="quantity" aria-describedby="quantity" />
                     </td>
 
                   </tr>

@@ -10,342 +10,302 @@ import { QrCode } from 'src/models/qrcode';
 import { DepartamentService } from 'src/services/departament.service';
 
 @Component({
-	selector: 'app-residues-register',
-	templateUrl: './residues-register.component.html',
-	styleUrls: [ './residues-register.component.scss' ]
+  selector: 'app-residues-register',
+  templateUrl: './residues-register.component.html',
+  styleUrls: ['./residues-register.component.scss']
 })
 export class ResiduesRegisterComponent implements OnInit {
-	page: number;
-	corporationId: string;
-	residuesRegister: any;
-	residuesRegisterOriginal: any;
-	residuesRegisterName: any;
-	materialsType: any;
-	unitsType: any;
-	nameResidue: any;
-	departments: any;
-	expand: boolean;
-	residuesToSave: ResiduesRegister;
-	constructor(
-		private toastr: ToastrService,
-		private residuesRegisterService: ResiduesRegisterService,
-		private authService: AuthService,
-		private departmentService: DepartamentService
-	) {
-		this.materialsType = Object.values(Material.Type);
-		this.unitsType = Object.values(Material.Unit);
-		this.residuesRegisterName = [];
-		this.departments = [];
-		this.expand = false;
-		this.residuesToSave = new ResiduesRegister();
-	}
+  page: number;
+  corporationId: string;
+  residuesRegister: any;
+  residuesRegisterOriginal: any;
+  residuesRegisterName: any;
+  materialsType: any;
+  unitsType: any;
+  nameResidue: any;
+  departments: any;
+  expand: boolean;
+  constructor(
+    private toastr: ToastrService,
+    private residuesRegisterService: ResiduesRegisterService,
+    private authService: AuthService,
+    private departmentService: DepartamentService
+  ) {
+    this.materialsType = Object.values(Material.Type);
+    this.unitsType = Object.values(Material.Unit);
+    this.residuesRegisterName = [];
+    this.departments = [];
+    this.expand = false;
+  }
 
-	ngOnInit() {
-		this.authService.isAuthenticated();
-		this.page = 1;
-		this.corporationId = this.authService.getCorporationId();
-		this.loadDepartments();
-		this.loadResiduesRegister();
-	}
+  ngOnInit() {
+    this.authService.isAuthenticated();
+    this.page = 1;
+    this.corporationId = this.authService.getCorporationId();
+    this.loadDepartments();
+    this.loadResiduesRegister();
+  }
 
-	newItem() {
-		var material = new Material();
-		var qrCode = new QrCode();
-		qrCode.code = this.uuidv4();
-		qrCode.date = new Date();
-		material.active = true;
-		material.name = this.nameResidue;
-		material.quantity = 1;
-		qrCode.material = material;
-		var newDepartment = new Department();
-		newDepartment.isChanged = true;
-		newDepartment.active = true;
-		if (this.residuesRegister === undefined) {
-			this.residuesRegister = new ResiduesRegister();
-			this.residuesRegister.departments = [];
-			newDepartment.qrCode = [ qrCode ];
-			this.residuesRegister.departments.push(newDepartment);
-		} else {
-			newDepartment.qrCode = [ qrCode ];
-			this.residuesRegister.departments.push(newDepartment);
-		}
-		if (!this.expand) {
-			this.expand = true;
-		}
-	}
+  newItem() {
+    var material = new Material();
+    var qrCode = new QrCode();
+    qrCode.code = this.uuidv4();
+    qrCode.date = new Date();
+    material.active = true;
+    material.name = this.nameResidue;
+    material.quantity = 1;
+    qrCode.material = material;
+    var newDepartment = new Department();
+    newDepartment.active = true;
+    if (this.residuesRegister === undefined) {
+      this.residuesRegister = new ResiduesRegister();
+      this.residuesRegister.departments = [];
+      newDepartment.qrCode = [qrCode];
+      this.residuesRegister.departments.push(newDepartment);
+    } else {
+      newDepartment.qrCode = [qrCode];
+      this.residuesRegister.departments.push(newDepartment);
+    }
+    if (!this.expand) {
+      this.expand = true;
+    }
+  }
 
-	async loadDepartments() {
-		var departments = undefined;
-		this.departments = undefined;
-		try {
-			departments = await new Promise((resolve, reject) => {
-				departments = this.departmentService.allDepartaments(
-					this.authService.getClass(),
-					this.corporationId,
-					resolve,
-					reject
-				);
-			});
+  async loadDepartments() {
+    var departments = undefined;
+    this.departments = undefined;
+    try {
+      departments = await new Promise((resolve, reject) => {
+        departments = this.departmentService.allDepartaments(
+          this.authService.getClass(),
+          this.corporationId,
+          resolve,
+          reject
+        );
+      });
 
-			if (departments) {
-				this.departments = departments;
-			}
-		} catch (error) {
-			this.toastr.error(messageCode['WARNNING'][error]['summary']);
-		}
-	}
+      if (departments) {
+        this.departments = departments;
+      }
+    } catch (error) {
+      this.toastr.error(messageCode['WARNNING'][error]['summary']);
+    }
+  }
 
-	async loadResiduesRegister() {
-		var residuesRegister = undefined;
-		try {
-			residuesRegister = await new Promise((resolve, reject) => {
-				residuesRegister = this.residuesRegisterService.allResiduesRegister(
-					this.authService.getClass(),
-					this.corporationId,
-					resolve,
-					reject
-				);
-			});
-			this.insertValues(residuesRegister);
-		} catch (error) {
-			console.log(error);
-			this.toastr.error(messageCode['WARNNING'][error]['summary']);
-		}
-	}
+  async loadResiduesRegister() {
+    var residuesRegister = undefined;
+    try {
+      residuesRegister = await new Promise((resolve, reject) => {
+        residuesRegister = this.residuesRegisterService.allResiduesRegister(
+          this.authService.getClass(),
+          this.corporationId,
+          resolve,
+          reject
+        );
+      });
+      this.insertValues(residuesRegister);
+    } catch (error) {
+      console.log(error);
+      this.toastr.error(messageCode['WARNNING'][error]['summary']);
+    }
+  }
 
-	private insertValues(residuesRegister: any) {
-		this.residuesRegisterName = [];
-		if (
-			residuesRegister !== null &&
-			residuesRegister.departments !== undefined &&
-			residuesRegister.departments.length > 0
-		) {
-			this.residuesRegister = JSON.parse(JSON.stringify(residuesRegister));
-			this.residuesRegisterOriginal = JSON.parse(JSON.stringify(residuesRegister));
-			this.residuesRegister.departments.forEach((departments) => {
-				departments.qrCode.forEach((qrcode) => {
-					this.residuesRegisterName.push(qrcode.material.name);
-				});
-			});
-		}
-	}
+  private insertValues(residuesRegister: any) {
+    this.residuesRegisterName = [];
+    if (
+      residuesRegister !== null &&
+      residuesRegister.departments !== undefined &&
+      residuesRegister.departments.length > 0
+    ) {
+      this.residuesRegister = JSON.parse(JSON.stringify(residuesRegister));
+      this.residuesRegisterOriginal = JSON.parse(JSON.stringify(residuesRegister));
+      this.residuesRegister.departments.forEach((departments) => {
+        departments.qrCode.forEach((qrcode) => {
+          this.residuesRegisterName.push(qrcode.material.name);
+        });
+      });
+    }
+  }
 
-	selectDepartment(oldID, objectCurrent, indexQrCodetoChange) {
-		if (!oldID) {
-			var item = this.departments.find((x) => x._id === objectCurrent._id);
-			objectCurrent.name = item.name;
-			objectCurrent.description = item.description;
-			objectCurrent.active = item.active;
-			objectCurrent._id = item._id;
-		} else {
-			if (this.residuesRegister.departments.length === 1) {
-				objectCurrent.isChanged = true;
-				var isReturn = false;
-				this.residuesRegister.departments.forEach((department) => {
-					if (department.qrCode.length === 1) {
-						isReturn = true;
-					}
-				});
-				if (isReturn) {
-					return;
-				}
-			}
-			var idNewDepartment = objectCurrent._id;
-			objectCurrent._id = oldID;
-			objectCurrent.isChanged = true;
-			//add qrCode to new
-			var isAdd = false;
-			this.residuesRegister.departments.forEach((department) => {
-				if (department._id === idNewDepartment && !isAdd) {
-					var element = objectCurrent.qrCode[indexQrCodetoChange];
-					department.qrCode.push(element);
-					isAdd = true;
-				}
-			});
-			if (!isAdd) {
-				var item = this.departments.find((x) => x._id === idNewDepartment);
-				this.newItem();
-				this.residuesRegister.departments[this.residuesRegister.departments.length - 1].name = item.name;
-				this.residuesRegister.departments[this.residuesRegister.departments.length - 1].description =
-					item.description;
-				this.residuesRegister.departments[this.residuesRegister.departments.length - 1].active = item.active;
-				this.residuesRegister.departments[this.residuesRegister.departments.length - 1]._id = item._id;
-				this.residuesRegister.departments[this.residuesRegister.departments.length - 1].qrCode[0] =
-					objectCurrent.qrCode[indexQrCodetoChange];
-			}
+  selectDepartment(oldID, objectCurrent, indexQrCodetoChange) {
+    if (!oldID) {
+      var item = this.departments.find((x) => x._id === objectCurrent._id);
+      objectCurrent.name = item.name;
+      objectCurrent.description = item.description;
+      objectCurrent.active = item.active;
+      objectCurrent._id = item._id;
+    }
+    //else {
+    //   if (this.residuesRegister.departments.length === 1) {
+    //     objectCurrent.isChanged = true;
+    //     var isReturn = false;
+    //     this.residuesRegister.departments.forEach((department) => {
+    //       if (department.qrCode.length === 1) {
+    //         isReturn = true;
+    //       }
+    //     });
+    //     if (isReturn) {
+    //       return;
+    //     }
+    //   }
+    //   var idNewDepartment = objectCurrent._id;
+    //   objectCurrent._id = oldID;
+    //   objectCurrent.isChanged = true;
+    //   //add qrCode to new
+    //   var isAdd = false;
+    //   this.residuesRegister.departments.forEach((department) => {
+    //     if (department._id === idNewDepartment && !isAdd) {
+    //       var element = objectCurrent.qrCode[indexQrCodetoChange];
+    //       department.qrCode.push(element);
+    //       isAdd = true;
+    //     }
+    //   });
+    //   if (!isAdd) {
+    //     var item = this.departments.find((x) => x._id === idNewDepartment);
+    //     this.newItem();
+    //     this.residuesRegister.departments[this.residuesRegister.departments.length - 1].name = item.name;
+    //     this.residuesRegister.departments[this.residuesRegister.departments.length - 1].description =
+    //       item.description;
+    //     this.residuesRegister.departments[this.residuesRegister.departments.length - 1].active = item.active;
+    //     this.residuesRegister.departments[this.residuesRegister.departments.length - 1]._id = item._id;
+    //     this.residuesRegister.departments[this.residuesRegister.departments.length - 1].qrCode[0] =
+    //       objectCurrent.qrCode[indexQrCodetoChange];
+    //   }
 
-			//remover o qrCode do antigo
-			var isRemoved = false;
-			this.residuesRegister.departments.forEach((department) => {
-				if (department._id === oldID && !isRemoved) {
-					department.qrCode.splice(indexQrCodetoChange, 1);
-					isRemoved = true;
-				}
-			});
-		}
-	}
+    //   //remover o qrCode do antigo
+    //   var isRemoved = false;
+    //   this.residuesRegister.departments.forEach((department) => {
+    //     if (department._id == oldID && !isRemoved) {
+    //       department.qrCode.splice(indexQrCodetoChange, 1);
+    //       isRemoved = true;
+    //     }
+    //   });
+    // }
+  }
 
 	/**
 	 * Utilizado por hora para gerar ids unicos para cada produto no lugar do Qr code
 	 */
-	uuidv4() {
-		return 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-			var r = (Math.random() * 16) | 0,
-				v = c == 'x' ? r : (r & 0x3) | 0x8;
-			return v.toString(16);
-		});
-	}
+  uuidv4() {
+    return 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = (Math.random() * 16) | 0,
+        v = c == 'x' ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
+  }
 
-	closeOrExpand() {
-		if (this.residuesRegister === undefined || this.residuesRegister === null) {
-			return;
-		}
-		if (this.expand) {
-			this.expand = false;
-		} else {
-			this.expand = true;
-		}
-	}
+  closeOrExpand() {
+    if (this.residuesRegister === undefined || this.residuesRegister === null) {
+      return;
+    }
+    if (this.expand) {
+      this.expand = false;
+    } else {
+      this.expand = true;
+    }
+  }
 
-	resetResidueRegisters(residuesRegister) {
-		this.residuesToSave = new ResiduesRegister();
-		this.insertValues(residuesRegister);
-	}
+  resetResidueRegisters(residuesRegister) {
+    this.insertValues(residuesRegister);
+  }
 
-	removeNonChangeds(): Boolean {
-		var existchange = false;
-		if (this.residuesRegisterOriginal === undefined || this.residuesRegisterOriginal === undefined) {
-			this.residuesToSave = JSON.parse(JSON.stringify(this.residuesRegister));
-			return true;
-		}
-		if (this.residuesRegister.departments.length > this.residuesRegisterOriginal.departments.length) {
-			existchange = true;
-		}
+  ChangedItem(item) {
+    item.changed = true;
+  }
 
-		var changed;
-		var match;
-		this.residuesRegister.departments.forEach((department) => {
-			changed = false;
-			match = false;
-			this.residuesRegisterOriginal.departments.forEach((original) => {
-				if (department._id === original._id) {
-					match = true;
-					if (
-						department.name !== original.name ||
-						department.description !== original.description ||
-						department.active !== original.active
-					) {
-						existchange = true;
-						changed = true;
-					}
+  ChangedQrItem(itemQrCode) {
+    this.residuesRegister.departments.forEach((department, index) => {
+      department.qrCode.forEach((qrCode) => {
+        if (qrCode.code === itemQrCode.code) {
+          department.changed = true;
+        }
+      });
+    });
+  }
 
-					department.qrCode.forEach((qrCode) => {
-						original.qrCode.forEach((qrCodeOriginal) => {
-							if (qrCode.material._id === undefined) {
-								existchange = true;
-								changed = true;
-							} else if (qrCode.material._id === qrCodeOriginal.material._id) {
-								if (
-									qrCode.material.name !== qrCodeOriginal.material.name ||
-									qrCode.material.type !== qrCodeOriginal.material.type ||
-									qrCode.material.weight !== qrCodeOriginal.material.weight ||
-									qrCode.material.quantity !== qrCodeOriginal.material.quantity ||
-									qrCode.material.unity !== qrCodeOriginal.material.unity ||
-									qrCode.material.active !== qrCodeOriginal.material.active
-								) {
-									existchange = true;
-									changed = true;
-								}
-							}
-						});
-					});
-				}
-				if (department.isChanged) {
-					existchange = true;
-					changed = true;
-				}
-			});
-			if (changed) {
-				if (!this.residuesToSave.departments) {
-					this.residuesToSave.departments = [ department ];
-				} else {
-					this.residuesToSave.departments.push(department);
-				}
-				changed = false;
-			} else if (!match) {
-				if (!this.residuesToSave.departments) {
-					this.residuesToSave.departments = [ department ];
-				} else {
-					this.residuesToSave.departments.push(department);
-				}
-			}
-		});
-		return existchange;
-	}
+  removeNotChanged() {
+    this.residuesRegister.departments.forEach((department, index) => {
+      if (!department.changed) {
+        this.residuesRegister.departments.splice(index, 1);
+      }
+    });
+  }
 
-	veryfyBeforeSave() {
-		if (this.residuesRegister.departments === undefined || this.residuesRegister.departments.length <= 0) {
-			this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
-			throw new Error();
-		}
-		this.residuesRegister.departments.forEach((department) => {
-			if (department.name === undefined) {
-				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
-				throw new Error();
-			}
-			department.qrCode.forEach((qrCode) => {
-				if (qrCode.code === undefined || qrCode.date === undefined) {
-					this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
-					throw new Error();
-				}
-				if (qrCode.material === undefined) {
-				}
-				if (
-					qrCode.material.name === undefined ||
-					qrCode.material.type === undefined ||
-					qrCode.material.weight < 0 ||
-					qrCode.material.quantity < 0 ||
-					qrCode.material.unity === undefined
-				) {
-					this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
-					throw new Error();
-				}
-			});
-		});
-	}
 
-	changeDate() {
-		this.residuesToSave.departments.forEach((department) => {
-			department.qrCode.forEach((qrCode) => {
-				qrCode.date = new Date();
-			});
-		});
-	}
+  veryfyBeforeSave() {
+    if (this.residuesRegister.departments === undefined || this.residuesRegister.departments.length <= 0) {
+      this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+      throw new Error();
+    }
+    this.residuesRegister.departments.forEach((department) => {
+      if (department.name === undefined) {
+        this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+        throw new Error();
+      }
+      department.qrCode.forEach((qrCode) => {
+        if (qrCode.code === undefined || qrCode.date === undefined) {
+          this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+          throw new Error();
+        }
+        if (qrCode.material === undefined) {
+          this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+          throw new Error();
+        }
+        if (
+          qrCode.material.name === undefined ||
+          qrCode.material.type === undefined ||
+          qrCode.material.weight < 0 ||
+          qrCode.material.quantity < 0 ||
+          qrCode.material.unity === undefined
+        ) {
+          this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+          throw new Error();
+        }
+      });
+    });
+  }
 
-	async save() {
-		try {
-			if (!this.removeNonChangeds()) {
-				this.loadDepartments();
-				this.loadResiduesRegister();
-				this.toastr.warning(messageCode['WARNNING']['WRE020']['summary']);
-				return;
-			}
-			this.changeDate();
-			this.veryfyBeforeSave();
-			var registerResidues = await new Promise(async (resolve, reject) => {
-				this.residuesRegisterService.addOrUpdate(
-					this.authService.getClass(),
-					this.corporationId,
-					this.residuesToSave,
-					resolve,
-					reject
-				);
-			});
-			this.resetResidueRegisters(registerResidues);
-			this.loadDepartments();
-			this.toastr.success(messageCode['SUCCESS']['SRE001']['summary']);
-		} catch (error) {
-			this.toastr.warning(messageCode['ERROR'][error]['summary']);
-		}
-	}
+  changeDate() {
+    this.residuesRegister.departments.forEach((department) => {
+      department.qrCode.forEach((qrCode) => {
+        qrCode.date = new Date();
+      });
+    });
+  }
+
+  removeInvalidaValuesToSave() {
+    this.residuesRegister.departments.forEach((department, index) => {
+      delete department.changed;
+    });
+  }
+
+  async save() {
+    try {
+      this.removeNotChanged();
+      this.removeInvalidaValuesToSave();
+
+      if (this.residuesRegister.departments.length <= 0) {
+        this.loadDepartments();
+        this.loadResiduesRegister();
+        this.toastr.warning(messageCode['WARNNING']['WRE020']['summary']);
+        return;
+      }
+      this.changeDate();
+      this.veryfyBeforeSave();
+      var registerResidues = await new Promise(async (resolve, reject) => {
+        this.residuesRegisterService.addOrUpdate(
+          this.authService.getClass(),
+          this.corporationId,
+          this.residuesRegister,
+          resolve,
+          reject
+        );
+      });
+      this.resetResidueRegisters(registerResidues);
+      this.loadDepartments();
+      this.toastr.success(messageCode['SUCCESS']['SRE001']['summary']);
+    } catch (error) {
+      this.toastr.warning(messageCode['ERROR'][error]['summary']);
+    }
+  }
 }
