@@ -57,12 +57,13 @@
                       </span>
                     </td>
                     <td>
-                      <select required (click)="oldValue = department._id" [(ngModel)]="department._id"  (change)="selectDepartment(oldValue ,department, i)" name="department" class="form-control">
-                        <option id="department" [ngValue]="item._id" *ngFor="let item of departments">{{ item.name }}</option>
+                      <select required (click)="oldValue = department" [(ngModel)]="department" (change)="selectDepartment(oldValue ,department._id, i)" name="department" class="form-control">
+                        <option hidden value="{{department}}" selected>{{department.name}}</option>
+                        <option id="department" [ngValue]="item" *ngFor="let item of departments">{{ item.name }}</option>
                       </select>
                     </td>
                     <td>
-                      <select required  (change)="ChangedQrItem(qrCode)" [(ngModel)]="qrCode.material.type" name="type" class="form-control">
+                      <select required (change)="ChangedQrItem(qrCode)" [(ngModel)]="qrCode.material.type" name="type" class="form-control">
                         <option id="type" *ngFor="let item of materialsType">{{ item }}</option>
                       </select>
                     </td>
@@ -86,7 +87,7 @@
               </ng-template>
             </tbody>
             <pagination-controls (pageChange)="page = $event" previousLabel="Anterior" nextLabel="Próxima" autoHide="true" responsive="true" screenReaderPaginationLabel="Pagination">
-              </pagination-controls>
+            </pagination-controls>
           </table>
         </div>
       </div>
