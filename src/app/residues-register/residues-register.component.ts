@@ -140,6 +140,8 @@ export class ResiduesRegisterComponent implements OnInit {
 			var isNew;
 			if (item && oldItem.qrCode) {
 				var element = this.residuesRegister.departments.find((x) => x._id === item._id);
+				element.isChanged = true;
+				element.changed = true;
 				element.qrCode.push(oldItem.qrCode[indexQrCodetoChange]);
 			} else {
 				this.newItem();
@@ -149,6 +151,8 @@ export class ResiduesRegisterComponent implements OnInit {
 				this.residuesRegister.departments[index].active = item.active;
 				this.residuesRegister.departments[index]._id = item._id;
 				this.residuesRegister.departments[index].qrCode[0] = objectCurrent.qrCode[indexQrCodetoChange];
+				this.residuesRegister.departments[index].isChanged = true;
+				this.residuesRegister.departments[index].changed = true;
 				isNew = true;
 			}
 
@@ -204,7 +208,8 @@ export class ResiduesRegisterComponent implements OnInit {
 			this.residuesRegister.departments[index].active = item.active;
 			this.residuesRegister.departments[index]._id = item._id;
 			this.residuesRegister.departments[index].qrCode[0] = oldItem.qrCode[indexQrCodetoChange];
-
+			this.residuesRegister.departments[index].isChanged = true;
+			this.residuesRegister.departments[index].changed = true;
 			var removed;
 			this.residuesRegister.departments.forEach((department, ind) => {
 				if (!removed) {
@@ -238,6 +243,7 @@ export class ResiduesRegisterComponent implements OnInit {
 		var refresh = JSON.parse(JSON.stringify(this.residuesRegister));
 		this.residuesRegister = undefined;
 		this.residuesRegister = refresh;
+		//this.save();
 	}
 
 	/**
