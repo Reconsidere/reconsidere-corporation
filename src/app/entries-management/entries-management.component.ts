@@ -71,7 +71,6 @@ export class EntriesManagementComponent implements OnInit {
 				this.createSimpleList(entries);
 			} else {
 				this.entries = new Entries();
-				this.newItem();
 			}
 		} catch (error) {
 			this.toastr.error(messageCode['WARNNING'][error]['summary']);
