@@ -205,6 +205,22 @@ export class SchedulingComponent implements OnInit {
 		}
 	}
 
+	ChangedItem(item) {
+		item.changed = true;
+	  }
+
+	  ChangeDate(event, item) {
+		item.date = event;
+		item.changed = true;
+	  }
+
+	  ChangeNumber(event, item) {
+		item.hour = event;
+		item.changed = true;
+	  }
+
+
+
 	veryfyBeforeSave() {
 		if (this.schedulings === undefined || this.schedulings.length <= 0) {
 			this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);

@@ -33,15 +33,15 @@
                   </select>
                 </td>
                 <td>
-                  <p-calendar [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" (ngModelChange)="item.date = $event" required name="date" [ngModel]="item.date| date:'dd/MM/yyyy'" dateFormat="dd/mm/yy">
+                  <p-calendar [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" (ngModelChange)="ChangeDate($event, item)" required name="date" [ngModel]="item.date| date:'dd/MM/yyyy'" dateFormat="dd/mm/yy">
                   </p-calendar>
                 </td>
 
                 <td>
-                  <p-calendar [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" required name="hour" pattern="HH:mm" timeOnly="true" hourFormat="24" (ngModelChange)="item.hour = $event" [ngModel]="item.hour | date:'HH:mm'" [readonlyInput]="false"></p-calendar>
+                  <p-calendar [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" required name="hour" pattern="HH:mm" timeOnly="true" hourFormat="24" (ngModelChange)="ChangeNumber($event, item)" [ngModel]="item.hour | date:'HH:mm'" [readonlyInput]="false"></p-calendar>
                 </td>
                 <td>
-                  <mat-checkbox color="accent" type="checkbox" name="active" [(ngModel)]="item.active" id="active">
+                  <mat-checkbox color="accent" type="checkbox" name="active" (change)="ChangedItem(item)" [(ngModel)]="item.active" id="active">
                   </mat-checkbox>
                 </td>
                 <td>

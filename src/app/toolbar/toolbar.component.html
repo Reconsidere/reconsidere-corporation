@@ -19,20 +19,24 @@
         <a class="nav-link" routerLink="/department" routerLinkActive="active">Departamento</a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" routerLink="/residue-register" routerLinkActive="active">Cadastro de resíduo</a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" routerLink="/scheduling" routerLinkActive="active">Agendamento</a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" routerLink="/entries-management" routerLinkActive="active">Entrada e Saída</a>
-      </li>
-      <li class="nav-item active">
         <a class="nav-link" routerLink="/registration-provider" routerLinkActive="active">Fornecedor</a>
       </li>
       <li class="nav-item active">
         <a class="nav-link" routerLink="/documents-management" routerLinkActive="active">Documentos</a>
       </li>
+      <li ngbDropdown class="nav-item dropdown active">
+        <a ngbDropdownToggle class="nav-link dropdown-toggle" id="navbarDropdownCheck" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          CheckPoints
+        </a>
+        <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownCheck">
+          <a class="dropdown-item" routerLink="/residue-register" routerLinkActive="active">Cadastro de resíduo</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" routerLink="/scheduling" routerLinkActive="active">Agendamento</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" routerLink="/entries-management" routerLinkActive="active">Entrada e Saída</a>
+        </div>
+      </li>
+
       <li ngbDropdown class="nav-item dropdown active">
         <a ngbDropdownToggle class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Gráficos
