@@ -1,34 +1,39 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand text-white">Reconsidere Corporation</a>
+  <a class="navbar-brand text-white" >Reconsidere Corporation</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" routerLink="/start-center" routerLinkActive="active">Início</a>
+      <li class="nav-item ">
+        <a class="nav-link" routerLink="/start-center" routerLinkActive="active">Início <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item active">
-        <a class="nav-link" routerLink="/account" routerLinkActive="active">Conta</a>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownInfo" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Informações empresariais
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownInfo">
+          <a class="dropdown-item" routerLink="/account" routerLinkActive="active">Conta</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" routerLink="/unit" routerLinkActive="active">Unidade</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" routerLink="/department" routerLinkActive="active">Departamento</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" routerLink="/registration-provider" routerLinkActive="active">Fornecedor</a>
+
+        </div>
       </li>
-      <li class="nav-item active">
-        <a class="nav-link" routerLink="/unit" routerLinkActive="active">Unidade</a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" routerLink="/department" routerLinkActive="active">Departamento</a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" routerLink="/registration-provider" routerLinkActive="active">Fornecedor</a>
-      </li>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" routerLink="/documents-management" routerLinkActive="active">Documentos</a>
       </li>
-      <li ngbDropdown class="nav-item dropdown active">
-        <a ngbDropdownToggle class="nav-link dropdown-toggle" id="navbarDropdownCheck" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          CheckPoints
+
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          CheckPoint
         </a>
-        <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownCheck">
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" routerLink="/residue-register" routerLinkActive="active">Cadastro de resíduo</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" routerLink="/scheduling" routerLinkActive="active">Agendamento</a>
@@ -37,28 +42,26 @@
         </div>
       </li>
 
-      <li ngbDropdown class="nav-item dropdown active">
-        <a ngbDropdownToggle class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownGraph" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Gráficos
         </a>
-        <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownGraph">
           <a class="dropdown-item" routerLink="/residue-register-graph" routerLinkActive="active">Resíduos</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" routerLink="/entries-management-graphic" routerLinkActive="active">Entrada e Saída</a>
         </div>
       </li>
 
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownExit" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Bem vindo, {{name}}
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownExit">
+          <a class="dropdown-item" routerLink="/logout" routerLinkActive="active" (click)="auth.logout()">Sair</a>
+        </div>
+      </li>
+
     </ul>
-
-
-    <div class="pull-right">
-      <ul class="nav pull-right">
-        <li ngbDropdown class="dropdown"><a ngbDropdownToggle class="dropdown-toggle" data-toggle="dropdown"><span class=" text-white  text-uppercase" *ngIf="name">Bem vindo, {{name}}</span> <b class="caret"></b></a>
-          <ul ngbDropdownMenu class="dropdown-menu">
-            <li><a class="text-muted" routerLink="/logout" routerLinkActive="active" (click)="auth.logout()"><i class="icon-off text-muted"></i>Sair</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
   </div>
 </nav>
