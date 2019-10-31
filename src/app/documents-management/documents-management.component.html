@@ -121,25 +121,22 @@
                     </button>
                   </div>
                 </form>
-
-
               </ul>
+              <div class="mt-5">
+                <a [href]="archiveURL(doc)" target="_blank" class="btn text-uppercase text-white" mat-raised-button color="accent" role="button">Baixar arquivo
+                  <mat-icon>cloud_download</mat-icon>
+                </a>
+
+              </div>
+
               <div class="card-footer bg-white">
                 <div class="  bg-white">
                   <label *ngIf="doc.expire" class="text-uppercase text-muted font-weight-light" for="">Expira em {{doc.daysToEXpire}} dia(s)</label>
                   <div class="float-right  text-muted border-0">
-                    <p-calendar *ngIf="doc.expire"  (ngModelChange)="ChangeDate($event, doc)" required name="date" [ngModel]="doc.date| date:'dd/MM/yyyy'" dateFormat="dd/mm/yy">
+                    <p-calendar *ngIf="doc.expire" (ngModelChange)="ChangeDate($event, doc)"  name="date" [ngModel]="doc.date| date:'dd/MM/yyyy'" dateFormat="dd/mm/yy">
                     </p-calendar>
                   </div>
                 </div>
-
-
-
-                <!-- <div>
-                  <label *ngIf="doc.expire" class="text-uppercase  font-weight-light" for="expire">Data</label>
-                  <p-calendar *ngIf="doc.expire" class="float-right text-muted border-0" [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" (ngModelChange)="ChangeDate($event, doc)" required name="date" [ngModel]="doc.date| date:'dd/MM/yyyy'" dateFormat="dd/mm/yy">
-                  </p-calendar>
-                </div> -->
               </div>
             </div>
           </div>

@@ -10,252 +10,261 @@ import { ArchiveService } from '../../services/archive.service';
 var myReader: FileReader = new FileReader();
 import * as moment from 'moment';
 import { DatePipe } from '@angular/common';
+import { environment } from 'src/environments/environment';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-documents-management',
-  templateUrl: './documents-management.component.html',
-  styleUrls: ['./documents-management.component.scss']
+	selector: 'app-documents-management',
+	templateUrl: './documents-management.component.html',
+	styleUrls: [ './documents-management.component.scss' ]
 })
 export class DocumentsManagementComponent implements OnInit {
-  page: number;
-  corporationId: string;
-  documents: any;
-  newDocuments: any;
-  types;
-  expires;
-  fileData: File = null;
-  expandNew;
-  expandDocument;
+	page: number;
+	corporationId: string;
+	documents: any;
+	newDocuments: any;
+	types;
+	expires;
+	fileData: File = null;
+	expandNew;
+	expandDocument;
 
-  constructor(
-    private toastr: ToastrService,
-    private documentsService: DocumentsManagementService,
-    private authService: AuthService,
-    private archiveService: ArchiveService,
-    private datePipe: DatePipe
-  ) {
-    this.documents = [];
-    this.newDocuments = [];
-  }
+	constructor(
+		private toastr: ToastrService,
+		private documentsService: DocumentsManagementService,
+		private authService: AuthService,
+		private archiveService: ArchiveService,
+		private datePipe: DatePipe,
+		private sanitizer: DomSanitizer
+	) {
+		this.documents = [];
+		this.newDocuments = [];
+	}
 
-  ngOnInit() {
-    this.authService.isAuthenticated();
-    this.page = 1;
-    this.types = Object.values(Document.Type);
-    this.expires = Object.values(Document.Expire);
-    this.corporationId = this.authService.getCorporationId();
-    this.loadDocuments();
-  }
+	ngOnInit() {
+		this.authService.isAuthenticated();
+		this.page = 1;
+		this.types = Object.values(Document.Type);
+		this.expires = Object.values(Document.Expire);
+		this.corporationId = this.authService.getCorporationId();
+		this.loadDocuments();
+	}
 
-  async loadDocuments() {
-    var documents = undefined;
-    try {
-      documents = await new Promise((resolve, reject) => {
-        documents = this.documentsService.allDocuments(
-          this.authService.getClass(),
-          this.corporationId,
-          resolve,
-          reject
-        );
-      });
+	async loadDocuments() {
+		var documents = undefined;
+		try {
+			documents = await new Promise((resolve, reject) => {
+				documents = this.documentsService.allDocuments(
+					this.authService.getClass(),
+					this.corporationId,
+					resolve,
+					reject
+				);
+			});
 
-      if (documents) {
-        this.documents = documents;
-        this.daysNotification(this.documents);
-      }
-    } catch (error) {
-      this.toastr.error(messageCode['WARNNING'][error]['summary']);
-    }
-  }
+			if (documents) {
+				this.daysNotification(documents);
+			}
+		} catch (error) {
+			this.toastr.error(messageCode['WARNNING'][error]['summary']);
+		}
+	}
 
-  newItem() {
-    var item = new Document();
-    item.expire = false;
-    item['changed'] = true;
-    this.newDocuments.push(item);
-  }
+	archiveURL(item) {
+		return this.sanitizer.bypassSecurityTrustResourceUrl(`${environment.database.uri}/${item.archive}`);
+	}
 
-  expandCreate() {
-    if (!this.expandNew) {
-      this.expandNew = true;
-    } else {
-      this.expandNew = false;
-    }
-  }
+	newItem() {
+		var item = new Document();
+		item.expire = false;
+		item['changed'] = true;
+		this.newDocuments.push(item);
+	}
 
-  expandDocuments() {
-    if (!this.expandDocument) {
-      this.expandDocument = true;
-    } else {
-      this.expandDocument = false;
-    }
-  }
+	expandCreate() {
+		if (!this.expandNew) {
+			this.expandNew = true;
+		} else {
+			this.expandNew = false;
+		}
+	}
 
-  fileProgress(event) {
-    this.fileData = <File>event.target.files[0];
-  }
+	expandDocuments() {
+		if (!this.expandDocument) {
+			this.expandDocument = true;
+		} else {
+			this.expandDocument = false;
+		}
+	}
 
-  async uploadDocument(item) {
-    try {
-      item.changed = true;
-      var object;
-      var document = new Archive();
-      myReader.readAsDataURL(this.fileData);
-      myReader.onloadend = async (e) => {
-        object = myReader.result;
-        document.name = '_' + Date.now() + this.fileData.name;
-        document.file = object;
-        var result = await new Promise(async (resolve, reject) => {
-          this.archiveService.uploadArchive(undefined, document, resolve, reject);
-        });
-        this.toastr.info(messageCode['INFO']['IRE008']['summary']);
-        item.archive = document.name;
-      };
-    } catch (error) {
-      console.log(error);
-      this.toastr.warning(messageCode['WARNNING']['WRE021']['summary']);
-    }
-  }
+	fileProgress(event) {
+		this.fileData = <File>event.target.files[0];
+	}
 
-  Expire(item) {
-    if (item.expire) {
-      item.changed = true;
-    } else {
-      item.changed = true;
-      item.daysNotification = 0;
-      item.date = undefined;
-    }
-  }
+	async uploadDocument(item) {
+		try {
+			item.changed = true;
+			var object;
+			var document = new Archive();
+			myReader.readAsDataURL(this.fileData);
+			myReader.onloadend = async (e) => {
+				object = myReader.result;
+				document.name = '_' + Date.now() + this.fileData.name;
+				document.file = object;
+				var result = await new Promise(async (resolve, reject) => {
+					this.archiveService.uploadArchive(undefined, document, resolve, reject);
+				});
+				this.toastr.info(messageCode['INFO']['IRE008']['summary']);
+				item.archive = document.name;
+			};
+		} catch (error) {
+			console.log(error);
+			this.toastr.warning(messageCode['WARNNING']['WRE021']['summary']);
+		}
+	}
 
-  ChangedItem(item) {
-    item.changed = true;
-  }
+	Expire(item) {
+		if (item.expire) {
+			item.changed = true;
+		} else {
+			item.changed = true;
+			item.daysNotification = 0;
+			item.date = undefined;
+		}
+	}
 
-  ChangeDate(event, item) {
-    item.date = event;
-    item.changed = true;
-  }
+	ChangedItem(item) {
+		item.changed = true;
+	}
 
-  daysNotification(items) {
-    var days;
-    var value = new Date().toDateString();
-    var today = new Date(value);
-    items.forEach((item) => {
-      if (item.expire) {
-        var date = new Date(item.date);
-        var timeDiff;
-        if (date.getTime() < today.getTime()) {
-          timeDiff = date.getTime() - today.getTime();
-        } else {
-          timeDiff = Math.abs(date.getTime() - today.getTime());
-        }
-        days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-        if (date < today) {
-          item.status = Document.Status.closed;
-          item.color = 'rgba(244, 64, 52, 0.65)';
-        } else if (0 < days && days < item.daysNotification) {
-          item.status = Document.Status.alert;
-          item.color = 'rgba(255, 193, 5, 0.65)';
-          item.daysToEXpire = days;
-        } else if (0 < days && days > item.daysNotification) {
-          item.status = Document.Status.ok;
-          item.color = 'rgba(0, 148, 133, 0.65)';
-        } else if (date.getDate() === today.getDate()) {
-          item.status = Document.Status.alert;
-          item.color = 'rgba(255, 193, 5, 0.65)';
-          item.daysToEXpire = days;
-        }
-      } else {
-        item.status = Document.Status.notExpire;
-        item.color = 'rgba(2, 166, 242, 0.65)';
-      }
-    });
-  }
+	ChangeDate(event, item) {
+		item.date = event;
+		item.changed = true;
+	}
 
-  veryfyBeforeSave() {
-    if (this.newDocuments === undefined || this.newDocuments.length <= 0) {
-      this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
-      throw new Error();
-    }
-    this.newDocuments.forEach((document) => {
-      if (document.type === undefined || document.type === undefined) {
-        this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
-        throw new Error();
-      }
-      if (document.name === undefined || document.name === undefined) {
-        this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
-        throw new Error();
-      }
-      if (document.archive === undefined || document.archive === undefined) {
-        this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
-        throw new Error();
-      }
-      if (document.expire) {
-        if (document.daysNotification === undefined || document.daysNotification === undefined) {
-          this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
-          throw new Error();
-        }
-        if (document.date === undefined || document.date === undefined) {
-          this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
-          throw new Error();
-        }
-      }
-    });
-  }
+	daysNotification(items) {
+		this.documents = items;
+		var days;
+		var value = new Date().toDateString();
+		var today = new Date(value);
+		items.forEach((item) => {
+			if (item.expire) {
+				var date = new Date(item.date);
+				var timeDiff;
+				if (date.getTime() < today.getTime()) {
+					timeDiff = date.getTime() - today.getTime();
+				} else {
+					timeDiff = Math.abs(date.getTime() - today.getTime());
+				}
+				days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+				if (date < today) {
+					item.status = Document.Status.closed;
+					item.color = 'rgba(244, 64, 52, 0.65)';
+				} else if (0 < days && days < item.daysNotification) {
+					item.status = Document.Status.alert;
+					item.color = 'rgba(255, 193, 5, 0.65)';
+					item.daysToEXpire = days;
+				} else if (0 < days && days > item.daysNotification) {
+					item.status = Document.Status.ok;
+					item.color = 'rgba(0, 148, 133, 0.65)';
+				} else if (date.getDate() === today.getDate()) {
+					item.status = Document.Status.alert;
+					item.color = 'rgba(255, 193, 5, 0.65)';
+					item.daysToEXpire = days;
+				}
+			} else {
+				item.status = Document.Status.notExpire;
+				item.color = 'rgba(2, 166, 242, 0.65)';
+			}
+		});
+	}
 
-  removeInvalidaValuesToSave() {
-    this.newDocuments.forEach((document, index) => {
-      delete document.changed;
-      delete document.color;
-      delete document.status;
-    });
-  }
+	veryfyBeforeSave() {
+		if (this.newDocuments === undefined || this.newDocuments.length <= 0) {
+			this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+			throw new Error();
+		}
+		this.newDocuments.forEach((document) => {
+			if (document.type === undefined || document.type === undefined) {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+			if (document.name === undefined || document.name === undefined) {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+			if (document.archive === undefined || document.archive === undefined) {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+			if (document.expire) {
+				if (document.daysNotification === undefined || document.daysNotification === undefined) {
+					this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+					throw new Error();
+				}
+				if (document.date === undefined || document.date === undefined) {
+					this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+					throw new Error();
+				}
+			}
+		});
+	}
 
-  removeNotChangedScheduling() {
-    this.newDocuments.forEach((document, index) => {
-      if (!document.changed) {
-        this.documents.splice(index, 1);
-      }
-    });
-  }
+	removeInvalidaValuesToSave() {
+		this.newDocuments.forEach((document, index) => {
+			delete document.changed;
+			delete document.color;
+			delete document.status;
+			delete document.url;
+			delete document.daysToEXpire;
+		});
+	}
 
-  resetDocuments(items) {
-    this.documents = items;
-    this.daysNotification(this.documents);
-  }
+	removeNotChangedScheduling() {
+		this.newDocuments.forEach((document, index) => {
+			if (!document.changed) {
+				this.documents.splice(index, 1);
+			}
+		});
+	}
 
-  verifyUpdate() {
-    this.documents.forEach((doc) => {
-      if (doc.changed) {
-        this.newDocuments.push(doc);
-      }
-    });
-  }
+	resetDocuments(items) {
+		this.newDocuments = [];
+		this.daysNotification(items);
+	}
 
-  async save() {
-    try {
-      this.verifyUpdate();
-      this.removeNotChangedScheduling();
-      this.removeInvalidaValuesToSave();
-      this.veryfyBeforeSave();
-      if (this.newDocuments.length <= 0) {
-        this.toastr.warning(messageCode['WARNNING']['WRE020']['summary']);
-        return;
-      }
+	verifyUpdate() {
+		this.documents.forEach((doc) => {
+			if (doc.changed) {
+				this.newDocuments.push(doc);
+			}
+		});
+	}
 
-      var documents = await new Promise(async (resolve, reject) => {
-        this.documentsService.addOrUpdate(
-          this.authService.getClass(),
-          this.corporationId,
-          this.newDocuments,
-          resolve,
-          reject
-        );
-      });
-      this.resetDocuments(documents);
-      this.toastr.success(messageCode['SUCCESS']['SRE001']['summary']);
-    } catch (error) {
-      this.toastr.warning(messageCode['ERROR'][error]['summary']);
-    }
-  }
+	async save() {
+		try {
+			this.verifyUpdate();
+			this.removeNotChangedScheduling();
+			this.removeInvalidaValuesToSave();
+			this.veryfyBeforeSave();
+			if (this.newDocuments.length <= 0) {
+				this.toastr.warning(messageCode['WARNNING']['WRE020']['summary']);
+				return;
+			}
+
+			var documents = await new Promise(async (resolve, reject) => {
+				this.documentsService.addOrUpdate(
+					this.authService.getClass(),
+					this.corporationId,
+					this.newDocuments,
+					resolve,
+					reject
+				);
+			});
+			this.resetDocuments(documents);
+			this.toastr.success(messageCode['SUCCESS']['SRE001']['summary']);
+		} catch (error) {
+			this.toastr.warning(messageCode['ERROR'][error]['summary']);
+		}
+	}
 }
