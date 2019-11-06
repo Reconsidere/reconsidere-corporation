@@ -1,6 +1,7 @@
 import { QrCode } from './qrcode';
 
 export class CheckPoints {
+	_idCorporation: String;
 	wastegenerated: {
 		qrCode: [QrCode];
 	};

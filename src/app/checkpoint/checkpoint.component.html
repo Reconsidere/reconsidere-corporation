@@ -1,3 +1,115 @@
-<p>
-  checkpoint works!
-</p>
+<app-toolbar></app-toolbar>
+<div class="container">
+  <div>
+
+
+    <ng-template [ngIf]="smallScreen" [ngIfElse]="bigScreen">
+      <mat-vertical-stepper  *ngFor="let item of list" (selectionChange)="stepClick($event)" [selectedIndex]="item.index">
+        <div class="card">
+          <div class="card-header">
+            <p class="text-muted font-weight-light">Nome: {{item.material.name}}</p>
+            <p class="text-muted font-weight-light">Código: {{item.code}}</p>
+          </div>
+          <div class="card-body">
+            <mat-step>
+              <ng-template matStepLabel>Resíduo gerado</ng-template>
+              <div class="feature--icon">
+                <img class="flaticon" src="../../assets/images/icons/trash.svg" alt="icon" height="50px" width="50px" />
+              </div>
+            </mat-step>
+            <mat-step label="Passo 2">
+              <p>Coleta solicitada</p>
+              <div class="feature--icon">
+                <img class="flaticon" src="../../assets/images/icons/contact.svg" alt="icon" height="50px" width="50px" />
+              </div>
+            </mat-step>
+            <mat-step label="Step 3">
+              <p>Coleta realizada</p>
+              <div class="feature--icon">
+                <img class="flaticon" src="../../assets/images/icons/garbage-truck.svg" alt="icon" height="50px" width="50px" />
+              </div>
+            </mat-step>
+            <mat-step label="Step 4">
+              <p>Coleta finalizada</p>
+              <div class="feature--icon">
+                <img class="flaticon" src="../../assets/images/icons/itinerary.svg" alt="icon" height="50px" width="50px" />
+              </div>
+            </mat-step>
+            <mat-step label="Step 5">
+              <p>Triagem</p>
+              <div class="feature--icon">
+                <img class="flaticon" src="../../assets/images/icons/execution.svg" alt="icon" height="50px" width="50px" />
+              </div>
+            </mat-step>
+            <mat-step label="Step 6">
+              <p>Destinação completa</p>
+              <div class="feature--icon">
+                <img class="flaticon" src="../../assets/images/icons/check.svg" alt="icon" height="50px" width="50px" />
+              </div>
+            </mat-step>
+
+            <ng-template matStepperIcon="edit">
+              <mat-icon>check</mat-icon>
+            </ng-template>
+          </div>
+        </div>
+      </mat-vertical-stepper>
+    </ng-template>
+
+    <ng-template #bigScreen>
+      <mat-horizontal-stepper  *ngFor="let item of list" (selectionChange)="stepClick($event)" [selectedIndex]="item.index">
+        <div class="card">
+          <div class="card-header">
+            <p class="text-muted font-weight-light">Nome: {{item.material.name}}</p>
+            <p class="text-muted font-weight-light">Código: {{item.code}}</p>
+          </div>
+          <div class="card-body">
+            <mat-step>
+              <ng-template matStepLabel>Resíduo gerado</ng-template>
+              <!-- <p></p> -->
+              <div class="feature--icon">
+                <img class="flaticon" src="../../assets/images/icons/trash.svg" alt="icon" height="50px" width="50px" />
+              </div>
+            </mat-step>
+            <mat-step label="Passo 2">
+              <p>Coleta solicitada</p>
+              <div class="feature--icon">
+                <img class="flaticon" src="../../assets/images/icons/contact.svg" alt="icon" height="50px" width="50px" />
+              </div>
+            </mat-step>
+            <mat-step label="Step 3">
+              <p>Coleta realizada</p>
+              <div class="feature--icon">
+                <img class="flaticon" src="../../assets/images/icons/garbage-truck.svg" alt="icon" height="50px" width="50px" />
+              </div>
+            </mat-step>
+            <mat-step label="Step 4">
+              <p>Coleta finalizada</p>
+              <div class="feature--icon">
+                <img class="flaticon" src="../../assets/images/icons/itinerary.svg" alt="icon" height="50px" width="50px" />
+              </div>
+            </mat-step>
+            <mat-step label="Step 5">
+              <p>Triagem</p>
+              <div class="feature--icon">
+                <img class="flaticon" src="../../assets/images/icons/execution.svg" alt="icon" height="50px" width="50px" />
+              </div>
+            </mat-step>
+            <mat-step label="Step 6">
+              <p>Destinação completa</p>
+              <div class="feature--icon">
+                <img class="flaticon" src="../../assets/images/icons/check.svg" alt="icon" height="50px" width="50px" />
+              </div>
+            </mat-step>
+
+            <ng-template matStepperIcon="edit">
+              <mat-icon>check</mat-icon>
+            </ng-template>
+          </div>
+        </div>
+      </mat-horizontal-stepper>
+    </ng-template>
+  </div>
+
+
+</div>
