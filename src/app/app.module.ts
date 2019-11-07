@@ -59,6 +59,8 @@ import { DocumentsManagementComponent } from './documents-management/documents-m
 import { NgxDocViewerModule } from '../../node_modules/ngx-doc-viewer';
 import { MatStepperModule } from '@angular/material/stepper';
 import { CheckpointPipe } from 'src/pipes/checkpoint.pipe';
+import {MatCardModule} from '@angular/material/card';
+
 
 
 registerLocaleData(localePt);
@@ -130,7 +132,8 @@ registerLocaleData(localePt);
 		ChartModule,
 		GridsterModule,
 		NgxDocViewerModule,
-		MatStepperModule
+		MatStepperModule,
+		MatCardModule
 	],
 	providers: [
 		{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
