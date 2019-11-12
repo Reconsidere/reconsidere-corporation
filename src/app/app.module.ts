@@ -58,7 +58,6 @@ import { WidgetResidueRegisterGraphicComponent } from './widget/widget-residue-r
 import { DocumentsManagementComponent } from './documents-management/documents-management.component';
 import { NgxDocViewerModule } from '../../node_modules/ngx-doc-viewer';
 import { MatStepperModule } from '@angular/material/stepper';
-import { CheckpointPipe } from 'src/pipes/checkpoint.pipe';
 import {MatCardModule} from '@angular/material/card';
 
 
@@ -95,7 +94,6 @@ registerLocaleData(localePt);
 		WidgetEntriesManagementGraphicComponent,
 		WidgetResidueRegisterGraphicComponent,
 		DocumentsManagementComponent,
-		CheckpointPipe
 	],
 	imports: [
 		BrowserModule,

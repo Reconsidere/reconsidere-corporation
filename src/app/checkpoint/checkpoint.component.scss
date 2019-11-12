@@ -1,7 +1,27 @@
-::ng-deep .mat-horizontal-stepper-header{
-    pointer-events: none !important;
+::ng-deep .mat-horizontal-stepper-header {
+	pointer-events: none !important;
 }
 
-::ng-deep .mat-vertical-stepper-header{
-    pointer-events: none !important;
+::ng-deep .mat-vertical-stepper-header {
+	pointer-events: none !important;
+}
+
+::ng-deep .mat-horizontal-stepper-header .mat-step-icon,
+.mat-horizontal-stepper-header .mat-step-icon-not-touched {
+	margin-right: 0 !important;
+}
+
+::ng-deep .mat-horizontal-stepper-header {
+	display: flex;
+	flex-direction: column;
+	justify-content: initial;
+	text-align: center;
+	margin-bottom: -15px;
+	flex-wrap: wrap;
+}
+
+
+::ng-deep .mat-vertical-stepper-header .mat-step-icon,
+.mat-vertical-stepper-header .mat-step-icon-not-touched {
+	margin-right: 0 !important;
 }

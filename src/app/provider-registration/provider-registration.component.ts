@@ -6,6 +6,7 @@ import { ProviderRegistrationService } from 'src/services/provider-registration.
 import { ProviderRegistration } from 'src/models/providerregistration';
 import { User } from 'src/models/user';
 import { environment } from 'src/environments/environment';
+import { Corporation } from 'src/models/corporation';
 
 @Component({
 	selector: 'app-provider-registration',
@@ -21,6 +22,7 @@ export class ProviderRegistrationComponent implements OnInit {
 	myIdsProviders: any;
 	expandNew;
 	expandProvider;
+	corporation: Corporation;
 	constructor(
 		private toastr: ToastrService,
 		private authService: AuthService,
@@ -42,6 +44,22 @@ export class ProviderRegistrationComponent implements OnInit {
 		await this.loadMyIdsProviders();
 		await this.loadProviders();
 		await this.loadMyProviders();
+		await this.loadCorporation();
+	}
+
+	async loadCorporation() {
+		var corporation = undefined;
+		try {
+			corporation = await new Promise((resolve, reject) => {
+				corporation = this.authService.getOrganization(this.authService.getClass(), resolve, reject);
+			});
+
+			if (corporation) {
+				this.corporation = corporation;
+			}
+		} catch (error) {
+			this.toastr.error(messageCode['WARNNING'][error]['summary']);
+		}
 	}
 
 	async loadProviders() {

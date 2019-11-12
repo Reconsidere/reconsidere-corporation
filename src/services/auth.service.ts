@@ -74,6 +74,7 @@ export class AuthService {
     myProviders {
       _id
       providerId
+      
     }
     departments {
       _id
@@ -251,6 +252,7 @@ export class AuthService {
     myProviders {
       _id
       providerId
+      
       
     
     }
@@ -430,6 +432,7 @@ query getCollectorByUser($_id: ID!) {
     myProviders {
       _id
       providerId
+      
       
     
     }
@@ -846,6 +849,7 @@ query getCollectorByUser($_id: ID!) {
 			return new Observable<string>();
 		}
 	}
+
 
 	generateToken(_class, corporationId, user, password): boolean {
 		if (user) {
