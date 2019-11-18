@@ -84,6 +84,8 @@ export class UnitService {
               _id
               code
               date
+              confirmedByCorporation
+			        confirmedByCollector
               material {
                 _id
                 type
@@ -106,6 +108,8 @@ export class UnitService {
                 _id
                 code
                 date
+                confirmedByCorporation
+			          confirmedByCollector
                 material {
                   _id
                   type
@@ -139,6 +143,8 @@ export class UnitService {
               _id
               code
               date
+              confirmedByCorporation
+			        confirmedByCollector
               material {
                 _id
                 type
@@ -164,6 +170,8 @@ export class UnitService {
                 _id
                 code
                 date
+                confirmedByCorporation
+			          confirmedByCollector
                 material {
                   _id
                   type
@@ -187,6 +195,8 @@ export class UnitService {
                 _id
                 code
                 date
+                confirmedByCorporation
+			          confirmedByCollector
                 material {
                   _id
                   type
@@ -199,6 +209,32 @@ export class UnitService {
               }
             }
         }
+
+        residuesPerformed{
+      date
+        name
+        cost
+        typeEntrie
+        quantity
+        weight
+        amount
+        qrCode {
+          _id
+          code
+          date
+          confirmedByCorporation
+			    confirmedByCollector
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
+    }
           }
     }`;
 

@@ -59,6 +59,7 @@ import { DocumentsManagementComponent } from './documents-management/documents-m
 import { NgxDocViewerModule } from '../../node_modules/ngx-doc-viewer';
 import { MatStepperModule } from '@angular/material/stepper';
 import {MatCardModule} from '@angular/material/card';
+import { ResiduePerformedComponent } from './residue-performed/residue-performed.component';
 
 
 
@@ -94,6 +95,7 @@ registerLocaleData(localePt);
 		WidgetEntriesManagementGraphicComponent,
 		WidgetResidueRegisterGraphicComponent,
 		DocumentsManagementComponent,
+		ResiduePerformedComponent,
 	],
 	imports: [
 		BrowserModule,

@@ -40,6 +40,8 @@ export class EntriesManagementService {
 				_id
 				code
 				date
+				confirmedByCorporation
+				confirmedByCollector
 				material {
 				_id
 				type
@@ -64,6 +66,8 @@ export class EntriesManagementService {
 				_id
 				code
 				date
+				confirmedByCorporation
+				confirmedByCollector
 				material {
 				_id
 				type
@@ -120,6 +124,8 @@ export class EntriesManagementService {
 			_id
 			code
 			date
+			confirmedByCorporation
+			confirmedByCollector
 			material {
 				_id
 				type
@@ -144,6 +150,8 @@ export class EntriesManagementService {
 			_id
 			code
 			date
+			confirmedByCorporation
+			confirmedByCollector
 			material {
 				_id
 				type

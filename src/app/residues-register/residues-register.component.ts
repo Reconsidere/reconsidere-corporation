@@ -26,8 +26,8 @@ export class ResiduesRegisterComponent implements OnInit {
 	expand: boolean;
 	constructor(
 		private toastr: ToastrService,
-		private residuesRegisterService: ResiduesRegisterService,
 		private authService: AuthService,
+		private residuesRegisterService: ResiduesRegisterService,
 		private departmentService: DepartamentService
 	) {
 		this.materialsType = Object.values(Material.Type);

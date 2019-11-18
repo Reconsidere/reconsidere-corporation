@@ -1,0 +1,163 @@
+<app-toolbar></app-toolbar>
+<div class="container">
+
+  <div class="card">
+    <div class="card-header">Meus resíduos
+      <button type="button" id="save" (click)="save()" mat-raised-button class="col-md-2 pull-right" color="primary">
+        Salvar ações
+      </button>
+    </div>
+    <div class="card-body">
+      <button class="block" (click)="expands()" type="button" mat-raised-button color="accent" data-toggle="button" aria-pressed="false" autocomplete="off">
+        <mat-icon *ngIf="!expand">expand_more</mat-icon>
+        <mat-icon *ngIf="expand">expand_less</mat-icon>
+      </button>
+      <div *ngIf="expand">
+        <div class="tablePerformed">
+          <table class="table-sm">
+            <thead>
+              <tr id="Titles">
+                <th>Coletor</th>
+                <th>Ação</th>
+                <th>Tipo</th>
+                <th>Nome</th>
+                <th>Custo</th>
+                <th>Quantidade</th>
+                <th>Peso</th>
+                <th>Valor</th>
+                <th>Confirmar saída</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-template ngFor let-item [ngForOf]="(entrieItems | paginate: { itemsPerPage: 6, currentPage: page })" igroup="index">
+                <tr>
+                  <td>
+                    <div>
+                      {{item.collector.tradingName}}
+                    </div>
+                  </td>
+                  <td>
+                    {{item.type}}
+                  </td>
+                  <td>
+                    {{item.typeEntrie}}
+                  </td>
+                  <td>
+                    {{item.qrCode.material.name}}
+                  </td>
+
+                  <td>
+                    {{item.cost |currency:'BRL':'symbol':'2.2':allowZero: true}}
+                  </td>
+                  <td>
+                    <div>
+                      {{item.quantity}}
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      {{item.weight}}
+                    </div>
+                  </td>
+                  <td>
+                    {{item.amount |currency:'BRL':'symbol':'2.2':allowZero: true}}
+                  </td>
+                  <td>
+                    <select required [(ngModel)]="item.confirmedByCorporation" (change)="changedItem(item)" name="confirmedByCorporation" class="form-control size">
+                      <option id="item" *ngFor="let item of residuesConfirmeds">{{type}}</option>
+                    </select>
+                  </td>
+
+                </tr>
+
+              </ng-template>
+            </tbody>
+            <pagination-controls (pageChange)="page = $event" previousLabel="Anterior" nextLabel="Próxima" autoHide="true" responsive="true" screenReaderPaginationLabel="Pagination">
+            </pagination-controls>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="typeCollector" class="card">
+    <div class="card-header">Resíduos coletados
+      <button type="button" id="save" (click)="save()" mat-raised-button class="col-md-2 pull-right" color="primary">
+        Salvar ações
+      </button>
+    </div>
+    <div class="card-body">
+      <button class="block" (click)="expands()" type="button" mat-raised-button color="accent" data-toggle="button" aria-pressed="false" autocomplete="off">
+        <mat-icon *ngIf="!expand">expand_more</mat-icon>
+        <mat-icon *ngIf="expand">expand_less</mat-icon>
+      </button>
+      <div *ngIf="expand">
+        <div class="tablePerformed">
+          <table class="table-sm">
+            <thead>
+              <tr id="Titles">
+                <th>Coletor</th>
+                <th>Ação</th>
+                <th>Tipo</th>
+                <th>Nome</th>
+                <th>Custo</th>
+                <th>Quantidade</th>
+                <th>Peso</th>
+                <th>Valor</th>
+                <th>Confirmar saída</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-template ngFor let-item [ngForOf]="(entrieItems | paginate: { itemsPerPage: 6, currentPage: page })" igroup="index">
+                <tr>
+                  <td>
+                    <div>
+                      {{item.collector.tradingName}}
+                    </div>
+                  </td>
+                  <td>
+                    {{item.type}}
+                  </td>
+                  <td>
+                    {{item.typeEntrie}}
+                  </td>
+                  <td>
+                    {{item.qrCode.material.name}}
+                  </td>
+
+                  <td>
+                    {{item.cost |currency:'BRL':'symbol':'2.2':allowZero: true}}
+                  </td>
+                  <td>
+                    <div>
+                      {{item.quantity}}
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      {{item.weight}}
+                    </div>
+                  </td>
+                  <td>
+                    {{item.amount |currency:'BRL':'symbol':'2.2':allowZero: true}}
+                  </td>
+                  <td>
+                    <select required [(ngModel)]="item.confirmedByCollector" (change)="changedItem(item)" name="confirmedByCollector" class="form-control size">
+                      <option id="item" *ngFor="let item of residuesConfirmeds">{{type}}</option>
+                    </select>
+                  </td>
+                </tr>
+
+              </ng-template>
+            </tbody>
+            <pagination-controls (pageChange)="page = $event" previousLabel="Anterior" nextLabel="Próxima" autoHide="true" responsive="true" screenReaderPaginationLabel="Pagination">
+            </pagination-controls>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

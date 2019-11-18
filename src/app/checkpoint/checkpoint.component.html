@@ -17,7 +17,11 @@
               <small class="col-sm-4"><em>Nome: {{item.material.name}}</em></small> <small class="col-sm-4"><em>Código: {{item.code}}</em></small>
               <small class="col-sm-4"><em>Peso: {{item.material.weight}}</em></small>
             </div>
-            <div class="card-body">
+            <button class="block" (click)="expandItem(item)" type="button" mat-raised-button color="accent" data-toggle="button" aria-pressed="false" autocomplete="off">
+              <mat-icon *ngIf="!item.expand">expand_more</mat-icon>
+              <mat-icon *ngIf="item.expand">expand_less</mat-icon>
+            </button>
+            <div *ngIf="item.expand" class="card-body">
               <mat-vertical-stepper [linear]="true" [selectedIndex]="item.index" #stepper>
                 <mat-step state="edit" [completed]="item.index >= 1 ? true: false">
                   <ng-template matStepLabel matStepperIcon="edit">Resíduo gerado</ng-template>
@@ -73,7 +77,11 @@
               <small class="col-sm-4"><em>Nome: {{item.material.name}}</em></small> <small class="col-sm-4"><em>Código: {{item.code}}</em></small>
               <small class="col-sm-4"><em>Peso: {{item.material.weight}}</em></small>
             </div>
-            <div class="card-body">
+            <button class="block" (click)="expandItem(item)" type="button" mat-raised-button color="accent" data-toggle="button" aria-pressed="false" autocomplete="off">
+              <mat-icon *ngIf="!item.expand">expand_more</mat-icon>
+              <mat-icon *ngIf="item.expand">expand_less</mat-icon>
+            </button>
+            <div *ngIf="item.expand" class="card-body">
               <mat-horizontal-stepper linear="true" [selectedIndex]="item.index">
                 <ng-template matStepperIcon="edit">
                   <mat-icon>check</mat-icon>
@@ -137,22 +145,313 @@
       Meus fornecedores checkpoints
     </div>
     <div *ngIf="expandProviderCheckPoint" class="card-body">
+      <ng-template [ngIf]="smallScreen" [ngIfElse]="bigScreen">
+        <div *ngFor="let provider of listProvider; let i = index">
+          <div class="card">
+            <div class="card-header bg-white">
+              <small class="col-sm-4"><em>Fornecedor: {{provider.name}}</em></small>
+            </div>
+            <button class="block btn btn-secondary btn-sm" (click)="expandItem(provider)" type="button" data-toggle="button" aria-pressed="false" autocomplete="off">
+              <mat-icon *ngIf="!provider.expand">expand_more</mat-icon>
+              <mat-icon *ngIf="provider.expand">expand_less</mat-icon>
+            </button>
+            <div *ngIf="provider.expand" class="card-body">
+              <div *ngFor="let item of provider.list; let ind = index">
+                <div class="card shadow p-3 mb-5 bg-white rounded">
+                  <div class="card-header bg-white">
+                    <small class="col-sm-4"><em>Nome: {{item.material.name}}</em></small> <small class="col-sm-4"><em>Código: {{item.code}}</em></small>
+                    <small class="col-sm-4"><em>Peso: {{item.material.weight}}</em></small>
+                  </div>
+                  <button class="block" (click)="expandItem(item)" type="button" mat-raised-button color="accent" data-toggle="button" aria-pressed="false" autocomplete="off">
+                    <mat-icon *ngIf="!item.expand">expand_more</mat-icon>
+                    <mat-icon *ngIf="item.expand">expand_less</mat-icon>
+                  </button>
+                  <div *ngIf="item.expand" class="card-body">
+                    <mat-vertical-stepper [linear]="true" [selectedIndex]="item.index" #stepper>
+                      <mat-step state="edit" [completed]="item.index >= 1 ? true: false">
+                        <ng-template matStepLabel matStepperIcon="edit">Resíduo gerado</ng-template>
+                        <div class="feature--icon">
+                          <img class="flaticon" src="../../assets/images/icons/trash.svg" alt="icon" height="50px" width="50px" />
+                        </div>
+                      </mat-step>
+                      <mat-step state="edit" [completed]="item.index >= 2 ? true: false">
+                        <ng-template matStepLabel matStepperIcon="edit">Coleta solicitada</ng-template>
+                        <div class="feature--icon">
+                          <img class="flaticon" src="../../assets/images/icons/contact.svg" alt="icon" height="50px" width="50px" />
+                        </div>
+                      </mat-step>
+                      <mat-step state="edit" [completed]="item.index >= 3 ? true: false">
+                        <ng-template matStepLabel matStepperIcon="edit">Coleta realizada</ng-template>
+                        <div class="feature--icon">
+                          <img class="flaticon" src="../../assets/images/icons/garbage-truck.svg" alt="icon" height="50px" width="50px" />
+                        </div>
+                      </mat-step>
+                      <mat-step state="edit" [completed]="item.index >= 4 ? true: false">
+                        <ng-template matStepLabel matStepperIcon="edit">Coleta finalizada</ng-template>
+                        <p></p>
+                        <div class="feature--icon">
+                          <img class="flaticon" src="../../assets/images/icons/itinerary.svg" alt="icon" height="50px" width="50px" />
+                        </div>
+                      </mat-step>
+                      <mat-step state="edit" [completed]="item.index >= 5 ? true: false">
+                        <ng-template matStepLabel matStepperIcon="edit">Triagem</ng-template>
+                        <div class="feature--icon">
+                          <img class="flaticon" src="../../assets/images/icons/execution.svg" alt="icon" height="50px" width="50px" />
+                        </div>
+                      </mat-step>
+                      <mat-step state="edit" [completed]="item.index >= 6 ? true: false">
+                        <ng-template matStepLabel matStepperIcon="edit">Destinação completa</ng-template>
+                        <div class="feature--icon">
+                          <img class="flaticon" src="../../assets/images/icons/check.svg" alt="icon" height="50px" width="50px" />
+                        </div>
+                      </mat-step>
 
+                      <ng-template matStepperIcon="edit">
+                        <mat-icon>check</mat-icon>
+                      </ng-template>
+                    </mat-vertical-stepper>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template #bigScreen>
+        <div *ngFor="let provider of listProvider; let i = index">
+          <div class="card">
+            <div class="card-header bg-white">
+              <small class="col-sm-4"><em>Fornecedor: {{provider.name}}</em></small>
+            </div>
+            <button class="block btn btn-secondary btn-sm" (click)="expandItem(provider)" type="button" data-toggle="button" aria-pressed="false" autocomplete="off">
+              <mat-icon *ngIf="!provider.expand">expand_more</mat-icon>
+              <mat-icon *ngIf="provider.expand">expand_less</mat-icon>
+            </button>
+            <div *ngIf="provider.expand" class="card-body">
+              <div *ngFor="let item of provider.list; let ind = index">
+                <div class="card shadow p-3 mb-5 bg-white rounded">
+                  <div class="card-header bg-white">
+                    <small class="col-sm-4"><em>Nome: {{item.material.name}}</em></small> <small class="col-sm-4"><em>Código: {{item.code}}</em></small>
+                    <small class="col-sm-4"><em>Peso: {{item.material.weight}}</em></small>
+                  </div>
+                  <button class="block" (click)="expandItem(item)" type="button" mat-raised-button color="accent" data-toggle="button" aria-pressed="false" autocomplete="off">
+                    <mat-icon *ngIf="!item.expand">expand_more</mat-icon>
+                    <mat-icon *ngIf="item.expand">expand_less</mat-icon>
+                  </button>
+                  <div *ngIf="item.expand" class="card-body">
+                    <mat-horizontal-stepper linear="true" [selectedIndex]="item.index">
+                      <ng-template matStepperIcon="edit">
+                        <mat-icon>check</mat-icon>
+                      </ng-template>
+
+                      <mat-step state="edit" [completed]="item.index >= 1 ? true: false">
+                        <ng-template matStepLabel matStepperIcon="edit">Resíduo gerado</ng-template>
+                        <div class="feature--icon">
+                          <img class="flaticon" src="../../assets/images/icons/trash.svg" alt="icon" height="50px" width="50px" />
+                        </div>
+                      </mat-step>
+                      <mat-step state="edit" [completed]="item.index >= 2 ? true: false">
+                        <ng-template matStepLabel matStepperIcon="edit">Coleta solicitada</ng-template>
+                        <div class="feature--icon">
+                          <img class="flaticon" src="../../assets/images/icons/contact.svg" alt="icon" height="50px" width="50px" />
+                        </div>
+                      </mat-step>
+                      <mat-step state="edit" [completed]="item.index >= 3 ? true: false">
+                        <ng-template matStepLabel matStepperIcon="edit">Coleta realizada</ng-template>
+                        <div class="feature--icon">
+                          <img class="flaticon" src="../../assets/images/icons/garbage-truck.svg" alt="icon" height="50px" width="50px" />
+                        </div>
+                      </mat-step>
+                      <mat-step state="edit" [completed]="item.index >= 4 ? true: false">
+                        <ng-template matStepLabel matStepperIcon="edit">Coleta finalizada</ng-template>
+                        <div class="feature--icon">
+                          <img class="flaticon" src="../../assets/images/icons/itinerary.svg" alt="icon" height="50px" width="50px" />
+                        </div>
+                      </mat-step>
+                      <mat-step state="edit" [completed]="item.index >= 5 ? true: false">
+                        <ng-template matStepLabel matStepperIcon="edit">Triagem</ng-template>
+                        <div class="feature--icon">
+                          <img class="flaticon" src="../../assets/images/icons/execution.svg" alt="icon" height="50px" width="50px" />
+                        </div>
+                      </mat-step>
+                      <mat-step state="edit" [completed]="item.index >= 6 ? true: false">
+
+                        <ng-template matStepLabel matStepperIcon="edit">Destinação completa</ng-template>
+                        <div class="feature--icon">
+                          <img class="flaticon" src="../../assets/images/icons/check.svg" alt="icon" height="50px" width="50px" />
+                        </div>
+                      </mat-step>
+
+
+                    </mat-horizontal-stepper>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
     </div>
   </div>
 
 
   <div class="card">
-      <div class="card-header">
-        <button class="block" (click)="expandMyUnitsCheckPoints()" type="button" mat-raised-button color="accent" data-toggle="button" aria-pressed="false" autocomplete="off">
-          <mat-icon *ngIf="!expandMyUnitsCheckPoint">expand_more</mat-icon>
-          <mat-icon *ngIf="expandMyUnitsCheckPoint">expand_less</mat-icon>
-        </button>
-        Minhas filiais  checkpoints
-      </div>
-      <div *ngIf="expandMyUnitsCheckPoint" class="card-body">
-  
-      </div>
+    <div class="card-header">
+      <button class="block" (click)="expandMyUnitsCheckPoints()" type="button" mat-raised-button color="accent" data-toggle="button" aria-pressed="false" autocomplete="off">
+        <mat-icon *ngIf="!expandMyUnitsCheckPoint">expand_more</mat-icon>
+        <mat-icon *ngIf="expandMyUnitsCheckPoint">expand_less</mat-icon>
+      </button>
+      Minhas filiais checkpoints
     </div>
+    <div *ngIf="expandMyUnitsCheckPoint" class="card-body">
+
+      <ng-template [ngIf]="smallScreen" [ngIfElse]="bigScreen">
+        <div *ngFor="let unit of lisUnit; let i = index">
+          <div class="card">
+            <div class="card-header bg-white">
+              <small class="col-sm-4"><em>Unidade: {{unit.name}}</em></small>
+            </div>
+            <button class="block btn btn-secondary btn-sm" (click)="expandItem(unit)" type="button" data-toggle="button" aria-pressed="false" autocomplete="off">
+                <mat-icon *ngIf="!unit.expand">expand_more</mat-icon>
+                <mat-icon *ngIf="unit.expand">expand_less</mat-icon>
+              </button>
+              <div *ngIf="unit.expand" class="card-body">
+              <div *ngFor="let item of unit.list; let ind = index">
+                <div class="card shadow p-3 mb-5 bg-white rounded">
+                  <div class="card-header bg-white">
+                    <small class="col-sm-4"><em>Nome: {{item.material.name}}</em></small> <small class="col-sm-4"><em>Código: {{item.code}}</em></small>
+                    <small class="col-sm-4"><em>Peso: {{item.material.weight}}</em></small>
+                  </div>
+                  <button class="block" (click)="expandItem(item)" type="button" mat-raised-button color="accent" data-toggle="button" aria-pressed="false" autocomplete="off">
+                    <mat-icon *ngIf="!item.expand">expand_more</mat-icon>
+                    <mat-icon *ngIf="item.expand">expand_less</mat-icon>
+                  </button>
+                  <div *ngIf="item.expand" class="card-body">
+                    <mat-vertical-stepper [linear]="true" [selectedIndex]="item.index" #stepper>
+                      <mat-step state="edit" [completed]="item.index >= 1 ? true: false">
+                        <ng-template matStepLabel matStepperIcon="edit">Resíduo gerado</ng-template>
+                        <div class="feature--icon">
+                          <img class="flaticon" src="../../assets/images/icons/trash.svg" alt="icon" height="50px" width="50px" />
+                        </div>
+                      </mat-step>
+                      <mat-step state="edit" [completed]="item.index >= 2 ? true: false">
+                        <ng-template matStepLabel matStepperIcon="edit">Coleta solicitada</ng-template>
+                        <div class="feature--icon">
+                          <img class="flaticon" src="../../assets/images/icons/contact.svg" alt="icon" height="50px" width="50px" />
+                        </div>
+                      </mat-step>
+                      <mat-step state="edit" [completed]="item.index >= 3 ? true: false">
+                        <ng-template matStepLabel matStepperIcon="edit">Coleta realizada</ng-template>
+                        <div class="feature--icon">
+                          <img class="flaticon" src="../../assets/images/icons/garbage-truck.svg" alt="icon" height="50px" width="50px" />
+                        </div>
+                      </mat-step>
+                      <mat-step state="edit" [completed]="item.index >= 4 ? true: false">
+                        <ng-template matStepLabel matStepperIcon="edit">Coleta finalizada</ng-template>
+                        <p></p>
+                        <div class="feature--icon">
+                          <img class="flaticon" src="../../assets/images/icons/itinerary.svg" alt="icon" height="50px" width="50px" />
+                        </div>
+                      </mat-step>
+                      <mat-step state="edit" [completed]="item.index >= 5 ? true: false">
+                        <ng-template matStepLabel matStepperIcon="edit">Triagem</ng-template>
+                        <div class="feature--icon">
+                          <img class="flaticon" src="../../assets/images/icons/execution.svg" alt="icon" height="50px" width="50px" />
+                        </div>
+                      </mat-step>
+                      <mat-step state="edit" [completed]="item.index >= 6 ? true: false">
+                        <ng-template matStepLabel matStepperIcon="edit">Destinação completa</ng-template>
+                        <div class="feature--icon">
+                          <img class="flaticon" src="../../assets/images/icons/check.svg" alt="icon" height="50px" width="50px" />
+                        </div>
+                      </mat-step>
+
+                      <ng-template matStepperIcon="edit">
+                        <mat-icon>check</mat-icon>
+                      </ng-template>
+                    </mat-vertical-stepper>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template #bigScreen>
+        <div *ngFor="let unit of lisUnit; let i = index">
+          <div class="card">
+            <div class="card-header bg-white">
+              <small class="col-sm-4"><em>Unidade: {{unit.name}}</em></small>
+            </div>
+            <div class="card-body">
+              <div *ngFor="let item of unit.list; let ind = index">
+                <div class="card shadow p-3 mb-5 bg-white rounded">
+                  <div class="card-header bg-white">
+                    <small class="col-sm-4"><em>Nome: {{item.material.name}}</em></small> <small class="col-sm-4"><em>Código: {{item.code}}</em></small>
+                    <small class="col-sm-4"><em>Peso: {{item.material.weight}}</em></small>
+                  </div>
+                  <button class="block" (click)="expandItem(item)" type="button" mat-raised-button color="accent" data-toggle="button" aria-pressed="false" autocomplete="off">
+                    <mat-icon *ngIf="!item.expand">expand_more</mat-icon>
+                    <mat-icon *ngIf="item.expand">expand_less</mat-icon>
+                  </button>
+                  <div *ngIf="item.expand" class="card-body">
+                    <mat-horizontal-stepper linear="true" [selectedIndex]="item.index">
+                      <ng-template matStepperIcon="edit">
+                        <mat-icon>check</mat-icon>
+                      </ng-template>
+
+                      <mat-step state="edit" [completed]="item.index >= 1 ? true: false">
+                        <ng-template matStepLabel matStepperIcon="edit">Resíduo gerado</ng-template>
+                        <div class="feature--icon">
+                          <img class="flaticon" src="../../assets/images/icons/trash.svg" alt="icon" height="50px" width="50px" />
+                        </div>
+                      </mat-step>
+                      <mat-step state="edit" [completed]="item.index >= 2 ? true: false">
+                        <ng-template matStepLabel matStepperIcon="edit">Coleta solicitada</ng-template>
+                        <div class="feature--icon">
+                          <img class="flaticon" src="../../assets/images/icons/contact.svg" alt="icon" height="50px" width="50px" />
+                        </div>
+                      </mat-step>
+                      <mat-step state="edit" [completed]="item.index >= 3 ? true: false">
+                        <ng-template matStepLabel matStepperIcon="edit">Coleta realizada</ng-template>
+                        <div class="feature--icon">
+                          <img class="flaticon" src="../../assets/images/icons/garbage-truck.svg" alt="icon" height="50px" width="50px" />
+                        </div>
+                      </mat-step>
+                      <mat-step state="edit" [completed]="item.index >= 4 ? true: false">
+                        <ng-template matStepLabel matStepperIcon="edit">Coleta finalizada</ng-template>
+                        <div class="feature--icon">
+                          <img class="flaticon" src="../../assets/images/icons/itinerary.svg" alt="icon" height="50px" width="50px" />
+                        </div>
+                      </mat-step>
+                      <mat-step state="edit" [completed]="item.index >= 5 ? true: false">
+                        <ng-template matStepLabel matStepperIcon="edit">Triagem</ng-template>
+                        <div class="feature--icon">
+                          <img class="flaticon" src="../../assets/images/icons/execution.svg" alt="icon" height="50px" width="50px" />
+                        </div>
+                      </mat-step>
+                      <mat-step state="edit" [completed]="item.index >= 6 ? true: false">
+
+                        <ng-template matStepLabel matStepperIcon="edit">Destinação completa</ng-template>
+                        <div class="feature--icon">
+                          <img class="flaticon" src="../../assets/images/icons/check.svg" alt="icon" height="50px" width="50px" />
+                        </div>
+                      </mat-step>
+
+
+                    </mat-horizontal-stepper>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+
+    </div>
+  </div>
+
 
 </div>

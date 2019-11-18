@@ -37,6 +37,8 @@ export class ResiduesRegisterService {
               _id
               code
 			  date
+			  confirmedByCorporation
+			  confirmedByCollector
               material {
                 _id
                 type
@@ -88,6 +90,8 @@ export class ResiduesRegisterService {
               _id
               code
 			  date
+			  confirmedByCorporation
+			  confirmedByCollector
               material {
                 _id
                 type

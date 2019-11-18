@@ -60,6 +60,7 @@
     "ngx-mask": "^7.0.1",
     "ngx-pagination": "^3.2.1",
     "ngx-toastr": "^9.1.2",
+    "node-sass": "^4.13.0",
     "nodemon": "^1.18.7",
     "popper.js": "^1.15.0",
     "primeicons": "^1.0.0",
@@ -71,7 +72,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.11.4",
-    "@angular/cli": "~7.0.4",
+    "@angular/cli": "^7.0.7",
     "@angular/compiler-cli": "~7.0.0",
     "@angular/language-service": "~7.0.0",
     "@types/jasmine": "~2.8.8",

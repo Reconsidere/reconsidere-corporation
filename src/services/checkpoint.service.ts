@@ -58,6 +58,8 @@ export class CheckpointService {
               _id
               code
               date
+              confirmedByCorporation
+	            confirmedByCollector
               material {
                 _id
                 type

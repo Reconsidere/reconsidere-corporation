@@ -87,6 +87,8 @@ export class AuthService {
         _id
         code
         date
+        confirmedByCorporation
+			  confirmedByCollector
         material {
           _id
           type
@@ -109,6 +111,8 @@ export class AuthService {
           _id
           code
           date
+          confirmedByCorporation
+			    confirmedByCollector
           material {
             _id
             type
@@ -142,6 +146,8 @@ export class AuthService {
         _id
         code
         date
+        confirmedByCorporation
+			  confirmedByCollector
         material {
           _id
           type
@@ -167,6 +173,8 @@ export class AuthService {
           _id
           code
           date
+          confirmedByCorporation
+			    confirmedByCollector
           material {
             _id
             type
@@ -190,6 +198,8 @@ export class AuthService {
           _id
           code
           date
+          confirmedByCorporation
+			    confirmedByCollector
           material {
             _id
             type
@@ -202,6 +212,33 @@ export class AuthService {
         }
       }
     }
+    residuesPerformed{
+      date
+        name
+        cost
+        typeEntrie
+        quantity
+        weight
+        amount
+        qrCode {
+          _id
+          code
+          date
+          confirmedByCorporation
+			    confirmedByCollector
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
+    }
+
+
   }
 }`;
 
@@ -267,6 +304,8 @@ export class AuthService {
         _id
         code
         date
+        confirmedByCorporation
+			  confirmedByCollector
         material {
           _id
           type
@@ -289,6 +328,8 @@ export class AuthService {
           _id
           code
           date
+          confirmedByCorporation
+			    confirmedByCollector
           material {
             _id
             type
@@ -322,6 +363,8 @@ export class AuthService {
         _id
         code
         date
+        confirmedByCorporation
+			  confirmedByCollector
         material {
           _id
           type
@@ -347,6 +390,8 @@ export class AuthService {
           _id
           code
           date
+          confirmedByCorporation
+			    confirmedByCollector
           material {
             _id
             type
@@ -370,6 +415,8 @@ export class AuthService {
           _id
           code
           date
+          confirmedByCorporation
+			    confirmedByCollector
           material {
             _id
             type
@@ -381,6 +428,31 @@ export class AuthService {
           }
         }
       }
+    }
+    residuesPerformed{
+      date
+        name
+        cost
+        typeEntrie
+        quantity
+        weight
+        amount
+        qrCode {
+          _id
+          code
+          date
+          confirmedByCorporation
+			    confirmedByCollector
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
     }
   }
 }`;
@@ -447,6 +519,8 @@ query getCollectorByUser($_id: ID!) {
         _id
         code
         date
+        confirmedByCorporation
+			  confirmedByCollector
         material {
           _id
           type
@@ -469,6 +543,8 @@ query getCollectorByUser($_id: ID!) {
           _id
           code
           date
+          confirmedByCorporation
+			    confirmedByCollector
           material {
             _id
             type
@@ -502,6 +578,8 @@ query getCollectorByUser($_id: ID!) {
         _id
         code
         date
+        confirmedByCorporation
+			  confirmedByCollector
         material {
           _id
           type
@@ -527,6 +605,8 @@ query getCollectorByUser($_id: ID!) {
           _id
           code
           date
+          confirmedByCorporation
+			    confirmedByCollector
           material {
             _id
             type
@@ -550,6 +630,8 @@ query getCollectorByUser($_id: ID!) {
           _id
           code
           date
+          confirmedByCorporation
+			    confirmedByCollector
           material {
             _id
             type
@@ -562,10 +644,685 @@ query getCollectorByUser($_id: ID!) {
         }
       }
     }
+    residuesPerformed{
+      date
+        name
+        cost
+        typeEntrie
+        quantity
+        weight
+        amount
+        qrCode {
+          _id
+          code
+          date
+          confirmedByCorporation
+			    confirmedByCollector
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
+    }
   }
 }`;
 
-	//#endregion
+  //#endregion
+  
+
+//#region by id
+private queryProviderById = /* GraphQL */ `
+	query getProvider($_id: ID!) {
+	  getProvider(_id: $_id)  {
+		_id
+    picture
+    company
+    cnpj
+    tradingName
+    active
+    class
+    phone
+    email
+    classification
+    cellPhone
+    creationDate
+    activationDate
+    verificationDate
+      location {
+        _id
+        country
+        state
+        latitude
+        longitude
+        cep
+        publicPlace
+        neighborhood
+        number
+        county
+        complement
+        
+      }
+    units {
+      _id
+      unitsId
+    }
+    users {
+      _id
+      name
+      email
+      password
+      active
+      
+      
+    }
+    myProviders {
+      _id
+      providerId
+      
+    }
+    departments {
+      _id
+      name
+      
+      description
+      active
+      isChanged
+      qrCode {
+        _id
+        code
+        date
+        confirmedByCorporation
+			  confirmedByCollector
+        material {
+          _id
+          type
+          name
+          weight
+          quantity
+          active
+          unity
+        }
+      }
+    }
+    residuesRegister{
+      departments {
+        _id
+        name
+        description
+        active
+        isChanged
+        qrCode {
+          _id
+          code
+          date
+          confirmedByCorporation
+			    confirmedByCollector
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
+      }
+    }
+    scheduling {
+      _id
+      hour
+      date
+      active
+      collector {
+        _id
+        company
+        cnpj
+        tradingName
+        active
+        phone
+        cellPhone
+        class
+        email
+        classification
+      }
+      qrCode {
+        _id
+        code
+        date
+        confirmedByCorporation
+			  confirmedByCollector
+        material {
+          _id
+          type
+          name
+          weight
+          quantity
+          active
+          unity
+        }
+      }
+    }
+    entries {
+      _id
+      purchase {
+        date
+        name
+        cost
+        typeEntrie
+        quantity
+        weight
+        amount
+        qrCode {
+          _id
+          code
+          date
+          confirmedByCorporation
+			    confirmedByCollector
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
+      }
+      sale {
+        date
+        name
+        cost
+        typeEntrie
+        quantity
+        weight
+        amount
+        qrCode {
+          _id
+          code
+          date
+          confirmedByCorporation
+			    confirmedByCollector
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
+      }
+    }
+    residuesPerformed{
+      date
+        name
+        cost
+        typeEntrie
+        quantity
+        weight
+        amount
+        qrCode {
+          _id
+          code
+          date
+          confirmedByCorporation
+			    confirmedByCollector
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
+    }
+  }
+}`;
+
+	private queryCorporationById = /* GraphQL */ `
+	query getCorporation($_id: ID!) {
+	  getCorporation(_id: $_id)  {
+		_id
+    picture
+    company
+    cnpj
+    tradingName
+    active
+    class
+    phone
+    email
+    classification
+    cellPhone
+    creationDate
+    activationDate
+    verificationDate
+    location {
+        _id
+        country
+        state
+        latitude
+        longitude
+        cep
+        publicPlace
+        neighborhood
+        number
+        county
+        complement
+        
+      }
+    units {
+      _id
+      unitsId
+    }
+    users {
+      _id
+      name
+      email
+      password
+      active
+      
+      
+    }
+    myProviders {
+      _id
+      providerId
+      
+      
+    
+    }
+    departments {
+      _id
+      name
+      
+      description
+      active
+      isChanged
+      qrCode {
+        _id
+        code
+        date
+        confirmedByCorporation
+			  confirmedByCollector
+        material {
+          _id
+          type
+          name
+          weight
+          quantity
+          active
+          unity
+        }
+      }
+    }
+    residuesRegister{
+      departments {
+        _id
+        name
+        description
+        active
+        isChanged
+        qrCode {
+          _id
+          code
+          date
+          confirmedByCorporation
+			    confirmedByCollector
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
+      }
+    }
+    scheduling {
+      _id
+      hour
+      date
+      active
+      collector {
+        _id
+        company
+        cnpj
+        tradingName
+        active
+        phone
+        cellPhone
+        class
+        email
+        classification
+      }
+      qrCode {
+        _id
+        code
+        date
+        confirmedByCorporation
+			  confirmedByCollector
+        material {
+          _id
+          type
+          name
+          weight
+          quantity
+          active
+          unity
+        }
+      }
+    }
+    entries {
+      _id
+      purchase {
+        date
+        name
+        cost
+        typeEntrie
+        quantity
+        weight
+        amount
+        qrCode {
+          _id
+          code
+          date
+          confirmedByCorporation
+			    confirmedByCollector
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
+      }
+      sale {
+        date
+        name
+        cost
+        typeEntrie
+        quantity
+        weight
+        amount
+        qrCode {
+          _id
+          code
+          date
+          confirmedByCorporation
+			    confirmedByCollector
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
+      }
+    }
+    residuesPerformed{
+      date
+        name
+        cost
+        typeEntrie
+        quantity
+        weight
+        amount
+        qrCode {
+          _id
+          code
+          date
+          confirmedByCorporation
+			    confirmedByCollector
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
+    }
+  }
+}`;
+
+	private queryCollectorById = /* GraphQL */ `
+query getCollector($_id: ID!) {
+	getCollector(_id: $_id)  {
+		_id
+    picture
+    company
+    cnpj
+    tradingName
+    active
+    class
+    phone
+    email
+    classification
+    cellPhone
+    creationDate
+    activationDate
+    verificationDate
+    location {
+        _id
+        country
+        state
+        latitude
+        longitude
+        cep
+        publicPlace
+        neighborhood
+        number
+        county
+        complement
+        
+      }
+    units {
+      _id
+      unitsId
+    }
+    users {
+      _id
+      name
+      email
+      password
+      active
+      
+      
+    }
+    myProviders {
+      _id
+      providerId
+      
+      
+    
+    }
+    departments {
+      _id
+      name
+      
+      description
+      active
+      isChanged
+      qrCode {
+        _id
+        code
+        date
+        confirmedByCorporation
+			  confirmedByCollector
+        material {
+          _id
+          type
+          name
+          weight
+          quantity
+          active
+          unity
+        }
+      }
+    }
+    residuesRegister{
+      departments {
+        _id
+        name
+        description
+        active
+        isChanged
+        qrCode {
+          _id
+          code
+          date
+          confirmedByCorporation
+			    confirmedByCollector
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
+      }
+    }
+    scheduling {
+      _id
+      hour
+      date
+      active
+      collector {
+        _id
+        company
+        cnpj
+        tradingName
+        active
+        phone
+        cellPhone
+        class
+        email
+        classification
+      }
+      qrCode {
+        _id
+        code
+        date
+        confirmedByCorporation
+			  confirmedByCollector
+        material {
+          _id
+          type
+          name
+          weight
+          quantity
+          active
+          unity
+        }
+      }
+    }
+    entries {
+      _id
+      purchase {
+        date
+        name
+        cost
+        typeEntrie
+        quantity
+        weight
+        amount
+        qrCode {
+          _id
+          code
+          date
+          confirmedByCorporation
+			    confirmedByCollector
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
+      }
+      sale {
+        date
+        name
+        cost
+        typeEntrie
+        quantity
+        weight
+        amount
+        qrCode {
+          _id
+          code
+          date
+          confirmedByCorporation
+			    confirmedByCollector
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
+      }
+    }
+    residuesPerformed{
+      date
+        name
+        cost
+        typeEntrie
+        quantity
+        weight
+        amount
+        qrCode {
+          _id
+          code
+          date
+          confirmedByCorporation
+			    confirmedByCollector
+          material {
+            _id
+            type
+            name
+            weight
+            quantity
+            active
+            unity
+          }
+        }
+    }
+  }
+}`;
+
+
+
+//#endregion
+  
 
 	//#region mutations
 
@@ -837,6 +1594,46 @@ query getCollectorByUser($_id: ID!) {
 						resolve(getCorporationByUser['getProviderByUser']);
 					} else {
 						resolve(getCorporationByUser['getCorporationByUser']);
+					}
+				} else {
+					resolve(undefined);
+				}
+			} catch (error) {
+				console.log(error);
+				reject(error.response.errors[0].message);
+			}
+		} else {
+			return new Observable<string>();
+		}
+  }
+  
+  
+	async getOrganizationById(_class, _id,  resolve, reject) {
+		if (_id !== null && _id !== undefined) {
+			const variables = {
+				_id: _id
+			};
+			const client = new GraphQLClient(environment.database.uri + `/${this.getPath(_class)}`, {
+				headers: {}
+			});
+
+			if (_class === Corporation.Classification.Coletora) {
+				this.query = this.queryCollectorById;
+			} else if (_class === ProviderRegistration.Classification.Provider) {
+				this.query = this.queryProviderById;
+			} else {
+				this.query = this.queryCorporationById;
+			}
+
+			try {
+				var getCorporationById = await client.request(this.query, variables);
+				if (getCorporationById) {
+					if (_class === Corporation.Classification.Coletora) {
+						resolve(getCorporationById['getCollector']);
+					} else if (_class === ProviderRegistration.Classification.Provider) {
+						resolve(getCorporationById['getProvider']);
+					} else {
+						resolve(getCorporationById['getCorporation']);
 					}
 				} else {
 					resolve(undefined);
