@@ -96,6 +96,7 @@ export class EntriesManagementComponent implements OnInit {
 							{
 								_idQrCode: item._id,
 								collector: value.collector,
+								_idColector: value.collector._id,
 								_id: item.material._id,
 								code: item.code,
 								typeMaterial: EntriesTypes.TypeEntrie.Material,
@@ -111,6 +112,7 @@ export class EntriesManagementComponent implements OnInit {
 						this.itemsMaterials.push({
 							_idQrCode: item._id,
 							collector: value.collector,
+							_idColector: value.collector._id,
 							_id: item.material._id,
 							code: item.code,
 							typeMaterial: EntriesTypes.TypeEntrie.Material,
@@ -184,7 +186,8 @@ export class EntriesManagementComponent implements OnInit {
 			weight: 0,
 			amount: 0.0,
 			qrCode: qrCode,
-			collector: undefined
+			collector: undefined,
+			_idColector: undefined
 		};
 		if (this.entrieItems === undefined || this.entrieItems.length <= 0) {
 			this.entrieItems = [ obj ];
@@ -206,6 +209,7 @@ export class EntriesManagementComponent implements OnInit {
 			item.qrCode['_id'] = item.qrCode.material._idQrCode;
 			item.qrCode['code'] = item.qrCode.material.code;
 			item.collector = item.qrCode.material.collector;
+			item._idColector = item.qrCode.material.collector._id;
 		} else {
 			item.name = '';
 			item.cost = 0;
@@ -327,6 +331,7 @@ export class EntriesManagementComponent implements OnInit {
 					delete entries.qrCode.material.code;
 					delete entries.qrCode.material._idQrCode;
 					delete entries.qrCode.material.typeMaterial;
+					delete entries.qrCode.material._idColector;
 					delete entries.isTypeMaterial;
 					delete entries.type;
 					delete entries.changed;

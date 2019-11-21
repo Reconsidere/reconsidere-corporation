@@ -1,6 +1,6 @@
-import { QrCode } from "./qrcode";
+import { QrCode } from './qrcode';
 
-export class ResiduePerformed {
+export class ResidueArrived {
 	date: Date;
 	name: String;
 	cost: Number;
@@ -10,12 +10,14 @@ export class ResiduePerformed {
 	amount: Number;
 	qrCode: QrCode;
 	observation: String;
+	confirmedByCorporation: String;
+	confirmedByCollector: String;
 }
 
-export namespace ResiduePerformed {
+export namespace ResidueArrived {
 	export enum Confirmed {
 		Yes = 'Sim',
 		No = 'Não',
-		contradiction = 'Contradição'
+		contradiction = 'Dados inconsistentes'
 	}
 }

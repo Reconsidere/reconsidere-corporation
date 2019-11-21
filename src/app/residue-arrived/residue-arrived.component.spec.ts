@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ResiduePerformedComponent } from './residue-performed.component';
+import { ResidueArrivedComponent } from './residue-arrived.component';
 
-describe('ResiduePerformedComponent', () => {
-  let component: ResiduePerformedComponent;
-  let fixture: ComponentFixture<ResiduePerformedComponent>;
+describe('ResidueArrivedComponent', () => {
+  let component: ResidueArrivedComponent;
+  let fixture: ComponentFixture<ResidueArrivedComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ResiduePerformedComponent ]
+      declarations: [ ResidueArrivedComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ResiduePerformedComponent);
+    fixture = TestBed.createComponent(ResidueArrivedComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -16,7 +16,7 @@ import { ResidueRegisterGraphicComponent } from './graphics/residue-register-gra
 import { EntriesManagementGraphicComponent } from './graphics/entries-management-graphic/entries-management-graphic.component';
 import { DocumentsManagementComponent } from './documents-management/documents-management.component';
 import { CheckpointComponent } from './checkpoint/checkpoint.component';
-import { ResiduePerformedComponent } from './residue-performed/residue-performed.component';
+import { ResidueArrivedComponent } from './residue-arrived/residue-arrived.component';
 
 export const routes: Routes = [
 	{ path: '', component: StartcenterComponent, canActivate: [ AuthGuard ] },
@@ -29,7 +29,7 @@ export const routes: Routes = [
 	{ path: 'unit', component: UnitComponent, canActivate: [ AuthGuard ] },
 	{ path: 'department', component: DepartmentComponent, canActivate: [ AuthGuard ] },
 	{ path: 'residue-register', component: ResiduesRegisterComponent, canActivate: [ AuthGuard ] },
-	{ path: 'residue-performed', component: ResiduePerformedComponent, canActivate: [ AuthGuard ] },
+	{ path: 'residue-arrived', component: ResidueArrivedComponent, canActivate: [ AuthGuard ] },
 	{ path: 'scheduling', component: SchedulingComponent, canActivate: [ AuthGuard ] },
 	{ path: 'entries-management', component: EntriesManagementComponent, canActivate: [ AuthGuard ] },
 	{ path: 'documents-management', component: DocumentsManagementComponent, canActivate: [ AuthGuard ] },

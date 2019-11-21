@@ -84,8 +84,6 @@ export class UnitService {
               _id
               code
               date
-              confirmedByCorporation
-			        confirmedByCollector
               material {
                 _id
                 type
@@ -108,8 +106,6 @@ export class UnitService {
                 _id
                 code
                 date
-                confirmedByCorporation
-			          confirmedByCollector
                 material {
                   _id
                   type
@@ -143,8 +139,6 @@ export class UnitService {
               _id
               code
               date
-              confirmedByCorporation
-			        confirmedByCollector
               material {
                 _id
                 type
@@ -170,8 +164,6 @@ export class UnitService {
                 _id
                 code
                 date
-                confirmedByCorporation
-			          confirmedByCollector
                 material {
                   _id
                   type
@@ -191,12 +183,11 @@ export class UnitService {
               quantity
               weight
               amount
+              _idColector
               qrCode {
                 _id
                 code
                 date
-                confirmedByCorporation
-			          confirmedByCollector
                 material {
                   _id
                   type
@@ -210,7 +201,7 @@ export class UnitService {
             }
         }
 
-        residuesPerformed{
+        residuesArrived{
       date
         name
         cost
@@ -218,12 +209,13 @@ export class UnitService {
         quantity
         weight
         amount
+        observation
+	      confirmedByCorporation
+	      confirmedByCollector
         qrCode {
           _id
           code
           date
-          confirmedByCorporation
-			    confirmedByCollector
           material {
             _id
             type

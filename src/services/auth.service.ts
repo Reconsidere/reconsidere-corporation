@@ -87,8 +87,6 @@ export class AuthService {
         _id
         code
         date
-        confirmedByCorporation
-			  confirmedByCollector
         material {
           _id
           type
@@ -173,8 +171,6 @@ export class AuthService {
           _id
           code
           date
-          confirmedByCorporation
-			    confirmedByCollector
           material {
             _id
             type
@@ -194,12 +190,11 @@ export class AuthService {
         quantity
         weight
         amount
+        _idColector
         qrCode {
           _id
           code
           date
-          confirmedByCorporation
-			    confirmedByCollector
           material {
             _id
             type
@@ -212,7 +207,7 @@ export class AuthService {
         }
       }
     }
-    residuesPerformed{
+    residuesArrived{
       date
         name
         cost
@@ -220,12 +215,13 @@ export class AuthService {
         quantity
         weight
         amount
+        observation
+	      confirmedByCorporation
+	      confirmedByCollector
         qrCode {
           _id
           code
           date
-          confirmedByCorporation
-			    confirmedByCollector
           material {
             _id
             type
@@ -304,8 +300,6 @@ export class AuthService {
         _id
         code
         date
-        confirmedByCorporation
-			  confirmedByCollector
         material {
           _id
           type
@@ -328,8 +322,6 @@ export class AuthService {
           _id
           code
           date
-          confirmedByCorporation
-			    confirmedByCollector
           material {
             _id
             type
@@ -363,8 +355,6 @@ export class AuthService {
         _id
         code
         date
-        confirmedByCorporation
-			  confirmedByCollector
         material {
           _id
           type
@@ -390,8 +380,6 @@ export class AuthService {
           _id
           code
           date
-          confirmedByCorporation
-			    confirmedByCollector
           material {
             _id
             type
@@ -411,12 +399,11 @@ export class AuthService {
         quantity
         weight
         amount
+        _idColector
         qrCode {
           _id
           code
           date
-          confirmedByCorporation
-			    confirmedByCollector
           material {
             _id
             type
@@ -429,7 +416,7 @@ export class AuthService {
         }
       }
     }
-    residuesPerformed{
+    residuesArrived{
       date
         name
         cost
@@ -437,12 +424,13 @@ export class AuthService {
         quantity
         weight
         amount
+        observation
+	      confirmedByCorporation
+	      confirmedByCollector
         qrCode {
           _id
           code
           date
-          confirmedByCorporation
-			    confirmedByCollector
           material {
             _id
             type
@@ -519,8 +507,6 @@ query getCollectorByUser($_id: ID!) {
         _id
         code
         date
-        confirmedByCorporation
-			  confirmedByCollector
         material {
           _id
           type
@@ -543,8 +529,6 @@ query getCollectorByUser($_id: ID!) {
           _id
           code
           date
-          confirmedByCorporation
-			    confirmedByCollector
           material {
             _id
             type
@@ -578,8 +562,6 @@ query getCollectorByUser($_id: ID!) {
         _id
         code
         date
-        confirmedByCorporation
-			  confirmedByCollector
         material {
           _id
           type
@@ -605,8 +587,6 @@ query getCollectorByUser($_id: ID!) {
           _id
           code
           date
-          confirmedByCorporation
-			    confirmedByCollector
           material {
             _id
             type
@@ -626,12 +606,11 @@ query getCollectorByUser($_id: ID!) {
         quantity
         weight
         amount
+        _idColector
         qrCode {
           _id
           code
           date
-          confirmedByCorporation
-			    confirmedByCollector
           material {
             _id
             type
@@ -644,7 +623,7 @@ query getCollectorByUser($_id: ID!) {
         }
       }
     }
-    residuesPerformed{
+    residuesArrived{
       date
         name
         cost
@@ -652,12 +631,13 @@ query getCollectorByUser($_id: ID!) {
         quantity
         weight
         amount
+        observation
+	      confirmedByCorporation
+	      confirmedByCollector
         qrCode {
           _id
           code
           date
-          confirmedByCorporation
-			    confirmedByCollector
           material {
             _id
             type
@@ -736,8 +716,6 @@ private queryProviderById = /* GraphQL */ `
         _id
         code
         date
-        confirmedByCorporation
-			  confirmedByCollector
         material {
           _id
           type
@@ -760,8 +738,6 @@ private queryProviderById = /* GraphQL */ `
           _id
           code
           date
-          confirmedByCorporation
-			    confirmedByCollector
           material {
             _id
             type
@@ -795,8 +771,6 @@ private queryProviderById = /* GraphQL */ `
         _id
         code
         date
-        confirmedByCorporation
-			  confirmedByCollector
         material {
           _id
           type
@@ -822,8 +796,6 @@ private queryProviderById = /* GraphQL */ `
           _id
           code
           date
-          confirmedByCorporation
-			    confirmedByCollector
           material {
             _id
             type
@@ -843,12 +815,11 @@ private queryProviderById = /* GraphQL */ `
         quantity
         weight
         amount
+        _idColector
         qrCode {
           _id
           code
           date
-          confirmedByCorporation
-			    confirmedByCollector
           material {
             _id
             type
@@ -861,7 +832,7 @@ private queryProviderById = /* GraphQL */ `
         }
       }
     }
-    residuesPerformed{
+    residuesArrived{
       date
         name
         cost
@@ -869,12 +840,13 @@ private queryProviderById = /* GraphQL */ `
         quantity
         weight
         amount
+        observation
+	      confirmedByCorporation
+	      confirmedByCollector
         qrCode {
           _id
           code
           date
-          confirmedByCorporation
-			    confirmedByCollector
           material {
             _id
             type
@@ -951,8 +923,6 @@ private queryProviderById = /* GraphQL */ `
         _id
         code
         date
-        confirmedByCorporation
-			  confirmedByCollector
         material {
           _id
           type
@@ -975,8 +945,6 @@ private queryProviderById = /* GraphQL */ `
           _id
           code
           date
-          confirmedByCorporation
-			    confirmedByCollector
           material {
             _id
             type
@@ -1010,8 +978,6 @@ private queryProviderById = /* GraphQL */ `
         _id
         code
         date
-        confirmedByCorporation
-			  confirmedByCollector
         material {
           _id
           type
@@ -1037,8 +1003,6 @@ private queryProviderById = /* GraphQL */ `
           _id
           code
           date
-          confirmedByCorporation
-			    confirmedByCollector
           material {
             _id
             type
@@ -1058,12 +1022,11 @@ private queryProviderById = /* GraphQL */ `
         quantity
         weight
         amount
+        _idColector
         qrCode {
           _id
           code
           date
-          confirmedByCorporation
-			    confirmedByCollector
           material {
             _id
             type
@@ -1076,7 +1039,7 @@ private queryProviderById = /* GraphQL */ `
         }
       }
     }
-    residuesPerformed{
+    residuesArrived{
       date
         name
         cost
@@ -1084,12 +1047,13 @@ private queryProviderById = /* GraphQL */ `
         quantity
         weight
         amount
+        observation
+	      confirmedByCorporation
+	      confirmedByCollector
         qrCode {
           _id
           code
           date
-          confirmedByCorporation
-			    confirmedByCollector
           material {
             _id
             type
@@ -1166,8 +1130,6 @@ query getCollector($_id: ID!) {
         _id
         code
         date
-        confirmedByCorporation
-			  confirmedByCollector
         material {
           _id
           type
@@ -1190,8 +1152,6 @@ query getCollector($_id: ID!) {
           _id
           code
           date
-          confirmedByCorporation
-			    confirmedByCollector
           material {
             _id
             type
@@ -1225,8 +1185,6 @@ query getCollector($_id: ID!) {
         _id
         code
         date
-        confirmedByCorporation
-			  confirmedByCollector
         material {
           _id
           type
@@ -1252,8 +1210,6 @@ query getCollector($_id: ID!) {
           _id
           code
           date
-          confirmedByCorporation
-			    confirmedByCollector
           material {
             _id
             type
@@ -1273,12 +1229,11 @@ query getCollector($_id: ID!) {
         quantity
         weight
         amount
+        _idColector
         qrCode {
           _id
           code
           date
-          confirmedByCorporation
-			    confirmedByCollector
           material {
             _id
             type
@@ -1291,7 +1246,7 @@ query getCollector($_id: ID!) {
         }
       }
     }
-    residuesPerformed{
+    residuesArrived{
       date
         name
         cost
@@ -1299,12 +1254,13 @@ query getCollector($_id: ID!) {
         quantity
         weight
         amount
+        observation
+	      confirmedByCorporation
+	      confirmedByCollector
         qrCode {
           _id
           code
           date
-          confirmedByCorporation
-			    confirmedByCollector
           material {
             _id
             type

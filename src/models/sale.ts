@@ -1,4 +1,4 @@
-import { QrCode } from "./qrcode";
+import { QrCode } from './qrcode';
 
 export class Sale {
 	_id: string;
@@ -9,6 +9,7 @@ export class Sale {
 	quantity: number;
 	weight: number;
 	amount: number;
-    active: boolean;
-    qrCode: QrCode;
+	active: boolean;
+	qrCode: QrCode;
+	_idColector: String;
 }

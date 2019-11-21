@@ -46,8 +46,6 @@ export class SchedulingService {
 			_id
 			code
 			date
-			confirmedByCorporation
-			confirmedByCollector
 			material {
 				_id
 				type
@@ -109,8 +107,6 @@ export class SchedulingService {
 		_id
 		code
 		date
-		confirmedByCorporation
-		confirmedByCollector
 		material {
 			_id
 			type
