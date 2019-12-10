@@ -33,6 +33,15 @@ export class ResidueArrivedComponent implements OnInit {
 	residuesConfirmed: any;
 	typeCollector;
 	collectionClients;
+
+	private readonly REGEX = /[^0-9.,]+/;
+
+	private readonly NOTNUMBER = 'NaN';
+
+	private readonly COMMA = ',';
+
+	private readonly DOT = '.';
+
 	constructor(
 		private toastr: ToastrService,
 		private authService: AuthService,
@@ -99,7 +108,7 @@ export class ResidueArrivedComponent implements OnInit {
 				this.schedulingService.allSchedulings(client.classification, client._id, resolve, reject);
 			});
 			if (items !== undefined) {
-				this.insertMaterialsCollectionsClients(items);
+				this.insertMaterialsCollectionsClients(items, client._id);
 				this.itemsMaterialsCollectionsClients.sort();
 			}
 		});
@@ -165,7 +174,7 @@ export class ResidueArrivedComponent implements OnInit {
 		}
 	}
 
-	insertMaterialsCollectionsClients(list: any) {
+	insertMaterialsCollectionsClients(list: any, _idClient) {
 		list.forEach((value) => {
 			if (value.qrCode !== null) {
 				value.qrCode.forEach((item) => {
@@ -175,6 +184,7 @@ export class ResidueArrivedComponent implements OnInit {
 								_idQrCode: item._id,
 								collector: value.collector,
 								_id: item.material._id,
+								_idCleint: _idClient,
 								code: item.code,
 								typeMaterial: EntriesTypes.TypeEntrie.Material,
 								type: item.material.type,
@@ -190,6 +200,7 @@ export class ResidueArrivedComponent implements OnInit {
 							_idQrCode: item._id,
 							collector: value.collector,
 							_id: item.material._id,
+							_idCleint: _idClient,
 							code: item.code,
 							typeMaterial: EntriesTypes.TypeEntrie.Material,
 							type: item.material.type,
@@ -203,6 +214,162 @@ export class ResidueArrivedComponent implements OnInit {
 				});
 			}
 		});
+	}
+
+	removeInvalidaValuesToSaveClient() {
+		if (this.entriesClients.sale) {
+			if (this.entriesClients.sale !== undefined && this.entriesClients.sale.length > 0) {
+				this.entriesClients.sale.forEach((entries, index) => {
+					delete entries.qrCode.material.collector;
+					delete entries.collector;
+					delete entries._idCleint;
+					delete entries.qrCode.material.code;
+					delete entries.qrCode.material._idQrCode;
+					delete entries.qrCode.material.typeMaterial;
+					delete entries.qrCode.material._idColector;
+					delete entries.isTypeMaterial;
+					delete entries.type;
+					delete entries.changed;
+				});
+			}
+		}
+		if (this.entriesClients.purchase) {
+			if (this.entriesClients.purchase !== undefined && this.entriesClients.purchase.length > 0) {
+				this.entriesClients.purchase.forEach((entries, index) => {
+					delete entries.qrCode.material.collector;
+					delete entries.collector;
+					delete entries._idCleint;
+					delete entries.qrCode.material.code;
+					delete entries.qrCode.material._idQrCode;
+					delete entries.qrCode.material.typeMaterial;
+					delete entries.isTypeMaterial;
+					delete entries.type;
+					delete entries.changed;
+				});
+			}
+		}
+	}
+
+	removeNotChangedSchedulingClient() {
+		if (this.entriesClients.sale !== undefined && this.entriesClients.sale.length > 0) {
+			this.entriesClients.sale.forEach((sale, index) => {
+				if (!sale.changed) {
+					var sales = this.entries.sale;
+					sales.splice(index, 1);
+				}
+			});
+		}
+
+		if (this.entriesClients.purchase !== undefined && this.entriesClients.purchase.length > 0) {
+			this.entriesClients.purchase.forEach((purchase, index) => {
+				if (!purchase.changed) {
+					var purchases = this.entries.purchase;
+					purchases.splice(index, 1);
+				}
+			});
+		}
+	}
+
+	veryfyBeforeSaveClient() {
+		if (this.entrieItemsClients === undefined || this.entrieItemsClients.length <= 0) {
+			this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+			throw new Error();
+		}
+		this.entrieItemsClients.forEach((item) => {
+			if (item.name === undefined) {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+			if (item.cost === undefined || item.cost <= 0) {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+			if (item.typeEntrie === undefined || item.typeEntrie === '') {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+			if (item.type === undefined || item.type === '') {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+			if (item.date === undefined) {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+			if (item.quantity === undefined || item.quantity <= 0) {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+			if (item.amount === undefined || item.amount <= 0) {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+			if (item.qrCode === undefined) {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+			if (item.qrCode.code === undefined) {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+			if (item.confirmedByCollector === undefined) {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+			if (item.qrCode.material === undefined) {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+			if (
+				item.qrCode.material.name === undefined ||
+				item.qrCode.material.type === undefined ||
+				item.qrCode.material.weight < 0 ||
+				item.qrCode.material.quantity < 0 ||
+				item.qrCode.material.unity === undefined
+			) {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+		});
+	}
+
+	private addToEntrieclients() {
+		this.entrieItemsClients.forEach((entrieItems) => {
+			if (entrieItems.type === EntriesTypes.Type.Input) {
+				this.insertValuesClients(entrieItems, EntriesTypes.types.purchase);
+			}
+			if (entrieItems.type === EntriesTypes.Type.Output) {
+				this.insertValuesClients(entrieItems, EntriesTypes.types.sale);
+			}
+		});
+	}
+
+	private insertValuesClients(itemEntrie: any, type: string) {
+		let isAdd = false;
+		if (this.entriesClients !== undefined) {
+			this.entriesClients.forEach((item, index) => {
+				if (item === itemEntrie) {
+					this.entriesClients[index] = itemEntrie;
+					isAdd = true;
+				} else if (item._id !== undefined && item._id === itemEntrie._id) {
+					this.entriesClients[index] = itemEntrie;
+					isAdd = true;
+				}
+			});
+			if (!isAdd) {
+				this.entriesClients.push(itemEntrie);
+			}
+		} else {
+			this.entriesClients = [ itemEntrie ];
+		}
+	}
+
+	async resetEntriesClients(item) {
+		this.entrieItemsClients = [];
+		this.itemsMaterialsCollectionsClients = [];
+		this.entriesClients = new Entries();
+		await this.loadMaterialsCollectionsClients();
+		this.createSimpleListCollectionsClients(item);
 	}
 
 	//#endregion
@@ -320,6 +487,167 @@ export class ResidueArrivedComponent implements OnInit {
 		}
 	}
 
+	removeInvalidaValuesToSave() {
+		if (this.entries.sale) {
+			if (this.entries.sale !== undefined && this.entries.sale.length > 0) {
+				this.entries.sale.forEach((entries, index) => {
+					delete entries.qrCode.material.collector;
+					delete entries.collector;
+					delete entries.qrCode.material.code;
+					delete entries.qrCode.material._idQrCode;
+					delete entries.qrCode.material.typeMaterial;
+					delete entries.qrCode.material._idColector;
+					delete entries.isTypeMaterial;
+					delete entries.type;
+					delete entries.changed;
+				});
+			}
+		}
+		if (this.entries.purchase) {
+			if (this.entries.purchase !== undefined && this.entries.purchase.length > 0) {
+				this.entries.purchase.forEach((entries, index) => {
+					delete entries.qrCode.material.collector;
+					delete entries.collector;
+					delete entries.qrCode.material.code;
+					delete entries.qrCode.material._idQrCode;
+					delete entries.qrCode.material.typeMaterial;
+					delete entries.isTypeMaterial;
+					delete entries.type;
+					delete entries.changed;
+				});
+			}
+		}
+	}
+
+	removeNotChangedScheduling() {
+		if (this.entries.sale !== undefined && this.entries.sale.length > 0) {
+			this.entries.sale.forEach((sale, index) => {
+				if (!sale.changed) {
+					var sales = this.entries.sale;
+					sales.splice(index, 1);
+				}
+			});
+		}
+
+		if (this.entries.purchase !== undefined && this.entries.purchase.length > 0) {
+			this.entries.purchase.forEach((purchase, index) => {
+				if (!purchase.changed) {
+					var purchases = this.entries.purchase;
+					purchases.splice(index, 1);
+				}
+			});
+		}
+	}
+
+	changePrice(oldValue, value, item, e) {
+		if (oldValue === value) {
+			return;
+		}
+		item['changed'] = true;
+		let number = value.replace(this.REGEX, '');
+		number = Number(number.replace(this.COMMA, this.DOT)).toFixed(2);
+		if (number === this.NOTNUMBER) {
+			item.cost = '';
+			return;
+		}
+		item.cost = Number(number);
+		this.calculatePrice(item);
+	}
+
+	changeAmount(oldValue, value, item, e) {
+		if (oldValue === value) {
+			return;
+		}
+		item['changed'] = true;
+		let number = value.replace(this.REGEX, '');
+		number = Number(number.replace(this.COMMA, this.DOT)).toFixed(2);
+		if (number === this.NOTNUMBER) {
+			item.cost = '';
+			return;
+		}
+		item.amount = Number(number);
+		this.calculatePrice(item);
+	}
+
+	calculatePrice(item) {
+		item['changed'] = true;
+		if (
+			(item.cost === undefined && item.quantity === undefined && item.weight === undefined) ||
+			(item.quantity <= 0 && item.weight <= 0 && item.cost <= 0)
+		) {
+			this.toastr.warning(messageCode['WARNNING']['WRE013']['summary']);
+			return;
+		} else if (item.cost > 0 && item.quantity > 0 && item.weight > 0) {
+			item.amount = item.cost * item.quantity * item.weight;
+		} else if (item.cost > 0 && item.quantity > 0 && item.weight <= 0) {
+			item.amount = item.cost * item.quantity;
+		}
+		item.date = new Date();
+	}
+
+	veryfyBeforeSave() {
+		if (this.entrieItems === undefined || this.entrieItems.length <= 0) {
+			this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+			throw new Error();
+		}
+		this.entrieItems.forEach((item) => {
+			if (item.name === undefined) {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+			if (item.cost === undefined || item.cost <= 0) {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+			if (item.typeEntrie === undefined || item.typeEntrie === '') {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+			if (item.type === undefined || item.type === '') {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+			if (item.date === undefined) {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+			if (item.quantity === undefined || item.quantity <= 0) {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+			if (item.amount === undefined || item.amount <= 0) {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+			if (item.qrCode === undefined) {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+			if (item.qrCode.code === undefined) {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+			if (item.confirmedByCorporation === undefined) {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+			if (item.qrCode.material === undefined) {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+			if (
+				item.qrCode.material.name === undefined ||
+				item.qrCode.material.type === undefined ||
+				item.qrCode.material.weight < 0 ||
+				item.qrCode.material.quantity < 0 ||
+				item.qrCode.material.unity === undefined
+			) {
+				this.toastr.warning(messageCode['WARNNING']['WRE001']['summary']);
+				throw new Error();
+			}
+		});
+	}
+
 	expands() {
 		if (this.expand) {
 			this.expand = false;
@@ -336,11 +664,84 @@ export class ResidueArrivedComponent implements OnInit {
 		}
 	}
 
-	changedItem(item) {}
+	changedItem(item) {
+		item['changed'] = true;
+	}
+
+	private addToEntrie() {
+		this.entrieItems.forEach((entrieItems) => {
+			if (entrieItems.type === EntriesTypes.Type.Input) {
+				this.insertValues(entrieItems, EntriesTypes.types.purchase);
+			}
+			if (entrieItems.type === EntriesTypes.Type.Output) {
+				this.insertValues(entrieItems, EntriesTypes.types.sale);
+			}
+		});
+	}
+
+	private insertValues(itemEntrie: any, type: string) {
+		let isAdd = false;
+		if (this.entries[type] !== undefined) {
+			this.entries[type].forEach((item, index) => {
+				if (item === itemEntrie) {
+					this.entries[type][index] = itemEntrie;
+					isAdd = true;
+				} else if (item._id !== undefined && item._id === itemEntrie._id) {
+					this.entries[type][index] = itemEntrie;
+					isAdd = true;
+				}
+			});
+			if (!isAdd) {
+				this.entries[type].push(itemEntrie);
+			}
+		} else {
+			this.entries[type] = [ itemEntrie ];
+		}
+	}
+
+	async resetEntries(item) {
+		this.entrieItems = [];
+		this.itemsMaterials = [];
+		this.entries = new Entries();
+		await this.loadMaterials();
+		this.createSimpleList(item);
+	}
 
 	async save() {}
 
 	async saveClients() {
-		console.log(this.entrieItemsClients);
+		try {
+			this.veryfyBeforeSaveClient();
+			this.addToEntrieclients();
+			this.removeNotChangedSchedulingClient();
+			this.removeInvalidaValuesToSaveClient();
+			if (
+				this.entriesClients.sale === undefined &&
+				this.entriesClients.sale.length <= 0 &&
+				this.entriesClients.purchase === undefined &&
+				this.entriesClients.purchase.length <= 0
+			) {
+				this.toastr.warning(messageCode['WARNNING']['WRE020']['summary']);
+				this.entrieItemsClients = [];
+				this.itemsMaterialsCollectionsClients = [];
+				this.entriesClients = new Entries();
+				this.loadMaterialsCollectionsClients();
+				this.loadEntriesCollectionsClients();
+				return;
+			}
+			var entries = await new Promise(async (resolve, reject) => {
+				// this.entriesService.addOrUpdate(
+				// 	this.authService.getClass(),
+				// 	this.corporationId,
+				// 	this.entriesClients,
+				// 	resolve,
+				// 	reject
+				// );
+			});
+			this.resetEntriesClients(entries);
+			this.toastr.success(messageCode['SUCCESS']['SRE001']['summary']);
+		} catch (error) {
+			this.toastr.warning(messageCode['ERROR'][error]['summary']);
+		}
 	}
 }
