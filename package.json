@@ -54,7 +54,7 @@
     "jsonwebtoken": "^8.4.0",
     "material-design-icons": "^3.0.1",
     "moment": "^2.24.0",
-    "mongoose": "^5.4.0",
+    "mongoose": "^5.7.5",
     "ngx-bootstrap": "^4.0.1",
     "ngx-doc-viewer": "^0.1.22",
     "ngx-mask": "^7.0.1",
