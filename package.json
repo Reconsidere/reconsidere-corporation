@@ -60,7 +60,7 @@
     "ngx-mask": "^7.0.1",
     "ngx-pagination": "^3.2.1",
     "ngx-toastr": "^9.1.2",
-    "node-sass": "^4.13.0",
+    "node-sass": "^4.13.1",
     "nodemon": "^1.18.7",
     "popper.js": "^1.15.0",
     "primeicons": "^1.0.0",
